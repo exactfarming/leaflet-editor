@@ -1,0 +1,179 @@
+import MapEditor from '../src/js/map';
+import MarkerGroup from '../src/js/edit/marker-group';
+
+function genLatLngs() {
+  var k = 1;
+  var latlng = map.getCenter();
+
+  latlng = {lat: latlng.lat - 0.04 * k, lng: latlng.lng};
+
+  var latlng2 = $.extend(true, {}, latlng);
+  latlng2.lat += 0.04 * k;
+  latlng2.lng += 0.081 * k;
+
+  var latlng3 = $.extend(true, {}, latlng2);
+  latlng3.lat += 0.04 * k;
+  latlng3.lng -= 0.081 * k;
+
+  var latlng4 = $.extend(true, {}, latlng2);
+  latlng4.lat += 0.02 * k;
+  latlng4.lng -= 0.16 * k;
+
+  return [latlng, latlng2, latlng3, latlng4];
+}
+function logGroup() {
+  //var _layers = mGroup._layers;
+
+  var positions = [];
+  var prev = [];
+  var next = [];
+  var npp = [];
+  var markers = mGroup.getLayers();
+  markers.forEach(function(marker, position) {
+    positions.push(position);
+    prev.push(marker._prev.position);
+    next.push(marker._next.position);
+    npp.push(mGroup.markerAt(marker.position)._posHash());
+  });
+  return {
+    positions: positions.join(' , '),
+    prev: prev.join(' , '),
+    next: next.join(' , '),
+    npp: npp.join(' , ')
+  };
+}
+
+describe('sort layers', function () {
+  beforeEach(function () {
+    $('body').prepend('<div id="map" style="width: 100%; height: 500px;"></div>');
+
+    window.map = new MapEditor('map', {
+      allowIntersection: true,
+      center: [55.75, 37.62],
+      zoom: 9,
+      worldCopyJump: true,
+      text: {
+        intersection: "Пересечение границ запрещено"
+      }
+    });
+
+    window._latlngs = genLatLngs();
+
+    window.mGroup = new MarkerGroup();
+
+    mGroup.addTo(map);
+
+    mGroup.addMarker(_latlngs[0]);
+    mGroup.addMarker(_latlngs[1]);
+    mGroup.addMarker(_latlngs[2]);
+    mGroup.addMarker(_latlngs[3]);
+  });
+  afterEach(() => {
+    $('body').html('');
+    map.remove();
+  });
+
+  it('firstMarker', () => {
+    expect(mGroup.firstMarker()).toBe(mGroup._markers[0]);
+  });
+  it('lastMarker', () => {
+    var markers = mGroup._markers;
+    expect(mGroup.lastMarker()).toBe(markers[markers.length - 1]);
+  });
+  it('test 0', function () {
+    expect(mGroup.markerAt(-1).position).toBe(mGroup.firstMarker().position);
+    expect(mGroup.markerAt(1000).position).toBe(mGroup.lastMarker().position);
+  });
+
+  it('test 1', function () {
+    expect(mGroup).not.toBe(null);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3');
+    expect(__ret.prev)     .toBe('3 , 0 , 1 , 2');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 0');
+    expect(__ret.npp).toBe('3_0_1 , 0_1_2 , 1_2_3 , 2_3_0');
+    expect(mGroup.firstMarker()._posHash()).toBe('3_0_1');
+    expect(mGroup.lastMarker()._posHash()).toBe('2_3_0');
+
+    expect(__ret.prev[0] !== __ret.prev[1]).toBe(true);
+    expect(__ret.next[1] !== __ret.next[2]).toBe(true);
+
+    var marker = mGroup.addMarker(1);
+
+    var __ret = logGroup();
+    expect(1).toBe(marker.position);
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3 , 4');
+    expect(__ret.prev)     .toBe('4 , 0 , 1 , 2 , 3');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 4 , 0');
+
+    mGroup.addMarker(1000);
+    mGroup.addMarker(-1);
+    mGroup.addMarker(0);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3 , 4 , 5 , 6 , 7');
+    expect(__ret.prev)     .toBe('7 , 0 , 1 , 2 , 3 , 4 , 5 , 6');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 4 , 5 , 6 , 7 , 0');
+  });
+
+  it('test 2', function () {
+    mGroup.removeMarkerAt(-1);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('');
+    expect(__ret.prev)     .toBe('');
+    expect(__ret.next)     .toBe('');
+
+    mGroup.removeMarkerAt(1000);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('');
+    expect(__ret.prev)     .toBe('');
+    expect(__ret.next)     .toBe('');
+  });
+
+  it('test 3', function () {
+    //mGroup.addMarker(0);
+    mGroup.addMarker(1);
+    mGroup.addMarker(3);
+    mGroup.addMarker(5);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3 , 4 , 5 , 6');
+    expect(__ret.prev)     .toBe('6 , 0 , 1 , 2 , 3 , 4 , 5');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 4 , 5 , 6 , 0');
+
+    //console.log(mGroup._ids());
+    mGroup.removeMarkerAt(0);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3 , 4 , 5');
+    expect(__ret.prev)     .toBe('5 , 0 , 1 , 2 , 3 , 4');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 4 , 5 , 0');
+
+    mGroup.addMarker(2);
+    mGroup.addMarker(2);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3 , 4 , 5 , 6 , 7');
+    expect(__ret.prev)     .toBe('7 , 0 , 1 , 2 , 3 , 4 , 5 , 6');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 4 , 5 , 6 , 7 , 0');
+
+    mGroup.removeMarkerAt(0);
+    mGroup.removeMarkerAt(0);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('0 , 1 , 2 , 3 , 4 , 5');
+    expect(__ret.prev)     .toBe('5 , 0 , 1 , 2 , 3 , 4');
+    expect(__ret.next)     .toBe('1 , 2 , 3 , 4 , 5 , 0');
+
+    mGroup.removeMarkerAt(0);
+    mGroup.removeMarkerAt(0);
+
+    var __ret = logGroup();
+    expect(__ret.positions).toBe('');
+    expect(__ret.prev)     .toBe('');
+    expect(__ret.next)     .toBe('');
+  });
+});

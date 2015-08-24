@@ -1,0 +1,36 @@
+{
+  "name": "leaflet-editor",
+  "version": "1.0.0",
+  "description": "Leaflet plugin which helps edit polygons with holes",
+  "main": "gulpfile.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "dependencies": {
+    "browser-sync": "^2.7.1",
+    "browserify": "^10.2.1",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "vinyl-paths": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "babelify": "^6.0.2",
+    "babel": "^5.4.5",
+    "wallabify": "^0.0.6",
+    "leaflet-fullscreen": "^0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owm-inc/leaflet-editor.git"
+  },
+  "author": "Oleg Dovger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/owm-inc/leaflet-editor/issues"
+  },
+  "homepage": "https://github.com/owm-inc/leaflet-editor"
+}

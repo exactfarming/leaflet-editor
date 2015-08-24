@@ -1,0 +1,32 @@
+import MapEditor from '../src/js/map';
+describe('markerGroup', function () {
+  beforeEach(function () {
+    $('body').prepend('<div id="map" style="width: 100%; height: 500px;"></div>');
+
+    window.map = new MapEditor('map', {
+      allowIntersection: true,
+      center: [55.75, 37.62],
+      zoom: 9,
+      worldCopyJump: true,
+      text: {
+        intersection: "Пересечение границ запрещено"
+      }
+    });
+  });
+  afterEach(() => {
+    $('body').html('');
+    map.remove();
+  });
+  it('getFirst, convertToLatLngs, restore', function () {
+    setTestPolygon(map);
+
+    expect(map.getEMarkersGroup().getFirst()).not.toBe(null);
+
+    var latlngs = map.getEMarkersGroup().convertToLatLngs();
+    expect(latlngs.length).toBe(4);
+    map.getEMarkersGroup().clearLayers();
+    expect(map.getEMarkersGroup().convertToLatLngs().length).toBe(0);
+    map.getEMarkersGroup().restore(latlngs);
+    expect(map.getEMarkersGroup().convertToLatLngs().length).toBe(4);
+  });
+});

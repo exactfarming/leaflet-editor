@@ -1,0 +1,50 @@
+import sort from '../src/js/utils/sortByPosition';
+describe('sort layers', function () {
+
+  var idArray = ['a1', 'b2', 'c3' , 'd4', 'e5', 'f6'];
+
+  var object = {
+    a1: {
+      __position: 1
+    },
+    b2: {
+      __position: 4
+    },
+    c3: {
+      __position: 0
+    },
+    d4: {
+      __position: 2
+    },
+    e5: {
+      __position: 5
+    },
+    f6: {
+      __position: 3
+    }
+  };
+
+  var objectExpect = {
+    a1: {
+      __position: 0
+    },
+    b2: {
+      __position: 1
+    },
+    c3: {
+      __position: 2
+    },
+    d4: {
+      __position: 3
+    },
+    e5: {
+      __position: 4
+    },
+    f6: {
+      __position: 5
+    }
+  };
+  it('test', function () {
+    expect(sort(object, idArray)).toEqual(objectExpect);
+  });
+});
