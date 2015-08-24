@@ -18,11 +18,10 @@ gulp.task('buildExample', function () {
     .pipe(browserSync.reload({stream: true}));
 });
 
-//gulp.task('copy', function () {
-//  gulp.src('examples/index.html')
-//    .pipe(gulp.dest('./dist'))
-//    .pipe(browserSync.reload({stream: true}));
-//});
+gulp.task('copy', function () {
+  gulp.src('src/css/index.css')
+    .pipe(gulp.dest('./dist/css'));
+});
 
 gulp.task('browserSync', function () {
   browserSync({
@@ -45,4 +44,4 @@ gulp.task('clean', function () {
 });
 
 
-gulp.task('default', ['clean', 'buildExample', 'browserSync', 'watchFiles']);
+gulp.task('default', ['clean', 'copy', 'buildExample', 'browserSync', 'watchFiles']);
