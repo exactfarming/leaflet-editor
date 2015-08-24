@@ -1,6 +1,5 @@
 import Base from './base';
 import ControlsHook from './hooks/controls';
-import EditEventsHook from './edit/hooks/events';
 
 import * as layers from './layers';
 import * as opts from './options';
@@ -78,7 +77,6 @@ function map() {
   }));
 
   map.addInitHook(ControlsHook);
-  map.addInitHook(EditEventsHook);
 
   return map;
 }

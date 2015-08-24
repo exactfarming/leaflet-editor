@@ -149,11 +149,10 @@ export default L.Marker.extend({
         }
 
         var latlng = e.target._latlng;
-        console.log(e.target);
         var hasIntersection = mGroup.hasIntersection(latlng);
 
         if (hasIntersection) {
-          map._showIntersectionError(latlng);
+          map._showIntersectionError();
           this._onceClick(); // bind 'once' again until has intersection
         } else {
           this._isFirst = false;
