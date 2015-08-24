@@ -2,7 +2,7 @@
 Leaflet plugin which helps edit polygons with holes
 
 ## Example
-[http://owm-inc.github.io/leaflet-editor/examples/](http://owm-inc.github.io/leaflet-editor/examples/)
+[http://owm-inc.github.io/leaflet-editor/](http://owm-inc.github.io/leaflet-editor/)
 
 ## Install
 npm install && bower install
