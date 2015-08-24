@@ -145,9 +145,6 @@ export default $.extend({
     this.$.removeClass('map-' + this._modeType);
     this._modeType = type;
     this.$.addClass('map-' + this._modeType);
-    console.log('mode: ', this._modeType);
-    console.log('eLen - ' + this.getEGroup().getLayers().length);
-    console.log('vLen - ' + this.getVGroup().getLayers().length);
   },
   _setMarkersGroupIcon (markerGroup) {
     var mIcon = this.options.markerIcon;
@@ -330,11 +327,7 @@ export default $.extend({
     this._unBindDrawEvents();
   },
   _activeEditLayer: undefined,
-  /**
-   * Used in 'edit/hooks/events'
-   * @private
-   */
-    _setActiveEditLayer (layer) {
+  _setActiveEditLayer (layer) {
     this._activeEditLayer = layer;
   },
   _getActiveEditLayer () {

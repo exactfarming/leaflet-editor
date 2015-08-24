@@ -370,8 +370,6 @@ export default L.MarkerGroup = BaseMGroup.extend({
         }
       }
     }
-    console.log('layers - ', layers);
-
     return this._originalPoints;
   },
   _bindLineEvents: undefined,
