@@ -24,6 +24,7 @@ export default {
 
         this._clearSelectedVLayer();
 
+        this._selectedMGroup = eMarkersGroup;
         return false;
       }
 
@@ -45,6 +46,9 @@ export default {
             var lastHGroup = ehMarkersGroup.addHoleGroup();
             lastHGroup.set(e.latlng, null, {icon: firstIcon});
             this.clearSelectedMarker();
+
+            this._selectedMGroup = lastHGroup;
+            this.fire('editor:start_add_new_hole');
 
             return false;
           }

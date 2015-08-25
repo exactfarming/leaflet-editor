@@ -118,6 +118,10 @@ export default function () {
 
       var selectedMarker = this.getSelectedMarker();
 
+      if(!this.hasLayer(selectedMarker)) {
+        return;
+      }
+
       if(selectedMarker && !selectedMarker._mGroup.hasFirstMarker()) {
         //set marker style
         if (data.intersection) {

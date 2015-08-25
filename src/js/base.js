@@ -312,7 +312,7 @@ export default $.extend({
     this.getEGroup().clearLayers();
     this.getEPolygon().clear();
     this.getEMarkersGroup().clear();
-    this.getEMarkersGroup().getDELine().clear();
+    this.getSelectedMGroup().getDELine().clear();
 
     this.getEHMarkersGroup().clearLayers();
 
