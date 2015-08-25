@@ -30,9 +30,15 @@ export default L.Control.extend({
   _changePos (map) {
     var controlCorner = map._controlCorners['msgcenter'];
     if (controlCorner && controlCorner.children.length) {
-      var width = controlCorner.children.item().children[0].clientWidth;
+      var child = controlCorner.children.item().children[0];
+
+      if(!child) {
+        return;
+      }
+
+      var width = child.clientWidth;
       if(width) {
-        controlCorner.style.left = (map._container.clientWidth/2 - width) + 'px';
+        controlCorner.style.left = (map._container.clientWidth - width) / 2 + 'px';
       }
     }
   },

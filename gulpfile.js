@@ -33,7 +33,7 @@ gulp.task('browserSync', function () {
 });
 
 gulp.task('watchFiles', function () {
-  gulp.watch('src/index.html', ['copy']);
+  gulp.watch('src/css/index.css', ['copy']);
   gulp.watch('dist/index.html').on('change', browserSync.reload);
   gulp.watch(['dist/**/*.js', 'src/**/*.js', '!dist/js/index.js'], ['buildExample']);
 });
