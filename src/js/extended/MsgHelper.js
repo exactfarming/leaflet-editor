@@ -32,14 +32,16 @@ export default L.Control.extend({
     if (controlCorner && controlCorner.children.length) {
       var width = controlCorner.children.item().children[0].clientWidth;
       if(width) {
-        controlCorner.style.left = (map._container.clientWidth - width) / 2 + 'px';
+        controlCorner.style.left = (map._container.clientWidth/2 - width) + 'px';
       }
     }
   },
   _bindEvents (map) {
-    window.addEventListener('resize', () => {
-      this._changePos(map);
-    });
+    setTimeout(() => {
+      window.addEventListener('resize', () => {
+        this._changePos(map);
+      });
+    }, 1);
   },
   _setContainer (container, map) {
     this._titleContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');
