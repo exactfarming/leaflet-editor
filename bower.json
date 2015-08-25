@@ -13,6 +13,7 @@
     "test",
     "tests"
   ],
+  "main": "./dist/js/index.js",
   "dependencies": {
     "Leaflet.fullscreen": "Leaflet/Leaflet.fullscreen#~0.0.4",
     "jquery": "~2.1.4",
