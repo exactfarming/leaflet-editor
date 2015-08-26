@@ -171,9 +171,10 @@ export default L.Marker.extend({
         return;
       }
 
+      var map = this._map;
       if (this._hasFirstIcon() && this._mGroup.hasIntersection(this.getLatLng(), true)) {
-        this._map.edgesIntersected(false);
-        this._map._showIntersectionError();
+        map.edgesIntersected(false);
+        map._showIntersectionError();
         return;
       }
 
@@ -191,9 +192,9 @@ export default L.Marker.extend({
         mGroup.select();
 
         if (this.isMiddle()) {
-          this._map._msgContainer.msg(this._map.options.text.clickToAddNewEdges);
+          map._msgContainer.msg(map.options.text.clickToAddNewEdges);
         } else {
-          this._map._msgContainer.msg(this._map.options.text.clickToRemoveAllSelectedEdges);
+          map._msgContainer.msg(map.options.text.clickToRemoveAllSelectedEdges);
         }
 
         return;
@@ -203,16 +204,16 @@ export default L.Marker.extend({
         mGroup.setMiddleMarkers(this.position);
         this._resetIcon(icon);
         mGroup.select();
-        this._map._msgContainer.msg(this._map.options.text.clickToRemoveAllSelectedEdges);
+        map._msgContainer.msg(map.options.text.clickToRemoveAllSelectedEdges);
       } else { //remove edge
         if (!mGroup.getFirst()._hasFirstIcon() && !dragend) {
-          mGroup._map._msgContainer.hide();
+          map._msgContainer.hide();
 
           var rsltIntersection = this._detectIntersection({target: {_latlng: mGroup._getMiddleLatLng(this.prev(), this.next())}});
 
           if (rsltIntersection) {
             this.resetStyle();
-            this._map._showIntersectionError(this._map.options.text.deletePointIntersection);
+            map._showIntersectionError(map.options.text.deletePointIntersection);
             this._previewErrorLine();
             return;
           }
@@ -226,12 +227,12 @@ export default L.Marker.extend({
             var newLatLng = nextMarker._prev.getLatLng();
 
             if (newLatLng.lat === oldLatLng.lat && newLatLng.lng === oldLatLng.lng) {
-              mGroup._map._msgContainer.msg(this._map.options.text.clickToAddNewEdges);
+              map._msgContainer.msg(map.options.text.clickToAddNewEdges);
             }
 
             mGroup.setSelected(nextMarker);
           } else {
-            mGroup._map._msgContainer.hide();
+            map._msgContainer.hide();
           }
           mGroup.select();
         }
