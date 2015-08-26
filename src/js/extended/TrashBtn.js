@@ -14,18 +14,15 @@ export default BtnCtrl.extend({
 
     map.on('trashAdded', () => {
       L.DomUtil.addClass(this._btn, 'disabled');
+
+      map.on('editor:marker_group_select', this._bindEvents, this);
+      map.on('editor:start_add_new_polygon', this._bindEvents, this);
+      map.on('editor:start_add_new_hole', this._bindEvents, this);
+      map.on('editor:marker_group_clear', this._disableBtn, this);
+      map.on('editor:delete_polygon', this._disableBtn, this);
+      map.on('editor:delete_hole', this._disableBtn, this);
+      map.on('editor:map_cleared', this._disableBtn, this);
     });
-
-    map.on('editor:marker_group_select', this._bindEvents, this);
-
-    map.on('editor:start_add_new_polygon', this._bindEvents, this);
-
-    map.on('editor:start_add_new_hole', this._bindEvents, this);
-
-    map.on('editor:marker_group_clear', this._disableBtn, this);
-    map.on('editor:delete_polygon', this._disableBtn, this);
-    map.on('editor:delete_hole', this._disableBtn, this);
-    map.on('editor:map_cleared', this._disableBtn, this);
 
     return BtnCtrl.prototype.onAdd.call(this, map);
   },
