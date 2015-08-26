@@ -235,18 +235,27 @@ export default $.extend({
    *
    * */
     saveState () {
-    if (this.isMode('draw')) {
-      this._convertToEdit(this.getEMarkersGroup()); // set 'edit' polygon
-      this._addEPolygon_To_VGroup();
-    }
-    this.clear();
-    //this._setMode('view');
 
-    var geojson = this.getVGroup().toGeoJSON();
-    if (geojson.geometry) {
-      return geojson.geometry;
+    var ePolygon = _map.getEPolygon();
+
+    if(!ePolygon.isEmpty()) {
+      this.fitBounds(ePolygon.getBounds());
+      this._msgContainer.msg(this.options.text.forgetToSave);
+    } else {
+      if (this._getSelectedVLayer()) {
+        this._setEPolygon_To_VGroup();
+      } else {
+        this._addEPolygon_To_VGroup();
+      }
+      this.clear();
+      this.mode('draw');
+
+      var geojson = this.getVGroup().toGeoJSON();
+      if (geojson.geometry) {
+        return geojson.geometry;
+      }
+      return {};
     }
-    return {};
   },
   getSelectedMarker () {
     return this._selectedMarker;

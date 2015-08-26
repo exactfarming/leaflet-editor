@@ -65,7 +65,8 @@ export var options = {
     rejectChanges: "reject changes",
     jsonWasLoaded: "JSON was loaded",
     checkJson: "check JSON",
-    loadJson: "load GeoJSON"
+    loadJson: "load GeoJSON",
+    forgetToSave: "Save changes by pressing outside of polygon"
   },
   worldCopyJump: true
 };
