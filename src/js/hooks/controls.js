@@ -26,7 +26,7 @@ export default function () {
 
   this.addControl(L.control.search());
 
-  this._LoadBtn = LoadBtn;
+  this._BtnControl = BtnControl;
 
   var trashBtn = new TrashBtn({
     btns: [

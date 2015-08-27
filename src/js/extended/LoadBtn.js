@@ -12,10 +12,6 @@ export default BtnCtrl.extend({
       L.DomEvent.addListener(btn, 'mouseover', this._onMouseOver, this);
       L.DomEvent.addListener(btn, 'mouseout', this._onMouseOut, this);
 
-      L.DomEvent
-        .on(btn, 'click', this.stopEvent)
-        .on(btn, 'click', this._toggle, this);
-
       this._map.on('searchEnabled', this._collapse, this);
 
       this._renderForm(container);
@@ -25,7 +21,7 @@ export default BtnCtrl.extend({
 
     return container;
   },
-  _toggle () {
+  _onPressBtn () {
     if (this._form.style.display != 'block') {
       this._form.style.display = 'block';
       this._textarea.focus();
