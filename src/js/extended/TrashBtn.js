@@ -6,12 +6,6 @@ export default BtnCtrl.extend({
   },
   _btn: null,
   onAdd (map) {
-    map.on('btnPressed', () => {
-      if (this._btn && !L.DomUtil.hasClass(this._btn, 'disabled')) {
-        this._onPressBtn();
-      }
-    });
-
     map.on('trashAdded', (data) => {
       L.DomUtil.addClass(data.control._btn, 'disabled');
 

@@ -13,6 +13,12 @@ export default L.Control.extend({
   },
   _titleContainer: null,
   onAdd (map) {
+    map.on('btnPressed', () => {
+      if (this._btn && !L.DomUtil.hasClass(this._btn, 'disabled')) {
+        this._onPressBtn();
+      }
+    });
+
     var container = L.DomUtil.create('div', 'leaflet-bar leaflet-editor-buttons');
 
     map._controlContainer.appendChild(container);
@@ -31,6 +37,7 @@ export default L.Control.extend({
 
     return container;
   },
+  _onPressBtn () {},
   _setBtn (opts, container) {
     var _btn;
     opts.forEach((btn, index) => {
