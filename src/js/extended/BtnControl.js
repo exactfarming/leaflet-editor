@@ -31,6 +31,10 @@ export default L.Control.extend({
       if (options.eventName) {
         map.fire(options.eventName, {control: self});
       }
+
+      L.DomEvent.addListener(self._btn, 'mouseover', this._onMouseOver, this);
+      L.DomEvent.addListener(self._btn, 'mouseout', this._onMouseOut, this);
+
     }, 1000);
 
     map.getBtnControl = () => this;
@@ -38,6 +42,8 @@ export default L.Control.extend({
     return container;
   },
   _onPressBtn () {},
+  _onMouseOver () {},
+  _onMouseOut () {},
   _setBtn (opts, container) {
     var _btn;
     opts.forEach((btn, index) => {

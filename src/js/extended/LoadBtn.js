@@ -7,11 +7,7 @@ export default BtnCtrl.extend({
   onAdd (map) {
     var container = BtnCtrl.prototype.onAdd.call(this, map);
 
-    map.on('loadBtnAdded', (data) => {
-      var btn = data.control._btn;
-      L.DomEvent.addListener(btn, 'mouseover', this._onMouseOver, this);
-      L.DomEvent.addListener(btn, 'mouseout', this._onMouseOut, this);
-
+    map.on('loadBtnAdded', () => {
       this._map.on('searchEnabled', this._collapse, this);
 
       this._renderForm(container);
