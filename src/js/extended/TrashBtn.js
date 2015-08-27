@@ -2,7 +2,8 @@ import BtnCtrl from './BtnControl';
 
 export default BtnCtrl.extend({
   options: {
-    eventName: 'trashAdded'
+    eventName: 'trashAdded',
+    pressEventName: 'trashBtnPressed'
   },
   _btn: null,
   onAdd (map) {
@@ -16,6 +17,8 @@ export default BtnCtrl.extend({
       map.on('editor:delete_polygon', this._disableBtn, this);
       map.on('editor:delete_hole', this._disableBtn, this);
       map.on('editor:map_cleared', this._disableBtn, this);
+
+      this._disableBtn();
     });
 
     return BtnCtrl.prototype.onAdd.call(this, map);
@@ -47,14 +50,19 @@ export default BtnCtrl.extend({
     this._onMouseOut();
   },
   _onMouseOver () {
-    var map = this._map;
-    if (map.getEMarkersGroup().getLayers()[0]._isFirst) {
-      map._msgContainer.msg(map.options.text.rejectChanges);
-    } else {
-      map._msgContainer.msg(map.options.text.deleteSelectedEdges);
+    if (!L.DomUtil.hasClass(this._btn, 'disabled')) {
+      var map = this._map;
+      var layer = map.getEMarkersGroup().getLayers()[0];
+      if (layer && layer._isFirst) {
+        map._msgContainer.msg(map.options.text.rejectChanges);
+      } else {
+        map._msgContainer.msg(map.options.text.deleteSelectedEdges);
+      }
     }
   },
   _onMouseOut () {
-    this._map._msgContainer.hide();
+    if (!L.DomUtil.hasClass(this._btn, 'disabled')) {
+      this._map._msgContainer.hide();
+    }
   }
 });

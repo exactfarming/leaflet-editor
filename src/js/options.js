@@ -67,7 +67,8 @@ export var options = {
     checkJson: "check JSON",
     loadJson: "load GeoJSON",
     forgetToSave: "Save changes by pressing outside of polygon",
-    searchLocation: "Search location"
+    searchLocation: "Search location",
+    submitLoadBtn: "submit"
   },
   worldCopyJump: true
 };

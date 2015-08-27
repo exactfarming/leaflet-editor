@@ -70,7 +70,7 @@ export default L.Control.extend({
         return function () {
           map.fire(pressEventName);
         }
-      }(this._map, btn.pressEventName || 'btnPressed'));
+      }(this._map, btn.pressEventName || this.options.pressEventName|| 'btnPressed'));
 
       L.DomEvent.on(link, 'click', L.DomEvent.stopPropagation)
         .on(link, 'click', callback);

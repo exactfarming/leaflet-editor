@@ -51,7 +51,7 @@ export default BtnCtrl.extend({
 
     var submitBtn = this._submitBtn = L.DomUtil.create('button', 'leaflet-submit-btn');
     submitBtn.type = "submit";
-    submitBtn.innerText = "submit";
+    submitBtn.innerText =this._map.options.text.submitLoadBtn;
 
     L.DomEvent
       .on(submitBtn, 'click', this.stopEvent)
