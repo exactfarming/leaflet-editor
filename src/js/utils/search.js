@@ -2,7 +2,6 @@ export default function () {
   L.Control.Search = L.Control.extend({
     options: {
       position: 'topleft',
-      title: 'search location',
       email: ''
     },
 
@@ -135,7 +134,7 @@ export default function () {
       document.getElementsByTagName('head')[0].appendChild(script);
     },
     _onMouseOver () {
-      this._map._msgContainer.msg(this.options.title);
+      this._map._msgContainer.msg(map.options.text.searchLocation);
     },
     _onMouseOut () {
       this._map._msgContainer.hide();
