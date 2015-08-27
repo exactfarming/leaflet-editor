@@ -100,6 +100,7 @@ export default L.Class.extend({
       }
     } else {
       if (this._isHole) {
+        map.removeLayer(this);
         map.fire('editor:delete_hole', {marker: marker});
       } else {
         map.removePolygon(map.getEPolygon());
@@ -286,8 +287,10 @@ export default L.Class.extend({
     if (this._isHole) {
       map.getEHMarkersGroup().resetSelection();
       map.getEMarkersGroup().resetSelection();
+      map.getEHMarkersGroup().setLastHole(this);
     } else {
       map.getEHMarkersGroup().resetSelection();
+      map.getEHMarkersGroup().resetLastHole();
     }
 
     this.getLayers()._each((marker) => {

@@ -40,12 +40,14 @@ export default {
 
       // start draw new hole polygon
       var ehMarkersGroup = this.getEHMarkersGroup();
+      var lastHole = ehMarkersGroup.getLastHole();
       if (firstMarker && !firstMarker._hasFirstIcon()) {
         if ((e.target.getEPolygon()._path == e.originalEvent.toElement)) {
-          if (!ehMarkersGroup.getLastHole()) {
+          if (!(lastHole && !lastHole.isEmpty())) {
+            this.clearSelectedMarker();
+
             var lastHGroup = ehMarkersGroup.addHoleGroup();
             lastHGroup.set(e.latlng, null, {icon: firstIcon});
-            this.clearSelectedMarker();
 
             this._selectedMGroup = lastHGroup;
             this.fire('editor:start_add_new_hole');
@@ -56,11 +58,11 @@ export default {
       }
 
       // continue with new hole polygon
-      if (ehMarkersGroup.getLastHole()) {
+      if (lastHole && !lastHole.isEmpty() && lastHole.hasFirstMarker()) {
         if (this.getEMarkersGroup()._isMarkerInPolygon(e.latlng)) {
           var marker = ehMarkersGroup.getLastHole().set(e.latlng);
           var rslt = marker._detectIntersection(); // in case of hole
-          if(rslt) {
+          if (rslt) {
             this._showIntersectionError();
 
             //marker._mGroup.removeMarker(marker); //todo: detect intersection for hole

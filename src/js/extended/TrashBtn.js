@@ -28,12 +28,14 @@ export default BtnCtrl.extend({
 
     L.DomEvent.addListener(this._btn, 'mouseover', this._onMouseOver, this);
     L.DomEvent.addListener(this._btn, 'mouseout', this._onMouseOut, this);
+    L.DomEvent.addListener(this._btn, 'click', this._onPressBtn, this);
   },
   _disableBtn () {
     L.DomUtil.addClass(this._btn, 'disabled');
 
     L.DomEvent.removeListener(this._btn, 'mouseover', this._onMouseOver);
     L.DomEvent.removeListener(this._btn, 'mouseout', this._onMouseOut);
+    L.DomEvent.removeListener(this._btn, 'click', this._onPressBtn, this);
   },
   _onPressBtn () {
     var map = this._map;

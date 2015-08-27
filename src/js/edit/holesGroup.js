@@ -19,6 +19,9 @@ export default L.FeatureGroup.extend({
   resetLastHole () {
     this._lastHole = undefined;
   },
+  setLastHole (layer) {
+    this._lastHole = layer;
+  },
   getLastHole () {
     return this._lastHole;
   },
