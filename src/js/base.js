@@ -242,11 +242,6 @@ export default $.extend({
       this.fitBounds(ePolygon.getBounds());
       this._msgContainer.msg(this.options.text.forgetToSave);
     } else {
-      if (this._getSelectedVLayer()) {
-        this._setEPolygon_To_VGroup();
-      } else {
-        this._addEPolygon_To_VGroup();
-      }
       this.clear();
       this.mode('draw');
 
