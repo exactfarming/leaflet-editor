@@ -12,8 +12,8 @@ export default BtnCtrl.extend({
       }
     });
 
-    map.on('trashAdded', () => {
-      L.DomUtil.addClass(this._btn, 'disabled');
+    map.on('trashAdded', (data) => {
+      L.DomUtil.addClass(data.control._btn, 'disabled');
 
       map.on('editor:marker_group_select', this._bindEvents, this);
       map.on('editor:start_add_new_polygon', this._bindEvents, this);
