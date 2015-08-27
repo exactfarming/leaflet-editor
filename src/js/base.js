@@ -238,19 +238,25 @@ export default $.extend({
 
     var ePolygon = _map.getEPolygon();
 
-    if(!ePolygon.isEmpty()) {
-      this.fitBounds(ePolygon.getBounds());
-      this._msgContainer.msg(this.options.text.forgetToSave);
-    } else {
-      this.clear();
-      this.mode('draw');
+    if (!ePolygon.isEmpty()) {
+      //this.fitBounds(ePolygon.getBounds());
+      //this._msgContainer.msg(this.options.text.forgetToSave);
 
-      var geojson = this.getVGroup().toGeoJSON();
-      if (geojson.geometry) {
-        return geojson.geometry;
+      if (this._getSelectedVLayer()) {
+        this._setEPolygon_To_VGroup();
+      } else {
+        this._addEPolygon_To_VGroup();
       }
-      return {};
     }
+
+    this.clear();
+    this.mode('draw');
+
+    var geojson = this.getVGroup().toGeoJSON();
+    if (geojson.geometry) {
+      return geojson.geometry;
+    }
+    return {};
   },
   getSelectedMarker () {
     return this._selectedMarker;
@@ -294,7 +300,7 @@ export default $.extend({
 
     var layer = geoJson.getLayers()[0];
 
-    if(layer) {
+    if (layer) {
       var layers = layer.getLayers();
       var vGroup = this.getVGroup();
       for (var i = 0; i < layers.length; i++) {
