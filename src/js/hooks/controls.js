@@ -26,6 +26,8 @@ export default function () {
 
   this.addControl(L.control.search());
 
+  this._LoadBtn = LoadBtn;
+
   var trashBtn = new TrashBtn({
     btns: [
       {'className': 'fa fa-trash'}
