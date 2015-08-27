@@ -13,16 +13,16 @@ export default L.Control.extend({
   },
   _titleContainer: null,
   onAdd (map) {
-    this._map = map;
-
     var container = L.DomUtil.create('div', 'leaflet-bar leaflet-editor-buttons');
 
     map._controlContainer.appendChild(container);
 
+    var options = this.options;
+
     setTimeout(() => {
-      this._setBtn(this.options.btns, container);
-      if (this.options.eventName) {
-        map.fire(this.options.eventName, {control: this});
+      this._setBtn(options.btns, container);
+      if (options.eventName) {
+        map.fire(options.eventName, {control: this});
       }
     }, 1000);
 
