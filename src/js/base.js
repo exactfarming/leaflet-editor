@@ -292,11 +292,15 @@ export default $.extend({
 
     this.clear();
 
-    var layers = geoJson.getLayers ? geoJson.getLayers() : [layer];
-    var vGroup = this.getVGroup();
-    for (var i = 0; i < layers.length; i++) {
-      var _l = layers[i];
-      vGroup.addLayer(_l);
+    var layer = geoJson.getLayers()[0];
+
+    if(layer) {
+      var layers = layer.getLayers();
+      var vGroup = this.getVGroup();
+      for (var i = 0; i < layers.length; i++) {
+        var _l = layers[i];
+        vGroup.addLayer(_l);
+      }
     }
 
     this.mode('draw');
