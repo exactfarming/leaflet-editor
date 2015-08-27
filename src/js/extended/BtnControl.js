@@ -19,10 +19,11 @@ export default L.Control.extend({
 
     var options = this.options;
 
+    var self = this;
     setTimeout(() => {
-      this._setBtn(options.btns, container);
+      self._setBtn(options.btns, container);
       if (options.eventName) {
-        map.fire(options.eventName, {control: this});
+        map.fire(options.eventName, {control: self});
       }
     }, 1000);
 
