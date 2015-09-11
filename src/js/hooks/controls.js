@@ -7,6 +7,8 @@ import m from '../utils/mobile';
 
 export default function () {
 
+  /* check last update */
+
   var ggl = new L.Google();
 
   this.addLayer(ggl);
