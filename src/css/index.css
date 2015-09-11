@@ -1,6 +1,7 @@
 .leaflet-search-bar a:focus {
   color: black;
 }
+
 .leaflet-marker-pane .tooltip {
   min-width: 100px;
 }
@@ -31,9 +32,9 @@
   text-align: center;
   border-radius: 50%;
   line-height: 1px;
-  margin-left: -5px !important;     
-  margin-top: -5px !important;     
-  width: 10px !important;     
+  margin-left: -5px !important;
+  margin-top: -5px !important;
+  width: 10px !important;
   height: 10px !important;
 }
 
@@ -66,6 +67,7 @@
   border-radius: 50%;
   border: none;
 }
+
 .group-selected.m-editor-intersection-div-icon {
   background: #ff3928 !important;
   box-shadow: inherit !important;
@@ -130,7 +132,7 @@
 .leaflet-editor-buttons {
   margin-left: 10px;
   margin-top: 10px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 }
 
 .leaflet-editor-buttons .load {
@@ -153,9 +155,10 @@
 }
 
 .leaflet-search-bar input {
-  height: 25px;
+  height: 26px;
   border: none;
 }
+
 .leaflet-search-bar input:focus {
   outline: none;
 }
@@ -180,16 +183,19 @@
 
 .load-json-container textarea,
 .leaflet-search-bar input {
-  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
   padding: 5px;
   width: 200px;
   border-radius: 4px;
 }
 
+.leaflet-search-bar input {
+  padding: 5px 65px 5px 5px;
+}
+
 .leaflet-editor-buttons textarea:focus {
   outline: none;
 }
-
 
 .leaflet-msg-container {
   background-color: rgba(0, 0, 0, 0.5);
@@ -258,9 +264,20 @@
   padding: 2px 10px;
   border-radius: 4px;
   border: none;
+  float: right;
+
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: white;
 }
+
+.search {
+  background-color: green;
+}
+
 .leaflet-submit-btn:active {
-  background-color: lightgrey;
+  background-color: #4BB74B;
 }
 
 .leaflet-submit-btn:focus {

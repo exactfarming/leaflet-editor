@@ -1,4 +1,4 @@
-import search from '../utils/search';
+import SearchBtn from '../extended/SearchBtn';
 import TrashBtn from '../extended/TrashBtn';
 import LoadBtn from '../extended/LoadBtn';
 import BtnControl from '../extended/BtnControl';
@@ -6,7 +6,6 @@ import MsgHelper from '../extended/MsgHelper';
 import m from '../utils/mobile';
 
 export default function () {
-  search();
 
   var ggl = new L.Google();
 
@@ -24,7 +23,7 @@ export default function () {
   this.boxZoom.disable();
   this.keyboard.disable();
 
-  this.addControl(L.control.search());
+  this.addControl(new SearchBtn());
 
   this._BtnControl = BtnControl;
 
