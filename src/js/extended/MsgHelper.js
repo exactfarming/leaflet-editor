@@ -63,10 +63,12 @@ export default L.Control.extend({
   getOffset (el) {
     var _x = 0;
     var _y = 0;
-    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-      _x += el.offsetLeft;
-      _y += el.offsetTop;
-      el = el.offsetParent;
+    if(!this._map.isFullscreen()) {
+      while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+        _x += el.offsetLeft;
+        _y += el.offsetTop;
+        el = el.offsetParent;
+      }
     }
     return {y: _y, x: _x};
   },

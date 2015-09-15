@@ -223,6 +223,7 @@
   position: absolute;
   top: -1px;
   left: 16px;
+  z-index: 2147483647;
 }
 
 .title-hidden {
