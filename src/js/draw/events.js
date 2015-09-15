@@ -5,12 +5,13 @@ export default {
 
     // click on map
     this.on('click', (e) => {
+      this._addMarkerLayerPoint = e.layerPoint;
       // bug fix
       if (e.originalEvent && e.originalEvent.clientX === 0 && e.originalEvent.clientY === 0) {
         return;
       }
 
-      if ((e.target instanceof L.Marker)) {
+      if (e.target instanceof L.Marker) {
         return;
       }
 
@@ -43,7 +44,7 @@ export default {
       var lastHole = ehMarkersGroup.getLastHole();
       if (firstMarker && !firstMarker._hasFirstIcon()) {
         if ((e.target.getEPolygon()._path == e.originalEvent.toElement)) {
-          if (!(lastHole && !lastHole.isEmpty())) {
+          if (!lastHole || !lastHole.getFirst() || !lastHole.getFirst()._hasFirstIcon()) {
             this.clearSelectedMarker();
 
             var lastHGroup = ehMarkersGroup.addHoleGroup();
@@ -89,6 +90,10 @@ export default {
     this.on('editor:join_path', (e) => {
       var eMarkersGroup = e.mGroup;
 
+      if (!eMarkersGroup) {
+        return;
+      }
+
       if (eMarkersGroup._isHole) {
         this.getEHMarkersGroup().resetLastHole();
       }
@@ -116,8 +121,10 @@ export default {
     });
 
     this.getVGroup().on('click', (e) => {
+      var selectedMGroup = this.getSelectedMGroup();
       var eMarkersGroup = this.getEMarkersGroup();
-      if (eMarkersGroup.getFirst() && eMarkersGroup.getFirst()._hasFirstIcon() && !eMarkersGroup.isEmpty()) {
+      if ((eMarkersGroup.getFirst() && eMarkersGroup.getFirst()._hasFirstIcon() && !eMarkersGroup.isEmpty()) ||
+        (selectedMGroup && selectedMGroup.getFirst() && selectedMGroup.getFirst()._hasFirstIcon() && !selectedMGroup.isEmpty())) {
         this._addMarker(e);
       } else {
         // reset

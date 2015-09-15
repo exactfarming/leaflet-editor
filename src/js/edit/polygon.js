@@ -43,17 +43,14 @@ export default L.EditPloygon = ExtendedPolygon.extend({
     map.off('editor:delete_hole');
     map.on('editor:delete_hole', (e) => this._removeHole(e));
 
-    this.on('mouseover', () => {
-      if (map.getEMarkersGroup().hasFirstMarker()) {
-       return;
-      }
-
-      map.fire('editor:edit_polygon_mouseover');
+    this.on('mousemove', (e) => {
+      map.fire('editor:edit_polygon_mousemove', {layerPoint: e.layerPoint});
     });
+
     this.on('mouseout', () => map.fire('editor:edit_polygon_mouseout'));
   },
   onRemove (map) {
-    this.off('mouseover');
+    this.off('mousemove');
     this.off('mouseout');
 
     map.off('editor:edit_polygon_mouseover');

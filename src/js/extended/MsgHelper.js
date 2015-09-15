@@ -8,7 +8,7 @@ export default L.Control.extend({
   },
   _titleContainer: null,
   onAdd (map) {
-    var corner = L.DomUtil.create('div', 'leaflet-top');
+    var corner = L.DomUtil.create('div', 'leaflet-bottom');
     var container = L.DomUtil.create('div', 'leaflet-msg-editor');
 
     map._controlCorners['msgcenter'] = corner;
@@ -18,7 +18,7 @@ export default L.Control.extend({
       this._setContainer(container, map);
       map.fire('msgHelperAdded', {control: this});
 
-      this._changePos(map);
+      this._changePos();
     }, 1000);
 
     map.getBtnControl = () => this;
@@ -27,38 +27,63 @@ export default L.Control.extend({
 
     return container;
   },
-  _changePos (map) {
-    var controlCorner = map._controlCorners['msgcenter'];
+  _changePos () {
+    var controlCorner = this._map._controlCorners['msgcenter'];
     if (controlCorner && controlCorner.children.length) {
       var child = controlCorner.children.item().children[0];
 
-      if(!child) {
+      if (!child) {
         return;
       }
 
       var width = child.clientWidth;
-      if(width) {
-        controlCorner.style.left = (map._container.clientWidth - width) / 2 + 'px';
+      if (width) {
+        controlCorner.style.left = (this._map._container.clientWidth - width) / 2 + 'px';
       }
     }
   },
-  _bindEvents (map) {
+  _bindEvents () {
     setTimeout(() => {
       window.addEventListener('resize', () => {
-        this._changePos(map);
+        this._changePos();
       });
     }, 1);
   },
-  _setContainer (container, map) {
+  _setContainer (container) {
     this._titleContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');
+    this._titlePosContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');
     container.appendChild(this._titleContainer);
+    document.body.appendChild(this._titlePosContainer);
 
     if (this.options.defaultMsg !== null) {
       L.DomUtil.removeClass(this._titleContainer, 'title-hidden');
       this._titleContainer.innerHTML = this.options.defaultMsg;
     }
+  },
+  msg (text, type, object) {
+    if (object) {
+      L.DomUtil.removeClass(this._titlePosContainer, 'title-hidden');
+      L.DomUtil.removeClass(this._titlePosContainer, 'title-error');
+      L.DomUtil.removeClass(this._titlePosContainer, 'title-success');
 
-    this._titleContainer.msg = (text, type) => {
+      this._titlePosContainer.innerHTML = text;
+
+      var point;
+
+      if (object instanceof L.Point) {
+        point = object;
+        point = this._map.layerPointToContainerPoint(point);
+      } else {
+        point = this._map.latLngToContainerPoint(object.getLatLng());
+      }
+
+      this._titlePosContainer.style.top = (point.y - 8) + "px";
+      this._titlePosContainer.style.left = (point.x + 10) + "px";
+
+      if (type) {
+        L.DomUtil.addClass(this._titlePosContainer, 'title-' + type);
+      }
+    } else {
       L.DomUtil.removeClass(this._titleContainer, 'title-hidden');
       L.DomUtil.removeClass(this._titleContainer, 'title-error');
       L.DomUtil.removeClass(this._titleContainer, 'title-success');
@@ -68,12 +93,12 @@ export default L.Control.extend({
       if (type) {
         L.DomUtil.addClass(this._titleContainer, 'title-' + type);
       }
-      this._changePos(map);
-    };
-
-    this._titleContainer.hide = () => {
-      L.DomUtil.addClass(this._titleContainer, 'title-hidden');
-    };
+      this._changePos();
+    }
+  },
+  hide () {
+    L.DomUtil.addClass(this._titleContainer, 'title-hidden');
+    L.DomUtil.addClass(this._titlePosContainer, 'title-hidden');
   },
   getBtnContainer () {
     return this._map._controlCorners['msgcenter'];

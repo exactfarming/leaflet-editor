@@ -5,9 +5,13 @@ import BtnControl from '../extended/BtnControl';
 import MsgHelper from '../extended/MsgHelper';
 import m from '../utils/mobile';
 
+import zoomTitle from '../titles/zoomTitle';
+import fullScreenTitle from '../titles/fullScreenTitle';
+
 export default function () {
 
-  /* check last update */
+  zoomTitle(this);
+  fullScreenTitle(this);
 
   var ggl = new L.Google();
 
@@ -41,82 +45,82 @@ export default function () {
     ]
   });
 
-  var msgHelper = new MsgHelper({
+  var msgHelper = this.msgHelper = new MsgHelper({
     defaultMsg: this.options.text.clickToStartDrawPolygonOnMap
   });
 
-  this.on('msgHelperAdded', (data) => {
-    var msgContainer = data.control._titleContainer;
-
-    this._msgContainer = msgContainer;
+  this.on('msgHelperAdded', () => {
     var text = this.options.text;
 
     this.on('editor:marker_group_select', () => {
 
       this.off('editor:not_selected_marker_mouseover');
-      this.on('editor:not_selected_marker_mouseover', () => {
-        msgContainer.msg(text.clickToSelectEdges);
+      this.on('editor:not_selected_marker_mouseover', (data) => {
+        msgHelper.msg(text.clickToSelectEdges, null, data.marker);
       });
 
       this.off('editor:selected_marker_mouseover');
-      this.on('editor:selected_marker_mouseover', () => {
-        msgContainer.msg(text.clickToRemoveAllSelectedEdges);
+      this.on('editor:selected_marker_mouseover', (data) => {
+        msgHelper.msg(text.clickToRemoveAllSelectedEdges, null, data.marker);
       });
 
       this.off('editor:selected_middle_marker_mouseover');
-      this.on('editor:selected_middle_marker_mouseover', () => {
-        msgContainer.msg(text.clickToAddNewEdges);
+      this.on('editor:selected_middle_marker_mouseover', (data) => {
+        msgHelper.msg(text.clickToAddNewEdges, null, data.marker);
       });
 
       // on edit polygon
-      this.off('editor:edit_polygon_mouseover');
-      this.on('editor:edit_polygon_mouseover', () => {
-        msgContainer.msg(text.clickToDrawInnerEdges);
+      this.off('editor:edit_polygon_mousemove');
+      this.on('editor:edit_polygon_mousemove', (data) => {
+        msgHelper.msg(text.clickToDrawInnerEdges, null, data.layerPoint);
       });
 
       this.off('editor:edit_polygon_mouseout');
       this.on('editor:edit_polygon_mouseout', () => {
-        msgContainer.hide();
+        msgHelper.hide();
       });
       // on view polygon
-      this.off('editor:view_polygon_mouseover');
-      this.on('editor:view_polygon_mouseover', () => {
-        msgContainer.msg(text.clickToEdit);
+      this.off('editor:view_polygon_mousemove');
+      this.on('editor:view_polygon_mousemove', (data) => {
+        msgHelper.msg(text.clickToEdit, null, data.layerPoint);
       });
 
       this.off('editor:view_polygon_mouseout');
       this.on('editor:view_polygon_mouseout', () => {
-        msgContainer.hide();
+        msgHelper.hide();
       });
     });
 
     // hide msg
     this.off('editor:marker_mouseout');
     this.on('editor:marker_mouseout', () => {
-      msgContainer.hide();
+      msgHelper.hide();
     });
     // on start draw polygon
     this.off('editor:first_marker_mouseover');
-    this.on('editor:first_marker_mouseover', () => {
-      msgContainer.msg(text.clickToJoinEdges);
+    this.on('editor:first_marker_mouseover', (data) => {
+      msgHelper.msg(text.clickToJoinEdges, null, data.marker);
     });
     // dblclick to join
     this.off('editor:last_marker_dblclick_mouseover');
-    this.on('editor:last_marker_dblclick_mouseover', () => {
-      msgContainer.msg(text.dblclickToJoinEdges);
+    this.on('editor:last_marker_dblclick_mouseover', (data) => {
+      msgHelper.msg(text.dblclickToJoinEdges, null, data.marker);
     });
 
-    this.on('editor:join_path', () => {
-      msgContainer.msg(this.options.text.clickToRemoveAllSelectedEdges);
+    this.on('editor:join_path', (data) => {
+      if(data.marker) {
+        msgHelper.msg(this.options.text.clickToRemoveAllSelectedEdges, null, data.marker);
+      }
     });
 
     //todo: continue with option 'allowCorrectIntersection'
     this.on('editor:intersection_detected', (data) => {
       // msg
       if (data.intersection) {
-        msgContainer.msg(this.options.text.intersection);
+          msgHelper.msg(this.options.text.intersection, 'error', (this._addMarkerLayerPoint || this.getSelectedMarker()));
+          this._addMarkerLayerPoint = null;
       } else {
-        msgContainer.hide();
+        msgHelper.hide();
       }
 
       var selectedMarker = this.getSelectedMarker();

@@ -197,6 +197,22 @@
   outline: none;
 }
 
+.leaflet-msg-editor {
+  bottom: 25px;
+}
+
+.btn-leaflet-msg-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 30px;
+}
+
 .leaflet-msg-container {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -209,7 +225,7 @@
   left: 16px;
 }
 
-.leaflet-msg-container.title-hidden {
+.title-hidden {
   display: none;
 }
 
@@ -220,6 +236,15 @@
 .leaflet-msg-container.title-success {
   background-color: rgba(79, 238, 49, 0.5);
 }
+
+.title-error {
+  background-color: red;
+}
+
+.title-success {
+  background-color: green;
+}
+
 
 .m-editor-middle-div-icon {
   background-color: transparent;
@@ -282,4 +307,40 @@
 
 .leaflet-submit-btn:focus {
   outline: none;
+}
+
+.loading .text {
+  visibility: hidden;
+}
+
+.search .fa-refresh {
+  display: none;
+}
+
+.loading.search .fa-refresh {
+  display: inline;
+  position: absolute;
+  left: 50%;
+  margin-left: -5px;
+  margin-top: 3px;
+}
+
+.full-screen {
+  border-radius: 4px;
+}
+
+.leaflet-control-zoom a.leaflet-control-zoom-out {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.btn-leaflet-msg-container.zoom {
+  top: 12px;
+}
+
+.load-geojson {
+  background-color: green;
+}
+.load-geojson:active {
+  background-color: #4BB74B;
 }

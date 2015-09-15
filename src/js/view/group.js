@@ -16,13 +16,13 @@ export default L.MultiPolygon.extend({
   onAdd (map) {
     L.MultiPolygon.prototype.onAdd.call(this, map);
 
-    this.on('mouseover', () => {
+    this.on('mousemove', (e) => {
       var eMarkersGroup = map.getEMarkersGroup();
       if (eMarkersGroup.isEmpty()) {
-        map.fire('editor:view_polygon_mouseover');
+        map.fire('editor:view_polygon_mousemove', {layerPoint: e.layerPoint});
       } else {
         if(!eMarkersGroup.getFirst()._hasFirstIcon()) {
-          map.fire('editor:view_polygon_mouseover');
+          map.fire('editor:view_polygon_mousemove', {layerPoint: e.layerPoint});
         }
       }
     });
@@ -41,7 +41,7 @@ export default L.MultiPolygon.extend({
     this.off('mouseover');
     this.off('mouseout');
 
-    map.off('editor:view_polygon_mouseover');
+    map.off('editor:view_polygon_mousemove');
     map.off('editor:view_polygon_mouseout');
   }
 });

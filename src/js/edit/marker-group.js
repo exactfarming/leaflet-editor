@@ -174,7 +174,7 @@ export default L.MarkerGroup = BaseMGroup.extend({
 
     if (marker._mGroup.getLayers().length > 2) {
       if (marker._mGroup._firstMarker._hasFirstIcon() && marker === marker._mGroup._lastMarker) {
-        this._map.fire('editor:last_marker_dblclick_mouseover');
+        this._map.fire('editor:last_marker_dblclick_mouseover', {marker: marker});
       }
     }
 
@@ -214,12 +214,8 @@ export default L.MarkerGroup = BaseMGroup.extend({
   },
   set (latlng, position, options) {
     if (!this.hasIntersection(latlng)) {
-      this._map._msgContainer.hide();
       this._map.edgesIntersected(false);
       return this._add(latlng, position, options);
-    } else {
-      this._map.edgesIntersected(false);
-      this._map._showIntersectionError();
     }
   },
   setMiddle (latlng, position, options) {

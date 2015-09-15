@@ -240,7 +240,7 @@ export default $.extend({
 
     if (!ePolygon.isEmpty()) {
       //this.fitBounds(ePolygon.getBounds());
-      //this._msgContainer.msg(this.options.text.forgetToSave);
+      //this.msgHelper.msg(this.options.text.forgetToSave);
 
       if (this._getSelectedVLayer()) {
         this._setEPolygon_To_VGroup();
@@ -295,6 +295,13 @@ export default $.extend({
   },
   createEditPolygon (json) {
     var geoJson = L.geoJson(json);
+
+    //avoid to lose changes
+    if (this._getSelectedVLayer()) {
+      this._setEPolygon_To_VGroup();
+    } else {
+      this._addEPolygon_To_VGroup();
+    }
 
     this.clear();
 
@@ -440,10 +447,12 @@ export default $.extend({
       clearTimeout(this._errorTimeout);
     }
 
-    this._msgContainer.msg(text || this.options.text.intersection, 'error');
+    this.msgHelper.msg(text || this.options.text.intersection, 'error', (this._addMarkerLayerPoint || this.getSelectedMarker()));
+
+    this._addMarkerLayerPoint = null;
 
     this._errorTimeout = setTimeout(() => {
-      this._msgContainer.hide();
-    }, 1000);
+      this.msgHelper.hide();
+    }, 10000);
   }
 }, DrawEvents);

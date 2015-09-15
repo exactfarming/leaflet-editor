@@ -149,10 +149,12 @@ export default L.Marker.extend({
         }
 
         var latlng = e.target._latlng;
+        this._map._addMarkerLayerPoint = e.target;
+
         var hasIntersection = mGroup.hasIntersection(latlng);
 
         if (hasIntersection) {
-          map._showIntersectionError();
+          //map._showIntersectionError();
           this._onceClick(); // bind 'once' again until has intersection
         } else {
           this._isFirst = false;
@@ -164,7 +166,9 @@ export default L.Marker.extend({
     }
   },
   _bindCommonEvents () {
-    this.on('click', () => {
+    this.on('click', (e) => {
+      this._map._addMarkerLayerPoint = e.target;
+
       var mGroup = this._mGroup;
 
       if (mGroup.hasFirstMarker() && this !== mGroup.getFirst()) {
@@ -174,7 +178,6 @@ export default L.Marker.extend({
       var map = this._map;
       if (this._hasFirstIcon() && this._mGroup.hasIntersection(this.getLatLng(), true)) {
         map.edgesIntersected(false);
-        map._showIntersectionError();
         return;
       }
 
@@ -192,9 +195,9 @@ export default L.Marker.extend({
         mGroup.select();
 
         if (this.isMiddle()) {
-          map._msgContainer.msg(map.options.text.clickToAddNewEdges);
+          map.msgHelper.msg(map.options.text.clickToAddNewEdges, null, this);
         } else {
-          map._msgContainer.msg(map.options.text.clickToRemoveAllSelectedEdges);
+          map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, this);
         }
 
         return;
@@ -204,10 +207,10 @@ export default L.Marker.extend({
         mGroup.setMiddleMarkers(this.position);
         this._resetIcon(icon);
         mGroup.select();
-        map._msgContainer.msg(map.options.text.clickToRemoveAllSelectedEdges);
+        map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, this);
       } else { //remove edge
         if (!mGroup.getFirst()._hasFirstIcon() && !dragend) {
-          map._msgContainer.hide();
+          map.msgHelper.hide();
 
           var rsltIntersection = this._detectIntersection({target: {_latlng: mGroup._getMiddleLatLng(this.prev(), this.next())}});
 
@@ -227,12 +230,12 @@ export default L.Marker.extend({
             var newLatLng = nextMarker._prev.getLatLng();
 
             if (newLatLng.lat === oldLatLng.lat && newLatLng.lng === oldLatLng.lng) {
-              map._msgContainer.msg(map.options.text.clickToAddNewEdges);
+              map.msgHelper.msg(map.options.text.clickToAddNewEdges, null, nextMarker._prev);
             }
 
             mGroup.setSelected(nextMarker);
           } else {
-            map._msgContainer.hide();
+            map.msgHelper.hide();
           }
           mGroup.select();
         }
@@ -243,20 +246,20 @@ export default L.Marker.extend({
       if (this._mGroup.getFirst()._hasFirstIcon()) {
         if (this._mGroup.getLayers().length > 2) {
           if (this._hasFirstIcon()) {
-            this._map.fire('editor:first_marker_mouseover');
+            this._map.fire('editor:first_marker_mouseover', {marker: this});
           } else if (this === this._mGroup._lastMarker) {
-            this._map.fire('editor:last_marker_dblclick_mouseover');
+            this._map.fire('editor:last_marker_dblclick_mouseover', {marker: this});
           }
         }
       } else {
         if (this.isSelectedInGroup()) {
           if (this.isMiddle()) {
-            this._map.fire('editor:selected_middle_marker_mouseover');
+            this._map.fire('editor:selected_middle_marker_mouseover', {marker: this});
           } else {
-            this._map.fire('editor:selected_marker_mouseover');
+            this._map.fire('editor:selected_marker_mouseover', {marker: this});
           }
         } else {
-          this._map.fire('editor:not_selected_marker_mouseover');
+          this._map.fire('editor:not_selected_marker_mouseover', {marker: this});
         }
       }
     });
@@ -271,6 +274,7 @@ export default L.Marker.extend({
       if (mGroup && mGroup.getFirst() && mGroup.getFirst()._hasFirstIcon()) {
         if (this === mGroup._lastMarker) {
           mGroup.getFirst().fire('click');
+          this._map.fire('editor:join_path', {marker: this});
         }
       }
     });
@@ -298,7 +302,7 @@ export default L.Marker.extend({
         dragend = false;
       }, 200);
 
-      this._map.fire('editor:selected_marker_mouseover');
+      this._map.fire('editor:selected_marker_mouseover', {marker: this});
     });
   },
   _isInsideHole () {
@@ -409,12 +413,13 @@ export default L.Marker.extend({
     L.Marker.prototype.onAdd.call(this, map);
 
     this.on('dragstart', (e) => {
+      this._addMarkerLayerPoint = null; //reset point
+
       this._mGroup.setSelected(this);
       this._oldLatLngState = e.target._latlng;
 
       if (this._prev.isPlain()) {
         this._mGroup.setMiddleMarkers(this.position);
-        //this.selectIconInGroup();
       }
 
     }).on('drag', (e) => {

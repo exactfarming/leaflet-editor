@@ -4,7 +4,8 @@ export default L.Control.extend({
     btns: [
       //{'title': 'remove', 'className': 'fa fa-trash'}
     ],
-    eventName: "controlAdded"
+    eventName: "controlAdded",
+    pressEventName: "btnPressed"
   },
   _btn: null,
   stopEvent: L.DomEvent.stopPropagation,
@@ -13,7 +14,7 @@ export default L.Control.extend({
   },
   _titleContainer: null,
   onAdd (map) {
-    map.on('btnPressed', () => {
+    map.on(this.options.pressEventName, () => {
       if (this._btn && !L.DomUtil.hasClass(this._btn, 'disabled')) {
         this._onPressBtn();
       }
@@ -70,7 +71,7 @@ export default L.Control.extend({
         return function () {
           map.fire(pressEventName);
         }
-      }(this._map, btn.pressEventName || this.options.pressEventName|| 'btnPressed'));
+      }(this._map, btn.pressEventName || this.options.pressEventName));
 
       L.DomEvent.on(link, 'click', L.DomEvent.stopPropagation)
         .on(link, 'click', callback);

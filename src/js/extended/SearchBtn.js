@@ -34,7 +34,6 @@ export default L.Control.extend({
 
     var submitBtn = this._submitBtn = L.DomUtil.create('button', 'leaflet-submit-btn search');
     submitBtn.type = "submit";
-    submitBtn.innerText =this._map.options.text.submitLoadBtn;
 
     L.DomEvent
       .on(submitBtn, 'click', stop)
@@ -43,14 +42,24 @@ export default L.Control.extend({
 
     form.appendChild(submitBtn);
 
+    this._btnTextContainer = L.DomUtil.create('span', 'text');
+    this._btnTextContainer.innerText = this._map.options.text.submitLoadBtn;
+    submitBtn.appendChild(this._btnTextContainer);
+
+    this._spinIcon = L.DomUtil.create('i', 'fa fa-refresh fa-spin');
+    submitBtn.appendChild(this._spinIcon);
+
     L.DomEvent.on(form, 'submit', stop).on(form, 'submit', L.DomEvent.preventDefault);
     container.appendChild(form);
-
 
     this._map.on('loadBtnOpened', this._collapse, this);
 
     L.DomEvent.addListener(container, 'mouseover', this._onMouseOver, this);
     L.DomEvent.addListener(container, 'mouseout', this._onMouseOut, this);
+
+    this._titleContainer = L.DomUtil.create('div', 'btn-leaflet-msg-container title-hidden');
+    this._titleContainer.innerHTML = this._map.options.text.searchLocation;
+    container.appendChild(this._titleContainer);
 
     return container;
   },
@@ -64,6 +73,7 @@ export default L.Control.extend({
       this._collapse();
       this._map.fire('searchDisabled');
     }
+    L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   },
 
   _collapse () {
@@ -73,7 +83,7 @@ export default L.Control.extend({
 
   _nominatimCallback (results) {
 
-    if (this._results) {
+    if (this._results && this._results.parentNode) {
       this._results.parentNode.removeChild(this._results);
     }
 
@@ -119,11 +129,15 @@ export default L.Control.extend({
     if (results.length === 0) {
       this._results.parentNode.removeChild(this._results);
     }
+    L.DomUtil.removeClass(this._submitBtn, 'loading');
   },
 
   _callbackId: 0,
 
   _doSearch () {
+
+    L.DomUtil.addClass(this._submitBtn, 'loading');
+
     var callback = '_l_osmgeocoder_' + this._callbackId++;
     window[callback] = L.Util.bind(this._nominatimCallback, this);
     var queryParams = {
@@ -143,9 +157,12 @@ export default L.Control.extend({
     document.getElementsByTagName('head')[0].appendChild(script);
   },
   _onMouseOver () {
-    this._map._msgContainer.msg(this._map.options.text.searchLocation);
+    if (this._form.style.display === 'block') {
+      return;
+    }
+    L.DomUtil.removeClass(this._titleContainer, 'title-hidden');
   },
   _onMouseOut () {
-    this._map._msgContainer.hide();
+    L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   }
 });

@@ -21,7 +21,13 @@ export default BtnCtrl.extend({
       this._disableBtn();
     });
 
-    return BtnCtrl.prototype.onAdd.call(this, map);
+    var container = BtnCtrl.prototype.onAdd.call(this, map);
+
+    this._titleContainer = L.DomUtil.create('div', 'btn-leaflet-msg-container title-hidden');
+    this._titleContainer.innerHTML = this._map.options.text.loadJson;
+    container.appendChild(this._titleContainer);
+
+    return container;
   },
   _bindEvents () {
     L.DomUtil.removeClass(this._btn, 'disabled');
@@ -50,21 +56,23 @@ export default BtnCtrl.extend({
       L.DomUtil.addClass(this._btn, 'disabled');
     }
     this._onMouseOut();
+    L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   },
   _onMouseOver () {
     if (!L.DomUtil.hasClass(this._btn, 'disabled')) {
       var map = this._map;
       var layer = map.getEMarkersGroup().getLayers()[0];
       if (layer && layer._isFirst) {
-        map._msgContainer.msg(map.options.text.rejectChanges);
+        this._titleContainer.innerHTML = map.options.text.rejectChanges;
       } else {
-        map._msgContainer.msg(map.options.text.deleteSelectedEdges);
+        this._titleContainer.innerHTML = map.options.text.deleteSelectedEdges;
       }
+      L.DomUtil.removeClass(this._titleContainer, 'title-hidden');
     }
   },
   _onMouseOut () {
     if (!L.DomUtil.hasClass(this._btn, 'disabled')) {
-      this._map._msgContainer.hide();
+      L.DomUtil.addClass(this._titleContainer, 'title-hidden');
     }
   }
 });
