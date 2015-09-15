@@ -64,8 +64,8 @@ export default L.Control.extend({
     var _x = 0;
     var _y = 0;
     while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-      _x += el.offsetLeft - el.scrollLeft;
-      _y += el.offsetTop - el.scrollTop;
+      _x += el.offsetLeft;
+      _y += el.offsetTop;
       el = el.offsetParent;
     }
     return {y: _y, x: _x};
