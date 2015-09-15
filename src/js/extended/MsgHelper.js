@@ -60,6 +60,16 @@ export default L.Control.extend({
       this._titleContainer.innerHTML = this.options.defaultMsg;
     }
   },
+  getOffset (el) {
+    var _x = 0;
+    var _y = 0;
+    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+      _x += el.offsetLeft - el.scrollLeft;
+      _y += el.offsetTop - el.scrollTop;
+      el = el.offsetParent;
+    }
+    return {y: _y, x: _x};
+  },
   msg (text, type, object) {
     if (object) {
       L.DomUtil.removeClass(this._titlePosContainer, 'title-hidden');
@@ -70,12 +80,17 @@ export default L.Control.extend({
 
       var point;
 
+      var offset = this.getOffset(document.getElementById(this._map._container.getAttribute('id')));
+
       if (object instanceof L.Point) {
         point = object;
         point = this._map.layerPointToContainerPoint(point);
       } else {
         point = this._map.latLngToContainerPoint(object.getLatLng());
       }
+
+      point.x += offset.x;
+      point.y += offset.y;
 
       this._titlePosContainer.style.top = (point.y - 8) + "px";
       this._titlePosContainer.style.left = (point.x + 10) + "px";
