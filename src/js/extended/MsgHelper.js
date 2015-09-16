@@ -30,7 +30,7 @@ export default L.Control.extend({
   _changePos () {
     var controlCorner = this._map._controlCorners['msgcenter'];
     if (controlCorner && controlCorner.children.length) {
-      var child = controlCorner.children.item().children[0];
+      var child = controlCorner.children[0].children[0];
 
       if (!child) {
         return;

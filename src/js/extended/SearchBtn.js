@@ -24,6 +24,10 @@ export default L.Control.extend({
 
     var form = this._form = document.createElement('form');
 
+    L.DomEvent.on(form, 'mousewheel', stop);
+    L.DomEvent.on(form, 'DOMMouseScroll', stop);
+    L.DomEvent.on(form, 'MozMousePixelScroll', stop);
+
     var input = this._input = document.createElement('input');
 
     L.DomEvent
@@ -43,7 +47,7 @@ export default L.Control.extend({
     form.appendChild(submitBtn);
 
     this._btnTextContainer = L.DomUtil.create('span', 'text');
-    this._btnTextContainer.innerText = this._map.options.text.submitLoadBtn;
+    this._btnTextContainer.innerHTML = this._map.options.text.submitLoadBtn;
     submitBtn.appendChild(this._btnTextContainer);
 
     this._spinIcon = L.DomUtil.create('i', 'fa fa-refresh fa-spin');
@@ -97,11 +101,16 @@ export default L.Control.extend({
     resultsContainer.style.border = '2px grey solid';
     resultsContainer.style.borderRadius = '2px';
 
+    L.DomEvent.on(resultsContainer, 'mousedown', L.DomEvent.stopPropagation);
+    L.DomEvent.on(resultsContainer, 'mousewheel', L.DomEvent.stopPropagation);
+    L.DomEvent.on(resultsContainer, 'DOMMouseScroll', L.DomEvent.stopPropagation);
+    L.DomEvent.on(resultsContainer, 'MozMousePixelScroll', L.DomEvent.stopPropagation);
+
     var divResults = [];
 
     for (var i = 0; i < results.length; i++) {
       var div = L.DomUtil.create('div', 'search-results-el');
-      div.innerText = results[i].display_name;
+      div.innerHTML = results[i].display_name;
       div.title = results[i].display_name;
       resultsContainer.appendChild(div);
 
@@ -117,8 +126,10 @@ export default L.Control.extend({
         }
       }(this._map, results[i], div));
 
-      L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation)
-      L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation)
+      L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
+      L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
+      L.DomEvent.on(div, 'MozMousePixelScroll', L.DomEvent.stopPropagation);
+      L.DomEvent.on(div, 'DOMMouseScroll', L.DomEvent.stopPropagation)
         .on(div, 'click', callback);
 
       divResults.push(div);
