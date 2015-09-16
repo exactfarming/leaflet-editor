@@ -5,7 +5,7 @@ export default {
 
     // click on map
     this.on('click', (e) => {
-      this._addMarkerLayerPoint = e.layerPoint;
+      this._storedLayerPoint = e.layerPoint;
       // bug fix
       if (e.originalEvent && e.originalEvent.clientX === 0 && e.originalEvent.clientY === 0) {
         return;
@@ -43,7 +43,7 @@ export default {
       var ehMarkersGroup = this.getEHMarkersGroup();
       var lastHole = ehMarkersGroup.getLastHole();
       if (firstMarker && !firstMarker._hasFirstIcon()) {
-        if ((e.target.getEPolygon()._path == e.originalEvent.toElement)) {
+        if ((e.target.getEPolygon()._path == e.originalEvent.target)) {
           if (!lastHole || !lastHole.getFirst() || !lastHole.getFirst()._hasFirstIcon()) {
             this.clearSelectedMarker();
 
@@ -113,36 +113,15 @@ export default {
         marker.dragging.enable();
       });
 
-      //this.getEMarkersGroup().select();
-
       eMarkersGroup.select();
-
-      this.fire('editor:marker_group_select');
     });
 
-    this.getVGroup().on('click', (e) => {
-      var selectedMGroup = this.getSelectedMGroup();
-      var eMarkersGroup = this.getEMarkersGroup();
-      if ((eMarkersGroup.getFirst() && eMarkersGroup.getFirst()._hasFirstIcon() && !eMarkersGroup.isEmpty()) ||
-        (selectedMGroup && selectedMGroup.getFirst() && selectedMGroup.getFirst()._hasFirstIcon() && !selectedMGroup.isEmpty())) {
-        this._addMarker(e);
-      } else {
-        // reset
-        if (this._getSelectedVLayer()) {
-          this._setEPolygon_To_VGroup();
-        } else {
-          this._addEPolygon_To_VGroup();
-        }
-        this.clear();
-        this.mode('draw');
+    var vGroup = this.getVGroup();
 
-        this._hideSelectedVLayer(e.layer);
+    vGroup.on('click', (e) => {
+      vGroup.onClick(e);
 
-        eMarkersGroup.restore(e.layer);
-        this._convertToEdit(eMarkersGroup);
-
-        eMarkersGroup.select();
-      }
+      this.msgHelper.msg(this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
     });
 
     this.on('editor:delete_marker', () => {

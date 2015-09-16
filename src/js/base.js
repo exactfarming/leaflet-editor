@@ -398,7 +398,7 @@ export default $.extend({
   _moveEPolygonOnTop () {
     var ePolygon = this.getEPolygon();
     if (ePolygon._container) {
-      var lastChild = $(ePolygon._container.parentElement).children().last();
+      var lastChild = $(ePolygon._container.parentNode).children().last();
       var $ePolygon = $(ePolygon._container);
       if ($ePolygon[0] !== lastChild) {
         $ePolygon.detach().insertAfter(lastChild);
@@ -447,9 +447,9 @@ export default $.extend({
       clearTimeout(this._errorTimeout);
     }
 
-    this.msgHelper.msg(text || this.options.text.intersection, 'error', (this._addMarkerLayerPoint || this.getSelectedMarker()));
+    this.msgHelper.msg(text || this.options.text.intersection, 'error', (this._storedLayerPoint || this.getSelectedMarker()));
 
-    this._addMarkerLayerPoint = null;
+    this._storedLayerPoint = null;
 
     this._errorTimeout = setTimeout(() => {
       this.msgHelper.hide();

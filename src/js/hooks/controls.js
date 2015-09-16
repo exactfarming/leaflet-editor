@@ -78,6 +78,7 @@ export default function () {
       this.off('editor:edit_polygon_mouseout');
       this.on('editor:edit_polygon_mouseout', () => {
         msgHelper.hide();
+        this._storedLayerPoint = null;
       });
       // on view polygon
       this.off('editor:view_polygon_mousemove');
@@ -88,6 +89,7 @@ export default function () {
       this.off('editor:view_polygon_mouseout');
       this.on('editor:view_polygon_mouseout', () => {
         msgHelper.hide();
+        this._storedLayerPoint = null;
       });
     });
 
@@ -117,8 +119,8 @@ export default function () {
     this.on('editor:intersection_detected', (data) => {
       // msg
       if (data.intersection) {
-          msgHelper.msg(this.options.text.intersection, 'error', (this._addMarkerLayerPoint || this.getSelectedMarker()));
-          this._addMarkerLayerPoint = null;
+          msgHelper.msg(this.options.text.intersection, 'error', (this._storedLayerPoint || this.getSelectedMarker()));
+          this._storedLayerPoint = null;
       } else {
         msgHelper.hide();
       }

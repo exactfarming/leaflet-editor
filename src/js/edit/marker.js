@@ -149,7 +149,7 @@ export default L.Marker.extend({
         }
 
         var latlng = e.target._latlng;
-        this._map._addMarkerLayerPoint = e.target;
+        this._map._storedLayerPoint = e.target;
 
         var hasIntersection = mGroup.hasIntersection(latlng);
 
@@ -167,7 +167,7 @@ export default L.Marker.extend({
   },
   _bindCommonEvents () {
     this.on('click', (e) => {
-      this._map._addMarkerLayerPoint = e.target;
+      this._map._storedLayerPoint = e.target;
 
       var mGroup = this._mGroup;
 
@@ -413,7 +413,7 @@ export default L.Marker.extend({
     L.Marker.prototype.onAdd.call(this, map);
 
     this.on('dragstart', (e) => {
-      this._addMarkerLayerPoint = null; //reset point
+      this._storedLayerPoint = null; //reset point
 
       this._mGroup.setSelected(this);
       this._oldLatLngState = e.target._latlng;

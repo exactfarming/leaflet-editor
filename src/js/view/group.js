@@ -37,6 +37,33 @@ export default L.MultiPolygon.extend({
       }
     });
   },
+  onClick (e) {
+    var map = this._map;
+    var selectedMGroup = map.getSelectedMGroup();
+    var eMarkersGroup = map.getEMarkersGroup();
+    if ((eMarkersGroup.getFirst() && eMarkersGroup.getFirst()._hasFirstIcon() && !eMarkersGroup.isEmpty()) ||
+      (selectedMGroup && selectedMGroup.getFirst() && selectedMGroup.getFirst()._hasFirstIcon() && !selectedMGroup.isEmpty())) {
+      var eMarkersGroup = map.getEMarkersGroup();
+      eMarkersGroup.set(e.latlng);
+      map._convertToEdit(eMarkersGroup);
+    } else {
+      // reset
+      if (map._getSelectedVLayer()) {
+        map._setEPolygon_To_VGroup();
+      } else {
+        map._addEPolygon_To_VGroup();
+      }
+      map.clear();
+      map.mode('draw');
+
+      map._hideSelectedVLayer(e.layer);
+
+      eMarkersGroup.restore(e.layer);
+      map._convertToEdit(eMarkersGroup);
+
+      eMarkersGroup.select();
+    }
+  },
   onRemove (map) {
     this.off('mouseover');
     this.off('mouseout');
