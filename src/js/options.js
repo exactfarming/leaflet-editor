@@ -68,7 +68,10 @@ export var options = {
     loadJson: "load GeoJSON",
     forgetToSave: "Save changes by pressing outside of polygon",
     searchLocation: "Search location",
-    submitLoadBtn: "submit"
+    submitLoadBtn: "submit",
+    zoom: "Zoom",
+    hideFullScreen: "Hide full screen",
+    showFullScreen: "Show full screen"
   },
   worldCopyJump: true
 };

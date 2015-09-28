@@ -8,16 +8,16 @@ export default function (map) {
     L.DomUtil.addClass(map._titleFullScreenContainer, 'title-hidden');
 
     if (map.isFullscreen()) {
-      map._titleFullScreenContainer.innerHTML = "Hide full";
+      map._titleFullScreenContainer.innerHTML = map.options.text.hideFullScreen;
     } else {
-      map._titleFullScreenContainer.innerHTML = "View full";
+      map._titleFullScreenContainer.innerHTML = map.options.text.showFullScreen;
     }
   }, this);
 
   var fullScreenContainer = map.fullscreenControl._container;
 
   map._titleFullScreenContainer = L.DomUtil.create('div', 'btn-leaflet-msg-container title-hidden');
-  map._titleFullScreenContainer.innerHTML = "View full";
+  map._titleFullScreenContainer.innerHTML = map.options.text.showFullScreen;
   fullScreenContainer.appendChild(map._titleFullScreenContainer);
 
   var _onMouseOver = () => {
