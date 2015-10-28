@@ -10,6 +10,11 @@ npm install && bower install
 ## Run
 gulp default
 
+## Plans
+
+* add tests
+* refactoring
+
 ## Issues
 
 Not all cases with self-intersection are solved yet.
