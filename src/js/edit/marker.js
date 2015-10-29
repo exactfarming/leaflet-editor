@@ -186,13 +186,20 @@ export default L.Marker.extend({
     }
 
     if (map.options.notifyClickMarkerDeletePolygon) {
+      if (selectedMGroup && !selectedMGroup._isHole) {
 
-      if (selectedMGroup && !selectedMGroup._isHole && map.getEPolygon().getLatLngs().length === 3) {
-        if (_markerToDeleteGroup !== this) {
-          _markerToDeleteGroup = this;
-          return true;
-        } else {
-          _markerToDeleteGroup = null;
+        /* todo: refactoring */
+        let plainMarkersLen = selectedMGroup.getLayers().filter((item) => {
+          return $(item._icon).hasClass('m-editor-div-icon');
+        }).length;
+
+        if (plainMarkersLen === 3) {
+          if (_markerToDeleteGroup !== this) {
+            _markerToDeleteGroup = this;
+            return true;
+          } else {
+            _markerToDeleteGroup = null;
+          }
         }
       }
     }
