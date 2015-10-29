@@ -9,7 +9,7 @@ if (m.isMobileBrowser()) {
 
 export var firstIcon = L.divIcon({
   className: "m-editor-div-icon-first",
-  iconSize: [8 * size, 8 * size]
+  iconSize: [10 * size, 10 * size]
 });
 
 export var icon = L.divIcon({

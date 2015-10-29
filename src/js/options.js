@@ -32,7 +32,27 @@ export var options = {
       stroke: true,
       color: drawColor,
       weight: weight
+    },
+    startDraw: {
+      opacity: 0.5,
+      fillOpacity: 0.2,
+      dashArray: '5, 10',
+      clickable: true,
+      fill: true,
+      stroke: true,
+      color: drawColor,
+      weight: weight
     }
+  },
+  drawLineStyle: {
+    opacity: 0.7,
+    fill: false,
+    fillColor: drawColor,
+    color: drawColor,
+    weight: weight,
+    dashArray: '5, 10',
+    stroke: true,
+    clickable: false
   },
   markerIcon: undefined,
   markerHoverIcon: undefined,
@@ -71,18 +91,8 @@ export var options = {
     submitLoadBtn: "submit",
     zoom: "Zoom",
     hideFullScreen: "Hide full screen",
-    showFullScreen: "Show full screen"
+    showFullScreen: "Show full screen",
+    acceptDeletion: "Accept deletion"
   },
   worldCopyJump: true
-};
-
-export var drawLineStyle = {
-  opacity: 0.7,
-  fill: false,
-  fillColor: drawColor,
-  color: drawColor,
-  weight: weight,
-  dashArray: '5, 10',
-  stroke: true,
-  clickable: false
 };

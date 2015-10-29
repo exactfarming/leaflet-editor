@@ -22,6 +22,8 @@ L.Util.extend(L.LineUtil, {
   }
 });
 
+let turnOffMouseMove = false;
+
 export default L.MarkerGroup = BaseMGroup.extend({
   _isHole: false,
   _editLineGroup: undefined,
@@ -60,7 +62,6 @@ export default L.MarkerGroup = BaseMGroup.extend({
     if (!this.dashedEditLineGroup._map) {
       this.dashedEditLineGroup.addTo(this._map);
     }
-
     return this.dashedEditLineGroup;
   },
   _setHoverIcon () {
@@ -163,11 +164,15 @@ export default L.MarkerGroup = BaseMGroup.extend({
 
     this.getDELine().addLatLng(latlng);
 
-    this._map.off('mousemove');
+    //this._map.off('mousemove');
+    turnOffMouseMove = true;
     if (this.getFirst()._hasFirstIcon()) {
       this._map.on('mousemove', (e) => {
-        this._updateDELine(e.latlng);
+        if(!turnOffMouseMove) {
+          this._updateDELine(e.latlng);
+        }
       });
+      turnOffMouseMove = false;
     } else {
       this.getDELine().clear();
     }

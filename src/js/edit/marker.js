@@ -10,6 +10,7 @@ if (userAgent.indexOf("ipad") !== -1 || userAgent.indexOf("iphone") !== -1) {
 
 var tooltip;
 var dragend = false;
+var _markerToDeleteGroup = null;
 
 export default L.Marker.extend({
   _draggable: undefined, // an instance of L.Draggable
@@ -160,13 +161,55 @@ export default L.Marker.extend({
           this._isFirst = false;
           this.setIcon(icon);
           //mGroup.setSelected(this);
-          map.fire('editor:join_path', {mGroup: mGroup});
+          map.fire('editor:join_path', { mGroup: mGroup });
         }
       });
     }
   },
+  _detectGroupDelete() {
+    let map = this._map;
+
+    var selectedMGroup = map.getSelectedMGroup();
+    if (this._mGroup._isHole || !this.isPlain() || (selectedMGroup && selectedMGroup.hasFirstMarker())) {
+      return false;
+    }
+
+    if (!this.isSelectedInGroup()) {
+      _markerToDeleteGroup = null;
+      return false;
+    }
+
+    if (_markerToDeleteGroup && this._leaflet_id === _markerToDeleteGroup._leaflet_id) {
+      if (this._latlng.lat !== _markerToDeleteGroup._latlng.lat || this._latlng.lng !== _markerToDeleteGroup._latlng.lng) {
+        return false;
+      }
+    }
+
+    if (map.options.notifyClickMarkerDeletePolygon) {
+
+      if (selectedMGroup && !selectedMGroup._isHole && map.getEPolygon().getLatLngs().length === 3) {
+        if (_markerToDeleteGroup !== this) {
+          _markerToDeleteGroup = this;
+          return true;
+        } else {
+          _markerToDeleteGroup = null;
+        }
+      }
+    }
+    return false;
+  },
+  isAcceptedToDelete() {
+    return _markerToDeleteGroup === this && this.isSelectedInGroup();
+  },
   _bindCommonEvents () {
     this.on('click', (e) => {
+      var map = this._map;
+
+      if (this._detectGroupDelete()) {
+        map.msgHelper.msg(map.options.text.acceptDeletion, 'error', this);
+        return;
+      }
+
       this._map._storedLayerPoint = e.target;
 
       var mGroup = this._mGroup;
@@ -175,7 +218,6 @@ export default L.Marker.extend({
         return;
       }
 
-      var map = this._map;
       if (this._hasFirstIcon() && this._mGroup.hasIntersection(this.getLatLng(), true)) {
         map.edgesIntersected(false);
         return;
@@ -208,11 +250,12 @@ export default L.Marker.extend({
         this._resetIcon(icon);
         mGroup.select();
         map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, this);
+        _markerToDeleteGroup = null;
       } else { //remove edge
         if (!mGroup.getFirst()._hasFirstIcon() && !dragend) {
           map.msgHelper.hide();
 
-          var rsltIntersection = this._detectIntersection({target: {_latlng: mGroup._getMiddleLatLng(this.prev(), this.next())}});
+          var rsltIntersection = this._detectIntersection({ target: { _latlng: mGroup._getMiddleLatLng(this.prev(), this.next()) } });
 
           if (rsltIntersection) {
             this.resetStyle();
@@ -235,6 +278,7 @@ export default L.Marker.extend({
 
             mGroup.setSelected(nextMarker);
           } else {
+            map.fire('editor:polygon:deleted');
             map.msgHelper.hide();
           }
           mGroup.select();
@@ -243,24 +287,28 @@ export default L.Marker.extend({
     });
 
     this.on('mouseover', () => {
+      var map = this._map;
       if (this._mGroup.getFirst()._hasFirstIcon()) {
         if (this._mGroup.getLayers().length > 2) {
           if (this._hasFirstIcon()) {
-            this._map.fire('editor:first_marker_mouseover', {marker: this});
+            map.fire('editor:first_marker_mouseover', { marker: this });
           } else if (this === this._mGroup._lastMarker) {
-            this._map.fire('editor:last_marker_dblclick_mouseover', {marker: this});
+            map.fire('editor:last_marker_dblclick_mouseover', { marker: this });
           }
         }
       } else {
         if (this.isSelectedInGroup()) {
           if (this.isMiddle()) {
-            this._map.fire('editor:selected_middle_marker_mouseover', {marker: this});
+            map.fire('editor:selected_middle_marker_mouseover', { marker: this });
           } else {
-            this._map.fire('editor:selected_marker_mouseover', {marker: this});
+            map.fire('editor:selected_marker_mouseover', { marker: this });
           }
         } else {
-          this._map.fire('editor:not_selected_marker_mouseover', {marker: this});
+          map.fire('editor:not_selected_marker_mouseover', { marker: this });
         }
+      }
+      if (this.isAcceptedToDelete()) {
+        map.msgHelper.msg(map.options.text.acceptDeletion, 'error', this);
       }
     });
     this.on('mouseout', () => {
@@ -274,7 +322,7 @@ export default L.Marker.extend({
       if (mGroup && mGroup.getFirst() && mGroup.getFirst()._hasFirstIcon()) {
         if (this === mGroup._lastMarker) {
           mGroup.getFirst().fire('click');
-          this._map.fire('editor:join_path', {marker: this});
+          //this._map.fire('editor:join_path', {marker: this});
         }
       }
     });
@@ -289,20 +337,20 @@ export default L.Marker.extend({
 
       this._setDragIcon();
 
-      map.fire('editor:drag_marker', {marker: this});
+      map.fire('editor:drag_marker', { marker: this });
     });
 
     this.on('dragend', () => {
 
       this._mGroup.select();
-      this._map.fire('editor:dragend_marker', {marker: this});
+      this._map.fire('editor:dragend_marker', { marker: this });
 
       dragend = true;
       setTimeout(() => {
         dragend = false;
       }, 200);
 
-      this._map.fire('editor:selected_marker_mouseover', {marker: this});
+      this._map.fire('editor:selected_marker_mouseover', { marker: this });
     });
   },
   _isInsideHole () {
@@ -455,7 +503,7 @@ export default L.Marker.extend({
       this.changePrevNextPos();
       map._convertToEdit(map.getEMarkersGroup());
       //
-      map.fire('editor:drag_marker', {marker: this});
+      map.fire('editor:drag_marker', { marker: this });
 
       this._oldLatLngState = undefined;
       this.resetStyle();

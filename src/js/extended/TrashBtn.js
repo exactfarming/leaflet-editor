@@ -54,6 +54,7 @@ export default BtnCtrl.extend({
       selectedMGroup.remove();
       selectedMGroup.getDELine().clear();
       L.DomUtil.addClass(this._btn, 'disabled');
+      map.fire('editor:polygon:deleted');
     }
     this._onMouseOut();
     L.DomUtil.addClass(this._titleContainer, 'title-hidden');

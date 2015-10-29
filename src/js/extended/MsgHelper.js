@@ -16,7 +16,7 @@ export default L.Control.extend({
 
     setTimeout(() => {
       this._setContainer(container, map);
-      map.fire('msgHelperAdded', {control: this});
+      map.fire('msgHelperAdded', { control: this });
 
       this._changePos();
     }, 1000);
@@ -63,16 +63,20 @@ export default L.Control.extend({
   getOffset (el) {
     var _x = 0;
     var _y = 0;
-    if(!this._map.isFullscreen()) {
+    if (!this._map.isFullscreen || !this._map.isFullscreen()) {
       while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
         _x += el.offsetLeft;
         _y += el.offsetTop;
         el = el.offsetParent;
       }
     }
-    return {y: _y, x: _x};
+    return { y: _y, x: _x };
   },
   msg (text, type, object) {
+    if (!text || !this._titlePosContainer) {
+      return;
+    }
+
     if (object) {
       L.DomUtil.removeClass(this._titlePosContainer, 'title-hidden');
       L.DomUtil.removeClass(this._titlePosContainer, 'title-error');
@@ -82,7 +86,8 @@ export default L.Control.extend({
 
       var point;
 
-      var offset = this.getOffset(document.getElementById(this._map._container.getAttribute('id')));
+      //var offset = this.getOffset(document.getElementById(this._map._container.getAttribute('id')));
+      var offset = this.getOffset(this._map._container);
 
       if (object instanceof L.Point) {
         point = object;
@@ -114,8 +119,13 @@ export default L.Control.extend({
     }
   },
   hide () {
-    L.DomUtil.addClass(this._titleContainer, 'title-hidden');
-    L.DomUtil.addClass(this._titlePosContainer, 'title-hidden');
+    if (this._titleContainer) {
+      L.DomUtil.addClass(this._titleContainer, 'title-hidden');
+    }
+
+    if (this._titlePosContainer) {
+      L.DomUtil.addClass(this._titlePosContainer, 'title-hidden');
+    }
   },
   getBtnContainer () {
     return this._map._controlCorners['msgcenter'];

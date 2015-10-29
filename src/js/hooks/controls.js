@@ -13,15 +13,17 @@ export default function () {
   zoomTitle(this);
   fullScreenTitle(this);
 
-  var ggl = new L.Google();
+  if (L.Google) {
+    var ggl = new L.Google();
 
-  this.addLayer(ggl);
+    this.addLayer(ggl);
 
-  this._controlLayers = new L.Control.Layers({
-    'Google': ggl
-  });
+    this._controlLayers = new L.Control.Layers({
+      'Google': ggl
+    });
 
-  this.addControl(this._controlLayers);
+    this.addControl(this._controlLayers);
+  }
 
   this.touchZoom.disable();
   this.doubleClickZoom.disable();
@@ -29,21 +31,34 @@ export default function () {
   this.boxZoom.disable();
   this.keyboard.disable();
 
-  this.addControl(new SearchBtn());
+  var controls = this.options.controls;
+
+  if (controls) {
+    if (controls.geoSearch) {
+      this.addControl(new SearchBtn());
+    }
+  }
 
   this._BtnControl = BtnControl;
 
   var trashBtn = new TrashBtn({
     btns: [
-      {'className': 'fa fa-trash'}
+      { 'className': 'fa fa-trash' }
     ]
   });
 
-  var loadBtn = new LoadBtn({
-    btns: [
-      {'className': 'fa fa-arrow-circle-o-down load'}
-    ]
-  });
+  if (controls.geoSearch) {
+    this.addControl(new SearchBtn());
+  }
+  let loadBtn;
+
+  if (controls.loadBtn) {
+    loadBtn = new LoadBtn({
+      btns: [
+        { 'className': 'fa fa-arrow-circle-o-down load' }
+      ]
+    });
+  }
 
   var msgHelper = this.msgHelper = new MsgHelper({
     defaultMsg: this.options.text.clickToStartDrawPolygonOnMap
@@ -110,7 +125,7 @@ export default function () {
     });
 
     this.on('editor:join_path', (data) => {
-      if(data.marker) {
+      if (data.marker) {
         msgHelper.msg(this.options.text.clickToRemoveAllSelectedEdges, null, data.marker);
       }
     });
@@ -119,19 +134,19 @@ export default function () {
     this.on('editor:intersection_detected', (data) => {
       // msg
       if (data.intersection) {
-          msgHelper.msg(this.options.text.intersection, 'error', (this._storedLayerPoint || this.getSelectedMarker()));
-          this._storedLayerPoint = null;
+        msgHelper.msg(this.options.text.intersection, 'error', (this._storedLayerPoint || this.getSelectedMarker()));
+        this._storedLayerPoint = null;
       } else {
         msgHelper.hide();
       }
 
       var selectedMarker = this.getSelectedMarker();
 
-      if(!this.hasLayer(selectedMarker)) {
+      if (!this.hasLayer(selectedMarker)) {
         return;
       }
 
-      if(selectedMarker && !selectedMarker._mGroup.hasFirstMarker()) {
+      if (selectedMarker && !selectedMarker._mGroup.hasFirstMarker()) {
         //set marker style
         if (data.intersection) {
           //set 'error' style
@@ -152,8 +167,12 @@ export default function () {
 
   if (!m.isMobileBrowser()) {
     this.addControl(msgHelper);
-    this.addControl(loadBtn);
-  }
 
-  this.addControl(trashBtn);
+    if (controls.loadBtn) {
+      this.addControl(loadBtn);
+    }
+  }
+  if (controls.trashBtn) {
+    this.addControl(trashBtn);
+  }
 }

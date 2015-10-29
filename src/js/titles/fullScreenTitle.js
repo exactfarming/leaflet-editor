@@ -1,4 +1,8 @@
 export default function (map) {
+  if (!map.options.fullscreenControl) {
+    return;
+  }
+
   var link = map.fullscreenControl.link;
   link.title = "";
   L.DomUtil.addClass(link, 'full-screen');

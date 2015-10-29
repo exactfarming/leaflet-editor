@@ -6,13 +6,50 @@ import * as opts from './options';
 
 import './utils/array';
 
-function map() {
-  var map = L.Map.extend($.extend(Base, {
+function map(type) {
+  let Instance = (type === 'mapbox') ? L.mapbox.Map : L.Map;
+  var map = Instance.extend($.extend(Base, {
     $: undefined,
     initialize (id, options) {
-      $.extend(opts.options, options);
-      L.Util.setOptions(this, opts.options);
-      L.Map.prototype.initialize.call(this, id, options);
+      if (options.text) {
+        $.extend(opts.options.text, options.text);
+        delete options.text;
+      }
+
+      var controls = options.controls;
+      if (controls) {
+        if (controls.zoom === false) {
+          options.zoomControl = false;
+        }
+      }
+
+      if (options.drawLineStyle) {
+        $.extend(opts.options.drawLineStyle, options.drawLineStyle);
+        delete options.drawLineStyle;
+      }
+      if (options.style) {
+        if (options.style.draw) {
+          $.extend(opts.options.style.draw, options.style.draw);
+        }
+        //delete options.style.draw;
+        if (options.style.view) {
+          $.extend(opts.options.style.view, options.style.view);
+        }
+        if (options.style.startDraw) {
+          $.extend(opts.options.style.startDraw, options.style.startDraw);
+        }
+        delete options.style;
+      }
+
+      $.extend(this.options, opts.options, options);
+      //L.Util.setOptions(this, opts.options);
+
+      if (type === 'mapbox') {
+        L.mapbox.Map.prototype.initialize.call(this, id, this.options.mapboxId, this.options);
+      } else {
+        L.Map.prototype.initialize.call(this, id, this.options);
+      }
+
       this.$ = $(this._container);
 
       layers.setLayers();
@@ -81,4 +118,4 @@ function map() {
   return map;
 }
 
-export default map();
+export default map;

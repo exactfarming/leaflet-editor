@@ -1,4 +1,13 @@
 export default function (map) {
+  var controls = map.options.controls;
+  if (controls && !controls.zoom) {
+    return;
+  }
+
+  if(!map.zoomControl) {
+    return;
+  }
+
   var zoomContainer = map.zoomControl._container;
   map._titleZoomContainer = L.DomUtil.create('div', 'btn-leaflet-msg-container zoom title-hidden');
   map._titleZoomContainer.innerHTML = map.options.text.zoom;

@@ -3,6 +3,7 @@ import EditPolygon from './edit/polygon';
 import HolesGroup from './edit/holesGroup';
 import EditLineGroup from './edit/line';
 import DashedEditLineGroup from './draw/dashed-line';
+import DrawGroup from './draw/group';
 
 import './edit/marker-group';
 
@@ -16,7 +17,7 @@ export default {
   editHoleMarkersGroup: null,
   setLayers () {
     this.viewGroup = new ViewGroup([]);
-    this.editGroup = new L.FeatureGroup([]);
+    this.editGroup = new DrawGroup([]);
     this.editPolygon = new EditPolygon([]);
     this.editMarkersGroup = new L.MarkerGroup([]);
     this.editLineGroup = new EditLineGroup([]);

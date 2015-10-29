@@ -22,6 +22,10 @@ export default {
         this._addMarker(e);
 
         this.fire('editor:start_add_new_polygon');
+        var startDrawStyle = this.options.style['startDraw'];
+        if (startDrawStyle) {
+          this.getEPolygon().setStyle(startDrawStyle);
+        }
 
         this._clearSelectedVLayer();
 
@@ -48,7 +52,7 @@ export default {
             this.clearSelectedMarker();
 
             var lastHGroup = ehMarkersGroup.addHoleGroup();
-            lastHGroup.set(e.latlng, null, {icon: firstIcon});
+            lastHGroup.set(e.latlng, null, { icon: firstIcon });
 
             this._selectedMGroup = lastHGroup;
             this.fire('editor:start_add_new_hole');
@@ -102,7 +106,7 @@ export default {
 
       var position = -1;
       layers.forEach(() => {
-        var marker = eMarkersGroup.addMarker(position, null, {icon: middleIcon});
+        var marker = eMarkersGroup.addMarker(position, null, { icon: middleIcon });
         position = marker.position + 2;
       });
 
@@ -114,6 +118,11 @@ export default {
       });
 
       eMarkersGroup.select();
+
+      //reset style if 'startDraw' was used
+      this.getEPolygon().setStyle(this.options.style.draw);
+
+      this.fire('editor:polygon:created');
     });
 
     var vGroup = this.getVGroup();
@@ -122,6 +131,7 @@ export default {
       vGroup.onClick(e);
 
       this.msgHelper.msg(this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
+      this.fire('editor:polygon:selected');
     });
 
     this.on('editor:delete_marker', () => {
@@ -148,7 +158,7 @@ export default {
   _unBindDrawEvents () {
     this.off('click');
     this.getVGroup().off('click');
-    this.off('mouseout');
+    //this.off('mouseout');
     this.off('dblclick');
 
     this.getDELine().clear();

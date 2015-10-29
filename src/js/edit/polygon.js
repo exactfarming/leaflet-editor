@@ -44,7 +44,7 @@ export default L.EditPloygon = ExtendedPolygon.extend({
     map.on('editor:delete_hole', (e) => this._removeHole(e));
 
     this.on('mousemove', (e) => {
-      map.fire('editor:edit_polygon_mousemove', {layerPoint: e.layerPoint});
+      map.fire('editor:edit_polygon_mousemove', { layerPoint: e.layerPoint });
     });
 
     this.on('mouseout', () => map.fire('editor:edit_polygon_mouseout'));
@@ -63,6 +63,9 @@ export default L.EditPloygon = ExtendedPolygon.extend({
     this._holes.push(hole);
 
     this.redraw();
+  },
+  hasHoles() {
+    return this._holes.length > 0;
   },
   _resetLastHole () {
     var map = this._map;

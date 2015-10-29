@@ -20,6 +20,18 @@ gulp.task('build', function () {
     .pipe(browserSync.reload({stream: true}));
 });
 
+gulp.task('buildMapbox', function () {
+  browserify({
+    entries: './src/js/index.mapbox.js',
+    debug: true
+  })
+    .transform(babelify)
+    .bundle()
+    .pipe(source('index.mapbox.js'))
+    .pipe(gulp.dest('./dist/js/'))
+    .pipe(browserSync.reload({stream: true}));
+});
+
 gulp.task('buildMin', function () {
   browserify({
     entries: './src/js/index.js',
@@ -28,6 +40,18 @@ gulp.task('buildMin', function () {
     .transform(babelify)
     .bundle()
     .pipe(source('index.min.js'))
+    .pipe(streamify(uglify()))
+    .pipe(gulp.dest('./dist/js/'));
+});
+
+gulp.task('buildMapboxMin', function () {
+  browserify({
+    entries: './src/js/index.mapbox.js',
+    debug: true
+  })
+    .transform(babelify)
+    .bundle()
+    .pipe(source('index.mapbox.min.js'))
     .pipe(streamify(uglify()))
     .pipe(gulp.dest('./dist/js/'));
 });
@@ -49,7 +73,15 @@ gulp.task('browserSync', function () {
 gulp.task('watchFiles', function () {
   gulp.watch('src/css/index.css', ['copy']);
   gulp.watch('dist/index.html').on('change', browserSync.reload);
-  gulp.watch(['dist/**/*.js', 'src/**/*.js', 'src/**/*.css', '!dist/js/index.js', '!dist/js/index.min.js'], ['copy', 'build', 'buildMin']);
+  gulp.watch([
+    'dist/**/*.js',
+    'src/**/*.js',
+    'src/**/*.css',
+    '!dist/js/index.js',
+    '!dist/js/index.min.js',
+    '!dist/js/index.mapbox.js',
+    '!dist/js/index.mapbox.min.js'
+  ], ['copy', 'build', 'buildMin', 'buildMapbox', 'buildMapboxMin']);
 });
 
 gulp.task('clean', function () {
@@ -58,4 +90,12 @@ gulp.task('clean', function () {
 });
 
 
-gulp.task('default', ['clean', 'copy', 'build', 'buildMin', 'browserSync', 'watchFiles']);
+gulp.task('default', [
+  'clean',
+  'copy',
+  'build',
+  'buildMapbox',
+  'buildMin',
+  'buildMapboxMin',
+  'browserSync',
+  'watchFiles']);

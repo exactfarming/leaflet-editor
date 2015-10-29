@@ -1,3 +1,3 @@
-import MapEditor from '../js/map';
+import map from './map';
 
-window.MapEditor = MapEditor;
+window.LeafletEditor = map();

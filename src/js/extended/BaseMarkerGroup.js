@@ -44,10 +44,12 @@ export default L.Class.extend({
       }
     });
 
+    var map = this._map;
+
     if (!this._isHole) {
-      var map = this._map;
       map.getVGroup().removeLayer(map._getSelectedVLayer());
     }
+    map.fire('editor:polygon:deleted');
   },
   removeLayer (marker) {
     var position = marker.position;

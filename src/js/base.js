@@ -126,16 +126,7 @@ export default $.extend({
   },
   _setMode (type) {
     var options = this.options;
-    //this.getVGroup().setStyle(options.style[type]);
-    //this.getEGroup().setStyle(options.editGroupStyle.mode[type]);
-
-    //if (!this.isMode('edit')) {
     this.getEPolygon().setStyle(options.style[type]);
-    //}
-
-    //this._setMarkersGroupIcon(this.getEMarkersGroup());
-    //this.$.trigger({type: 'mode', value: type});
-    //this.$.trigger({type: 'mode:' + type});
   },
 
   _getModeType () {
@@ -179,7 +170,6 @@ export default $.extend({
       markerGroup.updateStyle();
     }
   },
-  //modes: 'view', 'edit', 'draw', 'list'
   mode (type) {
     this.fire(this._modeType + '_events_disable');
     this.fire(type + '_events_enable');
@@ -197,14 +187,6 @@ export default $.extend({
   isMode (type) {
     return type === this._modeType;
   },
-  //vieew () {
-  //  if (this.isMode('edit') || this.isMode('draw') || this.isMode('afterDraw')) {
-  //    this._clearMap();
-  //
-  //  }
-  //  this._fitVBounds();
-  //  this._bindViewEvents();
-  //},
   draw () {
     if (this.isMode('edit') || this.isMode('view') || this.isMode('afterDraw')) {
       this._clearMap();
