@@ -13,13 +13,13 @@ export default function () {
   zoomTitle(this);
   fullScreenTitle(this);
 
-  if (L.Google) {
+  if (this.options.defaultControlLayers) {
     var ggl = new L.Google();
 
     this.addLayer(ggl);
 
     this._controlLayers = new L.Control.Layers({
-      'Google': ggl
+      Google: ggl,
     });
 
     this.addControl(this._controlLayers);
@@ -27,6 +27,7 @@ export default function () {
 
   this.touchZoom.disable();
   this.doubleClickZoom.disable();
+
   //this.scrollWheelZoom.disable();
   this.boxZoom.disable();
   this.keyboard.disable();
@@ -43,25 +44,22 @@ export default function () {
 
   var trashBtn = new TrashBtn({
     btns: [
-      { 'className': 'fa fa-trash' }
-    ]
+      { className: 'fa fa-trash' },
+    ],
   });
 
-  if (controls.geoSearch) {
-    this.addControl(new SearchBtn());
-  }
   let loadBtn;
 
-  if (controls.loadBtn) {
+  if (controls && controls.loadBtn) {
     loadBtn = new LoadBtn({
       btns: [
-        { 'className': 'fa fa-arrow-circle-o-down load' }
-      ]
+        { className: 'fa fa-arrow-circle-o-down load' },
+      ],
     });
   }
 
   var msgHelper = this.msgHelper = new MsgHelper({
-    defaultMsg: this.options.text.clickToStartDrawPolygonOnMap
+    defaultMsg: this.options.text.clickToStartDrawPolygonOnMap,
   });
 
   this.on('msgHelperAdded', () => {
@@ -95,6 +93,7 @@ export default function () {
         msgHelper.hide();
         this._storedLayerPoint = null;
       });
+
       // on view polygon
       this.off('editor:view_polygon_mousemove');
       this.on('editor:view_polygon_mousemove', (data) => {
@@ -113,11 +112,13 @@ export default function () {
     this.on('editor:marker_mouseout', () => {
       msgHelper.hide();
     });
+
     // on start draw polygon
     this.off('editor:first_marker_mouseover');
     this.on('editor:first_marker_mouseover', (data) => {
       msgHelper.msg(text.clickToJoinEdges, null, data.marker);
     });
+
     // dblclick to join
     this.off('editor:last_marker_dblclick_mouseover');
     this.on('editor:last_marker_dblclick_mouseover', (data) => {
@@ -154,6 +155,7 @@ export default function () {
         } else {
           //restore style
           selectedMarker.resetStyle();
+
           //restore other markers which are also need to reset style
           var markersToReset = selectedMarker._mGroup.getLayers().filter((layer) => {
             return L.DomUtil.hasClass(layer._icon, 'm-editor-intersection-div-icon');
@@ -168,11 +170,12 @@ export default function () {
   if (!m.isMobileBrowser()) {
     this.addControl(msgHelper);
 
-    if (controls.loadBtn) {
+    if (controls && controls.loadBtn) {
       this.addControl(loadBtn);
     }
   }
-  if (controls.trashBtn) {
+
+  if (controls && controls.trashBtn) {
     this.addControl(trashBtn);
   }
 }
