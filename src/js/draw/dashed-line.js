@@ -1,11 +1,11 @@
 import * as opts from '../options';
 
 export default L.Polyline.extend({
-  options: opts.options.drawLineStyle,
+  options: opts.options.style.drawLine,
   _latlngToMove: undefined,
   onAdd: function (map) {
     L.Polyline.prototype.onAdd.call(this, map);
-    this.setStyle(map.options.drawLineStyle);
+    this.setStyle(map.options.style.drawLine);
   },
   addLatLng (latlng) {
     if (this._latlngToMove) {

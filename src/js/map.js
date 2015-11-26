@@ -23,10 +23,10 @@ function map(type) {
         }
       }
 
-      if (options.drawLineStyle) {
-        $.extend(opts.options.drawLineStyle, options.drawLineStyle);
-        delete options.drawLineStyle;
-      }
+      //if (options.drawLineStyle) {
+      //  $.extend(opts.options.drawLineStyle, options.drawLineStyle);
+      //  delete options.drawLineStyle;
+      //}
       if (options.style) {
         if (options.style.draw) {
           $.extend(opts.options.style.draw, options.style.draw);
@@ -37,6 +37,9 @@ function map(type) {
         }
         if (options.style.startDraw) {
           $.extend(opts.options.style.startDraw, options.style.startDraw);
+        }
+        if (options.style.drawLine) {
+          $.extend(opts.options.style.drawLine, options.style.drawLine);
         }
         delete options.style;
       }

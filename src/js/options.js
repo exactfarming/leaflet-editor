@@ -1,6 +1,5 @@
 var viewColor = '#00FFFF';
 var drawColor = '#00F800';
-var editColor = '#00F800';
 var weight = 3;
 
 export var options = {
@@ -9,7 +8,7 @@ export var options = {
   forceToDraw: true,
   translations: {
     removePolygon: 'remove polygon',
-    removePoint: 'remove point',
+    removePoint: 'remove point'
   },
   overlays: {},
   defaultControlLayers: true,
@@ -22,7 +21,7 @@ export var options = {
       fill: true,
       stroke: true,
       color: viewColor,
-      weight: weight,
+      weight: weight
     },
     draw: {
       opacity: 0.5,
@@ -32,8 +31,19 @@ export var options = {
       fill: true,
       stroke: true,
       color: drawColor,
-      weight: weight,
+      weight: weight
     },
+    startDraw: {},
+    drawLine: {
+      opacity: 0.7,
+      fill: false,
+      fillColor: drawColor,
+      color: drawColor,
+      weight: weight,
+      dashArray: '5, 10',
+      stroke: true,
+      clickable: false
+    }
   },
   markerIcon: undefined,
   markerHoverIcon: undefined,
@@ -41,14 +51,14 @@ export var options = {
     color: 'red',
     weight: 3,
     opacity: 1,
-    smoothFactor: 1,
+    smoothFactor: 1
   },
   previewErrorLineStyle: {
     color: 'red',
     weight: 3,
     opacity: 1,
     smoothFactor: 1,
-    dashArray: '5, 10',
+    dashArray: '5, 10'
   },
   text: {
     intersection: 'Self-intersection is prohibited',
@@ -72,18 +82,7 @@ export var options = {
     submitLoadBtn: 'submit',
     zoom: 'Zoom',
     hideFullScreen: 'Hide full screen',
-    showFullScreen: 'Show full screen',
+    showFullScreen: 'Show full screen'
   },
-  worldCopyJump: true,
-};
-
-export var drawLineStyle = {
-  opacity: 0.7,
-  fill: false,
-  fillColor: drawColor,
-  color: drawColor,
-  weight: weight,
-  dashArray: '5, 10',
-  stroke: true,
-  clickable: false,
+  worldCopyJump: true
 };
