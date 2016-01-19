@@ -23,7 +23,7 @@ export default {
 
         this.fire('editor:start_add_new_polygon');
         var startDrawStyle = this.options.style['startDraw'];
-        debugger;
+
         if (startDrawStyle) {
           this.getEPolygon().setStyle(startDrawStyle);
         }
