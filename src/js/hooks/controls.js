@@ -14,12 +14,15 @@ export default function () {
   fullScreenTitle(this);
 
   if (this.options.defaultControlLayers) {
-    var ggl = new L.Google();
-
-    this.addLayer(ggl);
+    var OSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+    // OSM.addTo(map);
+    this.addLayer(OSM);
 
     this._controlLayers = new L.Control.Layers({
-      Google: ggl,
+      Google: new L.Google(),
+      OSM
     });
 
     this.addControl(this._controlLayers);
@@ -125,7 +128,7 @@ export default function () {
       msgHelper.msg(text.dblclickToJoinEdges, null, data.marker);
     });
 
-    this.on('editor:join_path', (data) => {
+    this.on('editor:__join_path', (data) => {
       if (data.marker) {
         msgHelper.msg(this.options.text.clickToRemoveAllSelectedEdges, null, data.marker);
       }

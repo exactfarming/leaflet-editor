@@ -161,7 +161,7 @@ export default L.Marker.extend({
           this._isFirst = false;
           this.setIcon(icon);
           //mGroup.setSelected(this);
-          map.fire('editor:join_path', { mGroup: mGroup });
+          map.fire('editor:__join_path', { mGroup: mGroup });
         }
       });
     }
@@ -329,7 +329,7 @@ export default L.Marker.extend({
       if (mGroup && mGroup.getFirst() && mGroup.getFirst()._hasFirstIcon()) {
         if (this === mGroup._lastMarker) {
           mGroup.getFirst().fire('click');
-          //this._map.fire('editor:join_path', {marker: this});
+          //this._map.fire('editor:__join_path', {marker: this});
         }
       }
     });
