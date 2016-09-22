@@ -123,7 +123,12 @@ export default {
       //reset style if 'startDraw' was used
       this.getEPolygon().setStyle(this.options.style.draw);
 
-      this.fire('editor:polygon:created');
+
+      if (eMarkersGroup._isHole) {
+        this.fire('editor:polygon:hole_created');
+      } else {
+        this.fire('editor:polygon:created');
+      }
     });
 
     var vGroup = this.getVGroup();
