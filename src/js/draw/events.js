@@ -1,4 +1,4 @@
-import {firstIcon,icon,dragIcon,middleIcon,hoverIcon,intersectionIcon} from '../marker-icons';
+import {firstIcon, icon, dragIcon, middleIcon, hoverIcon, intersectionIcon} from '../marker-icons';
 export default {
   _bindDrawEvents () {
     this._unBindDrawEvents();
@@ -48,7 +48,7 @@ export default {
       var ehMarkersGroup = this.getEHMarkersGroup();
       var lastHole = ehMarkersGroup.getLastHole();
       if (firstMarker && !firstMarker._hasFirstIcon()) {
-        if ((e.target.getEPolygon()._path == e.originalEvent.target)) {
+        if ((e.target.getEPolygon()._path === e.originalEvent.target)) {
           if (!lastHole || !lastHole.getFirst() || !lastHole.getFirst()._hasFirstIcon()) {
             this.clearSelectedMarker();
 
@@ -92,7 +92,7 @@ export default {
       this.fire('editor:marker_group_clear');
     });
 
-    this.on('editor:join_path', (e) => {
+    this.on('editor:__join_path', (e) => {
       var eMarkersGroup = e.mGroup;
 
       if (!eMarkersGroup) {
@@ -164,7 +164,7 @@ export default {
 
     this.getDELine().clear();
 
-    this.off('editor:join_path');
+    this.off('editor:__join_path');
 
     if (this._openPopup) {
       this.openPopup = this._openPopup;

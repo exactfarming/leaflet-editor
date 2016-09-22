@@ -35,6 +35,9 @@ export default $.extend({
     }
     layer._path.style.visibility = '';
   },
+  hasSelectedVLayer() {
+    return this._getSelectedVLayer() !== undefined;
+  },
   _addEGroup_To_VGroup () {
     var vGroup = this.getVGroup();
     var eGroup = this.getEGroup();
@@ -216,7 +219,7 @@ export default $.extend({
    * 2) when user edit polygon
    *
    * */
-    saveState () {
+  saveState () {
 
     var ePolygon = _map.getEPolygon();
 
@@ -239,6 +242,29 @@ export default $.extend({
       return geojson.geometry;
     }
     return {};
+  },
+  area() {
+
+    if (!window.turf) {
+      console.error('leaflet-editor: no "turf" library!!! http://turfjs.org/');
+
+      return 0;
+    }
+
+    let vLayer = this.getVGroup();
+    let ePolygonLayer = this.getEPolygon();
+    let selectedLayer = this._getSelectedVLayer();
+
+    let eArea = turf.area(ePolygonLayer.toGeoJSON());
+    let vArea = turf.area(vLayer.toGeoJSON());
+
+    let hArea = (selectedLayer) ? turf.area(selectedLayer.toGeoJSON()) : 0;
+
+    if (this.hasSelectedVLayer() && eArea > 0) {
+      vArea -= hArea;
+    }
+
+    return vArea + eArea;
   },
   getSelectedMarker () {
     return this._selectedMarker;
@@ -307,7 +333,7 @@ export default $.extend({
   },
   _fitVBounds () {
     if (this.getVGroup().getLayers().length !== 0) {
-      this.fitBounds(this.getVGroup().getBounds(), {padding: [30, 30]});
+      this.fitBounds(this.getVGroup().getBounds(), { padding: [30, 30] });
       //this.invalidateSize();
     }
   },
@@ -359,7 +385,7 @@ export default $.extend({
 
     for (var i = 0; i < arrayLatLng.length; i++) {
       // set hole marker
-      holeMarkerGroup.setHoleMarker(arrayLatLng[i], undefined, {}, {hGroup: hGroupPos, hMarker: i});
+      holeMarkerGroup.setHoleMarker(arrayLatLng[i], undefined, {}, { hGroup: hGroupPos, hMarker: i });
     }
 
     var layers = holeMarkerGroup.getLayers();
@@ -416,9 +442,9 @@ export default $.extend({
     } else {
       this.__polygonEdgesIntersected = value;
       if (value === true) {
-        this.fire("editor:intersection_detected", {intersection: true});
+        this.fire("editor:intersection_detected", { intersection: true });
       } else {
-        this.fire("editor:intersection_detected", {intersection: false});
+        this.fire("editor:intersection_detected", { intersection: false });
       }
     }
   },

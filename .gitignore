@@ -4,3 +4,5 @@
 /wallaby.js
 /bower_components
 /tests
+
+.DS_Store/
