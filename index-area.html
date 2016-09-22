@@ -67,6 +67,7 @@
   info.update(map.area());
 
   map.on('editor:polygon:created ' +
+    'editor:polygon:hole_created ' +
     'editor:drag_marker ' +
     'editor:delete_marker ' +
     'editor:polygon:deleted', function (e) {
