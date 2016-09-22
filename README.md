@@ -1,8 +1,10 @@
 # leaflet-editor
 Leaflet plugin which helps edit polygons with holes
 
-## Example
-[http://owm-inc.github.io/leaflet-editor/](http://owm-inc.github.io/leaflet-editor/)
+## Examples
+1) [http://owm-inc.github.io/leaflet-editor/](http://owm-inc.github.io/leaflet-editor/)
+
+2) ["area" function](http://rawgit.com/exactfarming/leaflet-editor/gh-pages/index-area.html) ("turf.js" library is required)
 
 ## Install
 npm install && bower install
