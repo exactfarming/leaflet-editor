@@ -255,6 +255,7 @@ export default $.extend({
     let ePolygonLayer = this.getEPolygon();
     let selectedLayer = this._getSelectedVLayer();
 
+    // if "eArea" < 0 than "ePolygonLayer" is hole layer
     let eArea = turf.area(ePolygonLayer.toGeoJSON());
     let vArea = turf.area(vLayer.toGeoJSON());
 
@@ -263,8 +264,9 @@ export default $.extend({
     if (this.hasSelectedVLayer() && eArea > 0) {
       vArea -= hArea;
     }
+    let sum = (eArea > 0) ? (vArea + eArea) : vArea;
 
-    return vArea + eArea;
+    return sum;
   },
   getSelectedMarker () {
     return this._selectedMarker;
