@@ -46,10 +46,13 @@ export default L.Class.extend({
 
     var map = this._map;
 
-    if (!this._isHole) {
+    if (this._isHole) {
+      map.fire('editor:polygon:hole_deleted');
+    } else {
       map.getVGroup().removeLayer(map._getSelectedVLayer());
+      map.fire('editor:polygon:deleted');
+
     }
-    map.fire('editor:polygon:deleted');
   },
   removeLayer (marker) {
     var position = marker.position;
@@ -98,12 +101,12 @@ export default L.Class.extend({
       this.setMiddleMarker(nextnextMarker.position);
 
       if (b) {
-        map.fire('editor:delete_marker', {marker: marker});
+        map.fire('editor:delete_marker', { marker: marker });
       }
     } else {
       if (this._isHole) {
         map.removeLayer(this);
-        map.fire('editor:delete_hole', {marker: marker});
+        map.fire('editor:delete_hole', { marker: marker });
       } else {
         map.removePolygon(map.getEPolygon());
 
@@ -205,7 +208,7 @@ export default L.Class.extend({
     }
     // 3. trigger event
     if (!marker.isMiddle()) {
-      this._map.fire('editor:add_marker', {marker: marker});
+      this._map.fire('editor:add_marker', { marker: marker });
     }
 
     return marker;

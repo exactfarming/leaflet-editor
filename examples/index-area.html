@@ -67,8 +67,10 @@
 
   map.on('editor:polygon:created ' +
     'editor:polygon:hole_created ' +
+    'editor:polygon:selected ' +
     'editor:drag_marker ' +
     'editor:delete_marker ' +
+    'editor:polygon:hole_deleted ' +
     'editor:polygon:deleted', function (e) {
 
     $('#event-type').text('event "' + e.type + '"');
