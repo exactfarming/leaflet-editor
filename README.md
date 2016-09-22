@@ -1,5 +1,5 @@
 # leaflet-editor
-Leaflet plugin which helps edit polygons with holes
+Leaflet plugin which helps edit polygons, create "holes" in them ;)
 
 ## Examples
 1) [http://owm-inc.github.io/leaflet-editor/](http://owm-inc.github.io/leaflet-editor/)
