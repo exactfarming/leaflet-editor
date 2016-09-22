@@ -285,7 +285,11 @@ export default L.Marker.extend({
 
             mGroup.setSelected(nextMarker);
           } else {
-            map.fire('editor:polygon:deleted');
+            if (mGroup._isHole) {
+              map.fire('editor:polygon:hole_deleted');
+            } else {
+              map.fire('editor:polygon:deleted');
+            }
             map.msgHelper.hide();
           }
           mGroup.select();
