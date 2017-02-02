@@ -2,7 +2,7 @@
 Leaflet plugin which helps edit polygons, create "holes" in them ;)
 
 ## Examples
-1) [http://owm-inc.github.io/leaflet-editor/](http://owm-inc.github.io/leaflet-editor/)
+1) [http://exactfarming.github.io/leaflet-editor/](http://owm-inc.github.io/leaflet-editor/)
 
 2) ["area" function](http://rawgit.com/exactfarming/leaflet-editor/gh-pages/index-area.html) ("turf.js" library is required)
 
