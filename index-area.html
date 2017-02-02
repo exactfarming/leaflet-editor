@@ -47,7 +47,7 @@
     zoom: 10
   });
 
-  var info = L.control();
+  var info = L.control({ position: 'bottomright'});
 
   info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info');
