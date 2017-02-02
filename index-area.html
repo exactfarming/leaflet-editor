@@ -40,13 +40,18 @@
 <script src="https://cdn.rawgit.com/exactfarming/leaflet-editor/master/dist/js/index.js"></script>
 <script src="https://npmcdn.com/@turf/turf@3.5.1/turf.min.js"></script>
 <script>
-  window.map = new LeafletEditor('map', {
+  var map = new LeafletEditor('map', {
     defaultControlLayers: false,
     fullscreenControl: true,
     allowIntersection: false,
     center: [54.521081495443596, 73.95996093749999],
     zoom: 10
   });
+  
+  var OSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  });
+  map.addLayer(OSM);
 
   var info = L.control({ position: 'bottomright'});
 
