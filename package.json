@@ -21,7 +21,9 @@
     "vinyl-source-stream": "^1.1.0",
     "wallabify": "^0.0.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cypress": "^1.0.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

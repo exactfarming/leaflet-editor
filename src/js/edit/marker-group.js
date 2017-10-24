@@ -351,13 +351,14 @@ export default L.MarkerGroup = BaseMGroup.extend({
     this._originalPoints = [];
     layers._each((layer) => {
       var latlng = layer.getLatLng();
-      this._originalPoints.push(this._map.latLngToLayerPoint(latlng));
+      this._originalPoints.push(new L.Point(latlng.lng, latlng.lat));
+      // this._originalPoints.push(this._map.latLngToLayerPoint(latlng));
     });
 
     if (!polygon) {
-      if (map._selectedMarker == layers[0]) { // point is first
+      if (map._selectedMarker === layers[0]) { // point is first
         this._originalPoints = this._originalPoints.slice(1);
-      } else if (map._selectedMarker == layers[layers.length - 1]) { // point is last
+      } else if (map._selectedMarker === layers[layers.length - 1]) { // point is last
         this._originalPoints.splice(-1);
       } else { // point is not first / last
         var tmpArrPoints = [];
@@ -406,7 +407,8 @@ export default L.MarkerGroup = BaseMGroup.extend({
       return false;
     }
 
-    var newPoint = map.latLngToLayerPoint(latlng);
+    var newPoint = new L.Point(latlng.lng, latlng.lat);
+    // var newPoint = map.latLngToLayerPoint(latlng);
 
     var points = this.getPointsForIntersection();
 
@@ -432,8 +434,10 @@ export default L.MarkerGroup = BaseMGroup.extend({
       return false;
     }
 
-    var newPoint = this._map.latLngToLayerPoint(lArray[0]);
-    var lastPoint = this._map.latLngToLayerPoint(lArray[1]);
+    var newPoint = new L.Point(lArray[0].lng, lArray[0].lat);
+    var lastPoint = new L.Point(lArray[1].lng, lArray[1].lat);
+    // var newPoint = this._map.latLngToLayerPoint(lArray[0]);
+    // var lastPoint = this._map.latLngToLayerPoint(lArray[1]);
 
     var points = this.getPointsForIntersection(hole);
 
@@ -443,7 +447,8 @@ export default L.MarkerGroup = BaseMGroup.extend({
     // (the main idea to reverse array of points and check intersection again)
 
     points = this.getPointsForIntersection(hole).reverse();
-    lastPoint = this._map.latLngToLayerPoint(lArray[2]);
+    lastPoint = new L.Point(lArray[2].lng, lArray[2].lat);
+    // lastPoint = this._map.latLngToLayerPoint(lArray[2]);
     var rslt2 = this._hasIntersectionWithHole(points, newPoint, lastPoint);
 
     this._map.edgesIntersected(rslt1 || rslt2);

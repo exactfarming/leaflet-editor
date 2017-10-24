@@ -6,3 +6,7 @@
 /tests
 
 .DS_Store/
+
+
+/cypress/
+/cypress.json
