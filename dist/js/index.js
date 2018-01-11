@@ -1728,7 +1728,7 @@ function map(type) {
       let eArea = turf.area(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(ePolygonLayer.toGeoJSON(), precLatLng));
       let vArea = turf.area(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(vLayer.toGeoJSON(), precLatLng));
 
-      let hArea = (selectedLayer) ? turf.area(selectedLayer.toGeoJSON()) : 0;
+      let hArea = (selectedLayer) ? turf.area(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;
