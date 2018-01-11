@@ -1,22 +1,22 @@
 import Base from './base';
 import ControlsHook from './hooks/controls';
 
-import * as layers from './layers';
-import * as opts from './options';
+import layers from './layers';
+import opts from './options';
 
 import './utils/array';
 
 function map(type) {
   let Instance = (type === 'mapbox') ? L.mapbox.Map : L.Map;
-  var map = Instance.extend($.extend(Base, {
+  let map = Instance.extend($.extend(Base, {
     $: undefined,
-    initialize (id, options) {
+    initialize(id, options) {
       if (options.text) {
-        $.extend(opts.options.text, options.text);
+        $.extend(opts.text, options.text);
         delete options.text;
       }
 
-      var controls = options.controls;
+      let controls = options.controls;
       if (controls) {
         if (controls.zoom === false) {
           options.zoomControl = false;
@@ -24,28 +24,28 @@ function map(type) {
       }
 
       //if (options.drawLineStyle) {
-      //  $.extend(opts.options.drawLineStyle, options.drawLineStyle);
+      //  $.extend(opts.drawLineStyle, options.drawLineStyle);
       //  delete options.drawLineStyle;
       //}
       if (options.style) {
         if (options.style.draw) {
-          $.extend(opts.options.style.draw, options.style.draw);
+          $.extend(opts.style.draw, options.style.draw);
         }
         //delete options.style.draw;
         if (options.style.view) {
-          $.extend(opts.options.style.view, options.style.view);
+          $.extend(opts.style.view, options.style.view);
         }
         if (options.style.startDraw) {
-          $.extend(opts.options.style.startDraw, options.style.startDraw);
+          $.extend(opts.style.startDraw, options.style.startDraw);
         }
         if (options.style.drawLine) {
-          $.extend(opts.options.style.drawLine, options.style.drawLine);
+          $.extend(opts.style.drawLine, options.style.drawLine);
         }
         delete options.style;
       }
 
-      $.extend(this.options, opts.options, options);
-      //L.Util.setOptions(this, opts.options);
+      $.extend(this.options, opts, options);
+      //L.Util.setOptions(this, opts);
 
       if (type === 'mapbox') {
         L.mapbox.Map.prototype.initialize.call(this, id, this.options.mapboxId, this.options);

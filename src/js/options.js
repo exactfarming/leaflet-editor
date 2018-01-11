@@ -1,8 +1,8 @@
-var viewColor = '#00FFFF';
-var drawColor = '#00F800';
-var weight = 3;
+const viewColor = '#00FFFF';
+const drawColor = '#00F800';
+const weight = 3;
 
-export var options = {
+export default {
   allowIntersection: false,
   allowCorrectIntersection: false, //todo: unfinished
   forceToDraw: true,
