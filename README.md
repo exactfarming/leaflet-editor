@@ -1,4 +1,4 @@
-# leaflet-editor [![Build Status](https://travis-ci.org/exactfarming/leaflet-editor.svg?branch=v1.0.0)](https://travis-ci.org/exactfarming/leaflet-editor)
+# leaflet-editor [![Build Status](https://travis-ci.org/exactfarming/leaflet-editor.svg?branch=master)](https://travis-ci.org/exactfarming/leaflet-editor)
 Leaflet plugin which helps edit polygons, create "holes" in them ;)
 
 ## Examples
