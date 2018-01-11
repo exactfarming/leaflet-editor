@@ -1,4 +1,4 @@
-# leaflet-editor
+# leaflet-editor [![Build Status](https://travis-ci.org/exactfarming/leaflet-editor.svg?branch=master)](https://travis-ci.org/exactfarming/leaflet-editor)
 Leaflet plugin which helps edit polygons, create "holes" in them ;)
 
 ## Examples
@@ -6,17 +6,11 @@ Leaflet plugin which helps edit polygons, create "holes" in them ;)
 
 2) ["area" function](http://exactfarming.github.io/leaflet-editor/index-area) ("turf.js" library is required)
 
-## Install
-npm install && bower install
+## Install packages
+yarn install
+
+## Build
+npm run build
 
 ## Run
-gulp default
-
-## Plans
-
-* add tests
-* refactoring
-
-## Issues
-
-Not all cases with self-intersection are solved yet.
+npm run start:dev
