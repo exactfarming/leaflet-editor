@@ -1,5 +1,6 @@
 import DrawEvents from './draw/events';
 import EditPolygon from './edit/polygon';
+import { precision, precisionGeoJSON } from './utils/precision';
 
 export default $.extend({
   _selectedMarker: undefined,
@@ -39,13 +40,13 @@ export default $.extend({
     return this._getSelectedVLayer() !== undefined;
   },
   _addEGroup_To_VGroup () {
-    var vGroup = this.getVGroup();
-    var eGroup = this.getEGroup();
+    let vGroup = this.getVGroup();
+    let eGroup = this.getEGroup();
 
     eGroup.eachLayer((layer) => {
       if (!layer.isEmpty()) {
-        var holes = layer._holes;
-        var latlngs = layer.getLatLngs();
+        let holes = layer._holes;
+        let latlngs = layer.getLatLngs();
         if ($.isArray(holes)) {
           if (holes) {
             latlngs = [latlngs].concat(holes);
@@ -56,11 +57,11 @@ export default $.extend({
     });
   },
   _addEPolygon_To_VGroup () {
-    var vGroup = this.getVGroup();
-    var ePolygon = this.getEPolygon();
+    let vGroup = this.getVGroup();
+    let ePolygon = this.getEPolygon();
 
-    var holes = ePolygon.getHoles();
-    var latlngs = ePolygon.getLatLngs();
+    let holes = ePolygon.getHoles();
+    let latlngs = ePolygon.getLatLngs();
 
     if (latlngs.length <= 2) {
       return;
@@ -74,8 +75,8 @@ export default $.extend({
     vGroup.addLayer(L.polygon(latlngs));
   },
   _setEPolygon_To_VGroup () {
-    var ePolygon = this.getEPolygon();
-    var selectedVLayer = this._getSelectedVLayer();
+    let ePolygon = this.getEPolygon();
+    let selectedVLayer = this._getSelectedVLayer();
 
     if (!selectedVLayer) {
       return;
@@ -91,31 +92,31 @@ export default $.extend({
   },
   _convertToEdit (group) {
     if (group instanceof L.MultiPolygon) {
-      var eGroup = this.getEGroup();
+      let eGroup = this.getEGroup();
 
       eGroup.clearLayers();
 
       group.eachLayer((layer) => {
-        var latlngs = layer.getLatLngs();
+        let latlngs = layer.getLatLngs();
 
-        var holes = layer._holes;
+        let holes = layer._holes;
         if ($.isArray(holes)) {
           latlngs = [latlngs].concat(holes);
         }
 
-        var editPolygon = new EditPolygon(latlngs);
+        let editPolygon = new EditPolygon(latlngs);
         editPolygon.addTo(this);
         eGroup.addLayer(editPolygon);
       });
       return eGroup;
     }
     else if (group instanceof L.MarkerGroup) {
-      var ePolygon = this.getEPolygon();
-      var layers = group.getLayers();
+      let ePolygon = this.getEPolygon();
+      let layers = group.getLayers();
       layers = layers.filter((layer) => !layer.isMiddle());
-      var pointsArray = layers.map((layer) => layer.getLatLng());
+      let pointsArray = layers.map((layer) => layer.getLatLng());
 
-      var holes = ePolygon.getHoles();
+      let holes = ePolygon.getHoles();
 
       if (holes) {
         pointsArray = [pointsArray].concat(holes);
@@ -128,7 +129,7 @@ export default $.extend({
     }
   },
   _setMode (type) {
-    var options = this.options;
+    let options = this.options;
     this.getEPolygon().setStyle(options.style[type]);
   },
 
@@ -141,15 +142,15 @@ export default $.extend({
     this.$.addClass('map-' + this._modeType);
   },
   _setMarkersGroupIcon (markerGroup) {
-    var mIcon = this.options.markerIcon;
-    var mHoverIcon = this.options.markerHoverIcon;
+    let mIcon = this.options.markerIcon;
+    let mHoverIcon = this.options.markerHoverIcon;
 
-    var mode = this._getModeType();
+    let mode = this._getModeType();
     if (mIcon) {
       if (!mIcon.mode) {
         markerGroup.options.mIcon = mIcon;
       } else {
-        var icon = mIcon.mode[mode];
+        let icon = mIcon.mode[mode];
         if (icon !== undefined) {
           markerGroup.options.mIcon = icon;
         }
@@ -160,7 +161,7 @@ export default $.extend({
       if (!mHoverIcon.mode) {
         markerGroup.options.mHoverIcon = mHoverIcon;
       } else {
-        var icon = mHoverIcon[mode];
+        let icon = mHoverIcon[mode];
         if (icon !== undefined) {
           markerGroup.options.mHoverIcon = icon;
         }
@@ -221,7 +222,7 @@ export default $.extend({
    * */
   saveState () {
 
-    var ePolygon = _map.getEPolygon();
+    let ePolygon = _map.getEPolygon();
 
     if (!ePolygon.isEmpty()) {
       //this.fitBounds(ePolygon.getBounds());
@@ -237,13 +238,15 @@ export default $.extend({
     this.clear();
     this.mode('draw');
 
-    var geojson = this.getVGroup().toGeoJSON();
+    let geojson = this.getVGroup().toGeoJSON();
     if (geojson.geometry) {
       return geojson.geometry;
     }
     return {};
   },
-  area() {
+  area(props) {
+
+    let { precLatLng } = props || { precLatLng: 2 };
 
     if (!window.turf) {
       console.error('leaflet-editor: no "turf" library!!! http://turfjs.org/');
@@ -255,18 +258,22 @@ export default $.extend({
     let ePolygonLayer = this.getEPolygon();
     let selectedLayer = this._getSelectedVLayer();
 
-    // if "eArea" < 0 than "ePolygonLayer" is hole layer
-    let eArea = turf.area(ePolygonLayer.toGeoJSON());
-    let vArea = turf.area(vLayer.toGeoJSON());
+    let sum = 0;
 
-    let hArea = (selectedLayer) ? turf.area(selectedLayer.toGeoJSON()) : 0;
+    if (!ePolygonLayer.isEmpty()) {
+      // if "eArea" < 0 than "ePolygonLayer" is hole layer
+      let eArea = turf.area(precisionGeoJSON(ePolygonLayer.toGeoJSON(), precLatLng));
+      let vArea = turf.area(precisionGeoJSON(vLayer.toGeoJSON(), precLatLng));
 
-    if (this.hasSelectedVLayer() && eArea > 0) {
-      vArea -= hArea;
+      let hArea = (selectedLayer) ? turf.area(selectedLayer.toGeoJSON()) : 0;
+
+      if (this.hasSelectedVLayer() && eArea > 0) {
+        vArea -= hArea;
+      }
+      sum = (eArea > 0) ? (vArea + eArea) : vArea;
     }
-    let sum = (eArea > 0) ? (vArea + eArea) : vArea;
 
-    return sum;
+    return precision(sum, precLatLng);
   },
   getSelectedMarker () {
     return this._selectedMarker;
@@ -275,11 +282,11 @@ export default $.extend({
     this._selectedMarker = null;
   },
   removeSelectedMarker () {
-    var selectedMarker = this._selectedMarker;
-    var prevMarker = selectedMarker.prev();
-    var nextMarker = selectedMarker.next();
-    var midlePrevMarker = selectedMarker._middlePrev;
-    var middleNextMarker = selectedMarker._middleNext;
+    let selectedMarker = this._selectedMarker;
+    let prevMarker = selectedMarker.prev();
+    let nextMarker = selectedMarker.next();
+    let midlePrevMarker = selectedMarker._middlePrev;
+    let middleNextMarker = selectedMarker._middleNext;
     selectedMarker.remove();
     this._selectedMarker = midlePrevMarker;
     this._selectedMarker.remove();
@@ -304,7 +311,7 @@ export default $.extend({
     this._setEPolygon_To_VGroup();
   },
   createEditPolygon (json) {
-    var geoJson = L.geoJson(json);
+    let geoJson = L.geoJson(json);
 
     //avoid to lose changes
     if (this._getSelectedVLayer()) {
@@ -315,13 +322,13 @@ export default $.extend({
 
     this.clear();
 
-    var layer = geoJson.getLayers()[0];
+    let layer = geoJson.getLayers()[0];
 
     if (layer) {
-      var layers = layer.getLayers();
-      var vGroup = this.getVGroup();
-      for (var i = 0; i < layers.length; i++) {
-        var _l = layers[i];
+      let layers = layer.getLayers();
+      let vGroup = this.getVGroup();
+      for (let i = 0; i < layers.length; i++) {
+        let _l = layers[i];
         vGroup.addLayer(_l);
       }
     }
@@ -343,7 +350,7 @@ export default $.extend({
     this.getEGroup().clearLayers();
     this.getEPolygon().clear();
     this.getEMarkersGroup().clear();
-    var selectedMGroup = this.getSelectedMGroup();
+    let selectedMGroup = this.getSelectedMGroup();
 
     if (selectedMGroup) {
       selectedMGroup.getDELine().clear();
@@ -372,31 +379,32 @@ export default $.extend({
     this._activeEditLayer = null;
   },
   _setEHMarkerGroup (arrayLatLng) {
-    var holeMarkerGroup = new L.MarkerGroup();
+    let holeMarkerGroup = new L.MarkerGroup();
     holeMarkerGroup._isHole = true;
 
     this._setMarkersGroupIcon(holeMarkerGroup);
 
-    var ehMarkersGroup = this.getEHMarkersGroup();
+    let ehMarkersGroup = this.getEHMarkersGroup();
     holeMarkerGroup.addTo(ehMarkersGroup);
 
-    var ehMarkersGroupLayers = ehMarkersGroup.getLayers();
+    let ehMarkersGroupLayers = ehMarkersGroup.getLayers();
 
-    var hGroupPos = ehMarkersGroupLayers.length - 1;
+    let hGroupPos = ehMarkersGroupLayers.length - 1;
     holeMarkerGroup._position = hGroupPos;
 
-    for (var i = 0; i < arrayLatLng.length; i++) {
+    for (let i = 0; i < arrayLatLng.length; i++) {
       // set hole marker
       holeMarkerGroup.setHoleMarker(arrayLatLng[i], undefined, {}, { hGroup: hGroupPos, hMarker: i });
     }
 
-    var layers = holeMarkerGroup.getLayers();
+    let layers = holeMarkerGroup.getLayers();
     layers.map((layer, position) => {
       holeMarkerGroup._setMiddleMarkers(layer, position);
     });
 
-    var ePolygon = this.getEPolygon();
-    var layers = holeMarkerGroup.getLayers();
+    let ePolygon = this.getEPolygon();
+
+    layers = holeMarkerGroup.getLayers();
 
     layers.forEach((layer) => {
       ePolygon.updateHolePoint(hGroupPos, layer.__position, layer._latlng);
@@ -406,10 +414,10 @@ export default $.extend({
     return holeMarkerGroup;
   },
   _moveEPolygonOnTop () {
-    var ePolygon = this.getEPolygon();
+    let ePolygon = this.getEPolygon();
     if (ePolygon._container) {
-      var lastChild = $(ePolygon._container.parentNode).children().last();
-      var $ePolygon = $(ePolygon._container);
+      let lastChild = $(ePolygon._container.parentNode).children().last();
+      let $ePolygon = $(ePolygon._container);
       if ($ePolygon[0] !== lastChild) {
         $ePolygon.detach().insertAfter(lastChild);
       }
@@ -423,16 +431,16 @@ export default $.extend({
     }
 
     // set markers
-    var latlngs = polygon.getLatLngs();
+    let latlngs = polygon.getLatLngs();
 
     this.getEMarkersGroup().setAll(latlngs);
 
     //this.getEMarkersGroup()._connectMarkers();
 
     // set hole markers
-    var holes = polygon.getHoles();
+    let holes = polygon.getHoles();
     if (holes) {
-      for (var j = 0; j < holes.length; j++) {
+      for (let j = 0; j < holes.length; j++) {
         this._setEHMarkerGroup(holes[j]);
       }
     }
