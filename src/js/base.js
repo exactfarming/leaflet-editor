@@ -265,7 +265,7 @@ export default $.extend({
       let eArea = turf.area(precisionGeoJSON(ePolygonLayer.toGeoJSON(), precLatLng));
       let vArea = turf.area(precisionGeoJSON(vLayer.toGeoJSON(), precLatLng));
 
-      let hArea = (selectedLayer) ? turf.area(selectedLayer.toGeoJSON()) : 0;
+      let hArea = (selectedLayer) ? turf.area(precisionGeoJSON(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;
