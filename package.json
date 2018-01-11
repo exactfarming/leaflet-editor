@@ -12,7 +12,7 @@
     "leaflet-fullscreen": "^0.0.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require babel-register --ui bdd --recursive test",
     "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\"",
     "start:dev": "webpack-dev-server",
     "build": "rm -rf dist && webpack",
