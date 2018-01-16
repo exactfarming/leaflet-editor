@@ -1732,7 +1732,6 @@ function map(type) {
       let vArea = this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(vLayer.toGeoJSON(), precLatLng));
 
       let hArea = (selectedLayer) ? this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(selectedLayer.toGeoJSON(), precLatLng)) : 0;
-
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;
       }
