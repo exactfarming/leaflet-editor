@@ -1,6 +1,6 @@
 {
   "name": "leaflet-editor",
-  "version": "1.0.12-patch-1",
+  "version": "1.1.1",
   "description": "Leaflet plugin which helps edit polygons with holes",
   "main": "gulpfile.js",
   "dependencies": {
