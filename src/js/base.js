@@ -1,8 +1,11 @@
 import DrawEvents from './draw/events';
 import EditPolygon from './edit/polygon';
-import { precision, precisionGeoJSON } from './utils/precision';
+import {
+  precision,
+  precisionGeoJSON
+} from './utils/precision';
 
-export default $.extend({
+export default Object.assign({
   _selectedMarker: undefined,
   _selectedVLayer: undefined,
   _oldSelectedMarker: undefined,
@@ -244,16 +247,18 @@ export default $.extend({
     }
     return {};
   },
-  area(props) {
+  geoJSONArea(geoJSON) {
+    let areaFunc = window.turf && window.turf.area && this.options.geoJSONArea;
 
-    let { precLatLng } = props || { precLatLng: 2 };
-
-    if (!window.turf) {
-      console.error('leaflet-editor: no "turf" library!!! http://turfjs.org/');
-
-      return 0;
+    if (!areaFunc) {
+      console.warn('Warning: Implement "geoJSONArea" function ( leaflet-editor )');
     }
 
+    return (areaFunc) ? areaFunc(geoJSON) : 0;
+  },
+  area(props = {}) {
+
+    let { precLatLng = 2 } = props;
     let vLayer = this.getVGroup();
     let ePolygonLayer = this.getEPolygon();
     let selectedLayer = this._getSelectedVLayer();
@@ -262,10 +267,10 @@ export default $.extend({
 
     if (!ePolygonLayer.isEmpty()) {
       // if "eArea" < 0 than "ePolygonLayer" is hole layer
-      let eArea = turf.area(precisionGeoJSON(ePolygonLayer.toGeoJSON(), precLatLng));
-      let vArea = turf.area(precisionGeoJSON(vLayer.toGeoJSON(), precLatLng));
+      let eArea = this.geoJSONArea(precisionGeoJSON(ePolygonLayer.toGeoJSON(), precLatLng));
+      let vArea = this.geoJSONArea(precisionGeoJSON(vLayer.toGeoJSON(), precLatLng));
 
-      let hArea = (selectedLayer) ? turf.area(precisionGeoJSON(selectedLayer.toGeoJSON(), precLatLng)) : 0;
+      let hArea = (selectedLayer) ? this.geoJSONArea(precisionGeoJSON(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;

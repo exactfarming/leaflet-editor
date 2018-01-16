@@ -44,18 +44,21 @@
     fullscreenControl: true,
     allowIntersection: false,
     center: [54.521081495443596, 73.95996093749999],
-    zoom: 10
+    zoom: 10,
+    geoJSONArea: window.turf.area
   });
 
   var info = L.control();
 
-  info.onAdd = function (map) {
+  var areaOptions = { precLatLng: 5 };
+
+  info.onAdd = function(map) {
     this._div = L.DomUtil.create('div', 'info');
-    this.update(map.area());
+    this.update(map.area(areaOptions));
     return this._div;
   };
 
-  info.update = function (area, eventType) {
+  info.update = function(area, eventType) {
     this._div.innerHTML = '<b>Area:</b>' +
       '<div>' + area.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' m<sup>2</sup></div>' +
       '<div>(' + area + ') m<sup>2</sup></div>' +
@@ -63,7 +66,7 @@
   };
 
   info.addTo(map);
-  info.update(map.area());
+  info.update(map.area(areaOptions));
 
   map.on('editor:polygon:created ' +
     'editor:polygon:hole_created ' +
@@ -71,10 +74,11 @@
     'editor:drag_marker ' +
     'editor:delete_marker ' +
     'editor:polygon:hole_deleted ' +
-    'editor:polygon:deleted', function (e) {
+    'editor:polygon:deleted', function(e) {
 
     $('#event-type').text('event "' + e.type + '"');
-    info.update(map.area(), e.type);
+    info.update(map.area(areaOptions), e.type);
   });
 </script>
+</body>
 </html>
