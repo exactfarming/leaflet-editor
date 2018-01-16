@@ -642,7 +642,8 @@ const weight = 3;
     hideFullScreen: 'Hide full screen',
     showFullScreen: 'Show full screen'
   },
-  worldCopyJump: true
+  worldCopyJump: true,
+  geoJSONArea: null
 });
 
 
@@ -1338,11 +1339,11 @@ var _markerToDeleteGroup = null;
 
 function map(type) {
   let Instance = (type === 'mapbox') ? L.mapbox.Map : L.Map;
-  let map = Instance.extend($.extend(__WEBPACK_IMPORTED_MODULE_0__base__["a" /* default */], {
+  let map = Instance.extend(Object.assign(__WEBPACK_IMPORTED_MODULE_0__base__["a" /* default */], {
     $: undefined,
     initialize(id, options) {
       if (options.text) {
-        $.extend(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].text, options.text);
+        Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].text, options.text);
         delete options.text;
       }
 
@@ -1354,27 +1355,27 @@ function map(type) {
       }
 
       //if (options.drawLineStyle) {
-      //  $.extend(opts.drawLineStyle, options.drawLineStyle);
+      //  Object.assign(opts.drawLineStyle, options.drawLineStyle);
       //  delete options.drawLineStyle;
       //}
       if (options.style) {
         if (options.style.draw) {
-          $.extend(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.draw, options.style.draw);
+          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.draw, options.style.draw);
         }
         //delete options.style.draw;
         if (options.style.view) {
-          $.extend(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.view, options.style.view);
+          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.view, options.style.view);
         }
         if (options.style.startDraw) {
-          $.extend(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.startDraw, options.style.startDraw);
+          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.startDraw, options.style.startDraw);
         }
         if (options.style.drawLine) {
-          $.extend(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.drawLine, options.style.drawLine);
+          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.drawLine, options.style.drawLine);
         }
         delete options.style;
       }
 
-      $.extend(this.options, __WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */], options);
+      Object.assign(this.options, __WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */], options);
       //L.Util.setOptions(this, opts);
 
       if (type === 'mapbox') {
@@ -1465,7 +1466,7 @@ function map(type) {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = ($.extend({
+/* harmony default export */ __webpack_exports__["a"] = (Object.assign({
   _selectedMarker: undefined,
   _selectedVLayer: undefined,
   _oldSelectedMarker: undefined,
@@ -1707,16 +1708,18 @@ function map(type) {
     }
     return {};
   },
-  area(props) {
+  geoJSONArea(geoJSON) {
+    let areaFunc = window.turf && window.turf.area && this.options.geoJSONArea;
 
-    let { precLatLng } = props || { precLatLng: 2 };
-
-    if (!window.turf) {
-      console.error('leaflet-editor: no "turf" library!!! http://turfjs.org/');
-
-      return 0;
+    if (!areaFunc) {
+      console.warn('Warning: Implement "geoJSONArea" function ( leaflet-editor )');
     }
 
+    return (areaFunc) ? areaFunc(geoJSON) : 0;
+  },
+  area(props = {}) {
+
+    let { precLatLng = 2 } = props;
     let vLayer = this.getVGroup();
     let ePolygonLayer = this.getEPolygon();
     let selectedLayer = this._getSelectedVLayer();
@@ -1725,10 +1728,10 @@ function map(type) {
 
     if (!ePolygonLayer.isEmpty()) {
       // if "eArea" < 0 than "ePolygonLayer" is hole layer
-      let eArea = turf.area(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(ePolygonLayer.toGeoJSON(), precLatLng));
-      let vArea = turf.area(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(vLayer.toGeoJSON(), precLatLng));
+      let eArea = this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(ePolygonLayer.toGeoJSON(), precLatLng));
+      let vArea = this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(vLayer.toGeoJSON(), precLatLng));
 
-      let hArea = (selectedLayer) ? turf.area(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(selectedLayer.toGeoJSON(), precLatLng)) : 0;
+      let hArea = (selectedLayer) ? this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;
