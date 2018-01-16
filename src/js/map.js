@@ -8,11 +8,11 @@ import './utils/array';
 
 function map(type) {
   let Instance = (type === 'mapbox') ? L.mapbox.Map : L.Map;
-  let map = Instance.extend($.extend(Base, {
+  let map = Instance.extend(Object.assign(Base, {
     $: undefined,
     initialize(id, options) {
       if (options.text) {
-        $.extend(opts.text, options.text);
+        Object.assign(opts.text, options.text);
         delete options.text;
       }
 
@@ -24,27 +24,27 @@ function map(type) {
       }
 
       //if (options.drawLineStyle) {
-      //  $.extend(opts.drawLineStyle, options.drawLineStyle);
+      //  Object.assign(opts.drawLineStyle, options.drawLineStyle);
       //  delete options.drawLineStyle;
       //}
       if (options.style) {
         if (options.style.draw) {
-          $.extend(opts.style.draw, options.style.draw);
+          Object.assign(opts.style.draw, options.style.draw);
         }
         //delete options.style.draw;
         if (options.style.view) {
-          $.extend(opts.style.view, options.style.view);
+          Object.assign(opts.style.view, options.style.view);
         }
         if (options.style.startDraw) {
-          $.extend(opts.style.startDraw, options.style.startDraw);
+          Object.assign(opts.style.startDraw, options.style.startDraw);
         }
         if (options.style.drawLine) {
-          $.extend(opts.style.drawLine, options.style.drawLine);
+          Object.assign(opts.style.drawLine, options.style.drawLine);
         }
         delete options.style;
       }
 
-      $.extend(this.options, opts, options);
+      Object.assign(this.options, opts, options);
       //L.Util.setOptions(this, opts);
 
       if (type === 'mapbox') {

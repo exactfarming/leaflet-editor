@@ -84,5 +84,6 @@ export default {
     hideFullScreen: 'Hide full screen',
     showFullScreen: 'Show full screen'
   },
-  worldCopyJump: true
+  worldCopyJump: true,
+  geoJSONArea: null
 };
