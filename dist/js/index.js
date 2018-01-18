@@ -1733,9 +1733,13 @@ function map(type) {
 
       let hArea = (selectedLayer) ? this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
+      console.log('eArea', eArea, 'vArea', vArea, 'hArea', hArea);
+
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;
+        console.log('vArea', vArea);
       }
+      console.log('sum = (eArea > 0) ? (vArea + eArea) : vArea', sum, ' = (', eArea,  ' > 0) ? (',vArea, ' + ', eArea, ') : ', vArea);
       sum = (eArea > 0) ? (vArea + eArea) : vArea;
     }
 
