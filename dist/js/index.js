@@ -65,41 +65,45 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return firstIcon; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return icon; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return dragIcon; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return middleIcon; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return hoverIcon; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return intersectionIcon; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_mobile__ = __webpack_require__(2);
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.intersectionIcon = exports.hoverIcon = exports.middleIcon = exports.dragIcon = exports.icon = exports.firstIcon = undefined;
+
+var _mobile = __webpack_require__(2);
+
+var _mobile2 = _interopRequireDefault(_mobile);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var size = 1;
 var userAgent = navigator.userAgent.toLowerCase();
 
-if (__WEBPACK_IMPORTED_MODULE_0__utils_mobile__["a" /* default */].isMobileBrowser()) {
+if (_mobile2.default.isMobileBrowser()) {
   size = 2;
 }
 
-var firstIcon = L.divIcon({
+var firstIcon = exports.firstIcon = L.divIcon({
   className: "m-editor-div-icon-first",
   iconSize: [10 * size, 10 * size]
 });
 
-var icon = L.divIcon({
+var icon = exports.icon = L.divIcon({
   className: "m-editor-div-icon",
   iconSize: [10 * size, 10 * size]
 });
 
-var dragIcon = L.divIcon({
+var dragIcon = exports.dragIcon = L.divIcon({
   className: "m-editor-div-icon-drag",
   iconSize: [10 * size * 3, 10 * size * 3]
 });
 
-var middleIcon = L.divIcon({
+var middleIcon = exports.middleIcon = L.divIcon({
   className: "m-editor-middle-div-icon",
   iconSize: [10 * size, 10 * size]
 
@@ -107,22 +111,27 @@ var middleIcon = L.divIcon({
 
 // disable hover icon to simplify
 
-var hoverIcon = icon || L.divIcon({
+var hoverIcon = exports.hoverIcon = icon || L.divIcon({
   className: "m-editor-div-icon",
   iconSize: [2 * 7 * size, 2 * 7 * size]
 });
 
-var intersectionIcon = L.divIcon({
+var intersectionIcon = exports.intersectionIcon = L.divIcon({
   className: "m-editor-intersection-div-icon",
   iconSize: [2 * 7 * size, 2 * 7 * size]
 });
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.Control.extend({
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.Control.extend({
   options: {
     position: 'topleft',
     btns: [
@@ -133,14 +142,17 @@ var intersectionIcon = L.divIcon({
   },
   _btn: null,
   stopEvent: L.DomEvent.stopPropagation,
-  initialize(options) {
+  initialize: function initialize(options) {
     L.Util.setOptions(this, options);
   },
+
   _titleContainer: null,
-  onAdd(map) {
-    map.on(this.options.pressEventName, () => {
-      if (this._btn && !L.DomUtil.hasClass(this._btn, 'disabled')) {
-        this._onPressBtn();
+  onAdd: function onAdd(map) {
+    var _this = this;
+
+    map.on(this.options.pressEventName, function () {
+      if (_this._btn && !L.DomUtil.hasClass(_this._btn, 'disabled')) {
+        _this._onPressBtn();
       }
     });
 
@@ -151,26 +163,30 @@ var intersectionIcon = L.divIcon({
     var options = this.options;
 
     var self = this;
-    setTimeout(() => {
+    setTimeout(function () {
       self._setBtn(options.btns, container);
       if (options.eventName) {
         map.fire(options.eventName, { control: self });
       }
 
-      L.DomEvent.addListener(self._btn, 'mouseover', this._onMouseOver, this);
-      L.DomEvent.addListener(self._btn, 'mouseout', this._onMouseOut, this);
+      L.DomEvent.addListener(self._btn, 'mouseover', _this._onMouseOver, _this);
+      L.DomEvent.addListener(self._btn, 'mouseout', _this._onMouseOut, _this);
     }, 1000);
 
-    map.getBtnControl = () => this;
+    map.getBtnControl = function () {
+      return _this;
+    };
 
     return container;
   },
-  _onPressBtn() {},
-  _onMouseOver() {},
-  _onMouseOut() {},
-  _setBtn(opts, container) {
+  _onPressBtn: function _onPressBtn() {},
+  _onMouseOver: function _onMouseOver() {},
+  _onMouseOut: function _onMouseOut() {},
+  _setBtn: function _setBtn(opts, container) {
+    var _this2 = this;
+
     var _btn;
-    opts.forEach((btn, index) => {
+    opts.forEach(function (btn, index) {
       if (index === opts.length - 1) {
         btn.className += " last";
       }
@@ -190,7 +206,7 @@ var intersectionIcon = L.divIcon({
         return function () {
           map.fire(pressEventName);
         };
-      }(this._map, btn.pressEventName || this.options.pressEventName);
+      }(_this2._map, btn.pressEventName || _this2.options.pressEventName);
 
       L.DomEvent.on(link, 'click', L.DomEvent.stopPropagation).on(link, 'click', callback);
 
@@ -198,27 +214,32 @@ var intersectionIcon = L.divIcon({
     });
     this._btn = _btn;
   },
-  getBtnContainer() {
+  getBtnContainer: function getBtnContainer() {
     return this._map._controlCorners['topleft'];
   },
-  getBtnAt(pos) {
+  getBtnAt: function getBtnAt(pos) {
     return this.getBtnContainer().child[pos];
   },
-  disableBtn(pos) {
+  disableBtn: function disableBtn(pos) {
     L.DomUtil.addClass(this.getBtnAt(pos), 'disabled');
   },
-  enableBtn(pos) {
+  enableBtn: function enableBtn(pos) {
     L.DomUtil.removeClass(this.getBtnAt(pos), 'disabled');
   }
-}));
+});
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  isMobileBrowser: function () {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  isMobileBrowser: function isMobileBrowser() {
     var check = false;
     (function (a) {
       if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) {
@@ -227,39 +248,54 @@ var intersectionIcon = L.divIcon({
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
   }
-});
+};
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__extended_Polygon__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extended_Tooltip__ = __webpack_require__(4);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-/* harmony default export */ __webpack_exports__["a"] = (L.EditPloygon = __WEBPACK_IMPORTED_MODULE_0__extended_Polygon__["a" /* default */].extend({
+var _Polygon = __webpack_require__(13);
+
+var _Polygon2 = _interopRequireDefault(_Polygon);
+
+var _Tooltip = __webpack_require__(4);
+
+var _Tooltip2 = _interopRequireDefault(_Tooltip);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = L.EditPloygon = _Polygon2.default.extend({
   _oldE: undefined, // to reuse event object after "bad hole" removing to build new hole
   _k: 1, // to decrease 'diff' value which helps build a hole
   _holes: [],
-  initialize(latlngs, options) {
+  initialize: function initialize(latlngs, options) {
     L.Polyline.prototype.initialize.call(this, latlngs, options);
     this._initWithHoles(latlngs);
 
     this.options.className = "leaflet-clickable polygon";
   },
-  _update(e) {
+  _update: function _update(e) {
     var marker = e.marker;
 
     if (marker._mGroup._isHole) {
       var markers = marker._mGroup._markers;
-      markers = markers.filter(marker => !marker.isMiddle());
-      this._holes[marker._mGroup.position] = markers.map(marker => marker.getLatLng());
+      markers = markers.filter(function (marker) {
+        return !marker.isMiddle();
+      });
+      this._holes[marker._mGroup.position] = markers.map(function (marker) {
+        return marker.getLatLng();
+      });
     }
     this.redraw();
   },
-  _removeHole(e) {
+  _removeHole: function _removeHole(e) {
     var holePosition = e.marker._mGroup.position;
     this._holes.splice(holePosition, 1);
 
@@ -268,25 +304,37 @@ var intersectionIcon = L.divIcon({
 
     this.redraw();
   },
-  onAdd(map) {
+  onAdd: function onAdd(map) {
+    var _this = this;
+
     L.Polyline.prototype.onAdd.call(this, map);
 
     map.off('editor:add_marker');
-    map.on('editor:add_marker', e => this._update(e));
+    map.on('editor:add_marker', function (e) {
+      return _this._update(e);
+    });
     map.off('editor:drag_marker');
-    map.on('editor:drag_marker', e => this._update(e));
+    map.on('editor:drag_marker', function (e) {
+      return _this._update(e);
+    });
     map.off('editor:delete_marker');
-    map.on('editor:delete_marker', e => this._update(e));
+    map.on('editor:delete_marker', function (e) {
+      return _this._update(e);
+    });
     map.off('editor:delete_hole');
-    map.on('editor:delete_hole', e => this._removeHole(e));
+    map.on('editor:delete_hole', function (e) {
+      return _this._removeHole(e);
+    });
 
-    this.on('mousemove', e => {
+    this.on('mousemove', function (e) {
       map.fire('editor:edit_polygon_mousemove', { layerPoint: e.layerPoint });
     });
 
-    this.on('mouseout', () => map.fire('editor:edit_polygon_mouseout'));
+    this.on('mouseout', function () {
+      return map.fire('editor:edit_polygon_mouseout');
+    });
   },
-  onRemove(map) {
+  onRemove: function onRemove(map) {
     this.off('mousemove');
     this.off('mouseout');
 
@@ -295,16 +343,16 @@ var intersectionIcon = L.divIcon({
 
     L.Polyline.prototype.onRemove.call(this, map);
   },
-  addHole(hole) {
+  addHole: function addHole(hole) {
     this._holes = this._holes || [];
     this._holes.push(hole);
 
     this.redraw();
   },
-  hasHoles() {
+  hasHoles: function hasHoles() {
     return this._holes.length > 0;
   },
-  _resetLastHole() {
+  _resetLastHole: function _resetLastHole() {
     var map = this._map;
 
     map.getSelectedMarker().removeHole();
@@ -313,7 +361,7 @@ var intersectionIcon = L.divIcon({
       this._addHole(this._oldE, 0.5);
     }
   },
-  checkHoleIntersection() {
+  checkHoleIntersection: function checkHoleIntersection() {
     var map = this._map;
 
     if (map.options.allowIntersection || map.getEMarkersGroup().isEmpty()) {
@@ -347,16 +395,21 @@ var intersectionIcon = L.divIcon({
       }
     }
   }
-}));
+});
 
 /***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* unused harmony default export */ var _unused_webpack_default_export = (L.Class.extend({
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.Class.extend({
   _time: 2000,
-  initialize(map, text, time) {
+  initialize: function initialize(map, text, time) {
     this._map = map;
     this._popupPane = map._panes.popupPane;
     this._text = '' || text;
@@ -367,22 +420,20 @@ var intersectionIcon = L.divIcon({
 
     this._time = time || this._time;
   },
-
-  dispose() {
+  dispose: function dispose() {
     if (this._container) {
       this._popupPane.removeChild(this._container);
       this._container = null;
     }
   },
-
-  'static'(isStatic) {
+  'static': function _static(isStatic) {
     this._isStatic = isStatic || this._isStatic;
     return this;
   },
-  _render() {
+  _render: function _render() {
     this._container.innerHTML = "<span>" + this._text + "</span>";
   },
-  _updatePosition(latlng) {
+  _updatePosition: function _updatePosition(latlng) {
     var pos = this._map.latLngToLayerPoint(latlng),
         tooltipContainer = this._container;
 
@@ -393,8 +444,7 @@ var intersectionIcon = L.divIcon({
 
     return this;
   },
-
-  _showError(latlng) {
+  _showError: function _showError(latlng) {
     if (this._container) {
       L.DomUtil.addClass(this._container, 'leaflet-show');
       L.DomUtil.addClass(this._container, 'leaflet-error-tooltip');
@@ -406,8 +456,7 @@ var intersectionIcon = L.divIcon({
     }
     return this;
   },
-
-  _showInfo(latlng) {
+  _showInfo: function _showInfo(latlng) {
     if (this._container) {
       L.DomUtil.addClass(this._container, 'leaflet-show');
       L.DomUtil.addClass(this._container, 'leaflet-info-tooltip');
@@ -419,8 +468,7 @@ var intersectionIcon = L.divIcon({
     }
     return this;
   },
-
-  _hide() {
+  _hide: function _hide() {
     if (this._container) {
       L.DomUtil.removeClass(this._container, 'leaflet-show');
       L.DomUtil.removeClass(this._container, 'leaflet-info-tooltip');
@@ -429,12 +477,13 @@ var intersectionIcon = L.divIcon({
     this._map.off('mousemove', this._onMouseMove, this);
     return this;
   },
-
-  text(text) {
-    this._text = text || this._text;
+  text: function text(_text) {
+    this._text = _text || this._text;
     this._render();
   },
-  show(latlng, type = 'info') {
+  show: function show(latlng) {
+    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'info';
+
 
     this.text();
 
@@ -445,7 +494,7 @@ var intersectionIcon = L.divIcon({
       this.showInfo(latlng);
     }
   },
-  showInfo(latlng) {
+  showInfo: function showInfo(latlng) {
     this._showInfo(latlng);
 
     if (this._hideInfoTimeout) {
@@ -455,7 +504,7 @@ var intersectionIcon = L.divIcon({
 
     this._hideInfoTimeout = setTimeout(L.Util.bind(this.hide, this), this._time);
   },
-  showError(latlng) {
+  showError: function showError(latlng) {
     this._showError(latlng);
 
     if (this._hideErrorTimeout) {
@@ -465,49 +514,63 @@ var intersectionIcon = L.divIcon({
 
     this._hideErrorTimeout = setTimeout(L.Util.bind(this.hide, this), this._time);
   },
-  hide() {
+  hide: function hide() {
     this._hide();
   },
-  _onMouseMove(e) {
+  _onMouseMove: function _onMouseMove(e) {
     this._updatePosition(e.latlng);
   },
-  setTime(time) {
+  setTime: function setTime(time) {
     if (time) {
       this._time = time;
     }
   }
-}));
+});
 
 /***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.FeatureGroup.extend({
-  update() {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.FeatureGroup.extend({
+  update: function update() {
     var map = this._map;
     map._convertToEdit(map.getEMarkersGroup());
     map.getEMarkersGroup()._connectMarkers();
     //    map.getEPolygon().setStyle(map.editStyle[map._getModeType()]);
   }
-}));
+});
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__options__ = __webpack_require__(7);
 
 
-/* harmony default export */ __webpack_exports__["a"] = (L.Polyline.extend({
-  options: __WEBPACK_IMPORTED_MODULE_0__options__["a" /* default */].style.drawLine,
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _options = __webpack_require__(7);
+
+var _options2 = _interopRequireDefault(_options);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = L.Polyline.extend({
+  options: _options2.default.style.drawLine,
   _latlngToMove: undefined,
-  onAdd: function (map) {
+  onAdd: function onAdd(map) {
     L.Polyline.prototype.onAdd.call(this, map);
     this.setStyle(map.options.style.drawLine);
   },
-  addLatLng(latlng) {
+  addLatLng: function addLatLng(latlng) {
     if (this._latlngToMove) {
       this._latlngToMove = undefined;
     }
@@ -520,7 +583,7 @@ var intersectionIcon = L.divIcon({
 
     return this.redraw();
   },
-  update(pos) {
+  update: function update(pos) {
 
     if (!this._latlngToMove && this._latlngs.length) {
       this._latlngToMove = L.latLng(pos);
@@ -534,26 +597,31 @@ var intersectionIcon = L.divIcon({
     }
     return this;
   },
-  _addLine(line, group, isLastMarker) {
+  _addLine: function _addLine(line, group, isLastMarker) {
     if (!isLastMarker) {
       line.addTo(group);
     }
   },
-  clear() {
+  clear: function clear() {
     this.setLatLngs([]);
   }
-}));
+});
 
 /***/ }),
 /* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-const viewColor = '#00FFFF';
-const drawColor = '#00F800';
-const weight = 3;
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var viewColor = '#00FFFF';
+var drawColor = '#00F800';
+var weight = 3;
+
+exports.default = {
   allowIntersection: false,
   allowCorrectIntersection: false, //todo: unfinished
   forceToDraw: true,
@@ -637,17 +705,26 @@ const weight = 3;
   },
   worldCopyJump: true,
   geoJSONArea: null
-});
+};
 
 /***/ }),
 /* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__extended_Tooltip__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__marker_icons__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Tooltip = __webpack_require__(4);
+
+var _Tooltip2 = _interopRequireDefault(_Tooltip);
+
+var _markerIcons = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var size = 1;
 var userAgent = navigator.userAgent.toLowerCase();
@@ -660,13 +737,15 @@ var tooltip;
 var dragend = false;
 var _markerToDeleteGroup = null;
 
-/* harmony default export */ __webpack_exports__["a"] = (L.Marker.extend({
+exports.default = L.Marker.extend({
   _draggable: undefined, // an instance of L.Draggable
   _oldLatLngState: undefined,
-  initialize(group, latlng, options = {}) {
+  initialize: function initialize(group, latlng) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
 
     options = $.extend({
-      icon: __WEBPACK_IMPORTED_MODULE_1__marker_icons__["d" /* icon */],
+      icon: _markerIcons.icon,
       draggable: false
     }, options);
 
@@ -676,37 +755,37 @@ var _markerToDeleteGroup = null;
 
     this._isFirst = group.getLayers().length === 0;
   },
-  removeGroup() {
+  removeGroup: function removeGroup() {
     if (this._mGroup._isHole) {
       this._mGroup.removeHole();
     } else {
       this._mGroup.remove();
     }
   },
-  remove() {
+  remove: function remove() {
     if (this._map) {
       this._mGroup.removeSelected();
     }
   },
-  removeHole() {
+  removeHole: function removeHole() {
     // deprecated
     this.removeGroup();
   },
-  next() {
+  next: function next() {
     var next = this._next._next;
     if (!this._next.isMiddle()) {
       next = this._next;
     }
     return next;
   },
-  prev() {
+  prev: function prev() {
     var prev = this._prev._prev;
     if (!this._prev.isMiddle()) {
       prev = this._prev;
     }
     return prev;
   },
-  changePrevNextPos() {
+  changePrevNextPos: function changePrevNextPos() {
     if (this._prev.isMiddle()) {
 
       var prevLatLng = this._mGroup._getMiddleLatLng(this.prev(), this);
@@ -716,41 +795,42 @@ var _markerToDeleteGroup = null;
       this._next.setLatLng(nextLatLng);
     }
   },
+
   /**
    * change events for marker (example: hole)
    */
-  resetEvents(callback) {
+  resetEvents: function resetEvents(callback) {
     if (callback) {
       callback.call(this);
     }
   },
-  _posHash() {
+  _posHash: function _posHash() {
     return this._prev.position + '_' + this.position + '_' + this._next.position;
   },
-  _resetIcon(_icon) {
+  _resetIcon: function _resetIcon(_icon) {
     if (this._hasFirstIcon()) {
       return;
     }
-    var ic = _icon || __WEBPACK_IMPORTED_MODULE_1__marker_icons__["d" /* icon */];
+    var ic = _icon || _markerIcons.icon;
 
     this.setIcon(ic);
     this.prev().setIcon(ic);
     this.next().setIcon(ic);
   },
-  _setHoverIcon(_hIcon) {
+  _setHoverIcon: function _setHoverIcon(_hIcon) {
     if (this._hasFirstIcon()) {
       return;
     }
-    this.setIcon(_hIcon || __WEBPACK_IMPORTED_MODULE_1__marker_icons__["c" /* hoverIcon */]);
+    this.setIcon(_hIcon || _markerIcons.hoverIcon);
   },
-  _addIconClass(className) {
+  _addIconClass: function _addIconClass(className) {
     L.DomUtil.addClass(this._icon, className);
   },
-  _removeIconClass(className) {
+  _removeIconClass: function _removeIconClass(className) {
     L.DomUtil.removeClass(this._icon, className);
   },
-  _setIntersectionIcon() {
-    var iconClass = __WEBPACK_IMPORTED_MODULE_1__marker_icons__["e" /* intersectionIcon */].options.className;
+  _setIntersectionIcon: function _setIntersectionIcon() {
+    var iconClass = _markerIcons.intersectionIcon.options.className;
     var className = 'm-editor-div-icon';
     this._removeIconClass(className);
     this._addIconClass(iconClass);
@@ -763,59 +843,61 @@ var _markerToDeleteGroup = null;
     this._nextIntersected._removeIconClass(className);
     this._nextIntersected._addIconClass(iconClass);
   },
-  _setFirstIcon() {
+  _setFirstIcon: function _setFirstIcon() {
     this._isFirst = true;
-    this.setIcon(__WEBPACK_IMPORTED_MODULE_1__marker_icons__["b" /* firstIcon */]);
+    this.setIcon(_markerIcons.firstIcon);
   },
-  _hasFirstIcon() {
+  _hasFirstIcon: function _hasFirstIcon() {
     return this._icon && L.DomUtil.hasClass(this._icon, 'm-editor-div-icon-first');
   },
-  _setMiddleIcon() {
-    this.setIcon(__WEBPACK_IMPORTED_MODULE_1__marker_icons__["f" /* middleIcon */]);
+  _setMiddleIcon: function _setMiddleIcon() {
+    this.setIcon(_markerIcons.middleIcon);
   },
-  isMiddle() {
+  isMiddle: function isMiddle() {
     return this._icon && L.DomUtil.hasClass(this._icon, 'm-editor-middle-div-icon') && !L.DomUtil.hasClass(this._icon, 'leaflet-drag-target');
   },
-  _setDragIcon() {
+  _setDragIcon: function _setDragIcon() {
     this._removeIconClass('m-editor-div-icon');
-    this.setIcon(__WEBPACK_IMPORTED_MODULE_1__marker_icons__["a" /* dragIcon */]);
+    this.setIcon(_markerIcons.dragIcon);
   },
-  isPlain() {
+  isPlain: function isPlain() {
     return L.DomUtil.hasClass(this._icon, 'm-editor-div-icon') || L.DomUtil.hasClass(this._icon, 'm-editor-intersection-div-icon');
   },
-  _onceClick() {
+  _onceClick: function _onceClick() {
+    var _this = this;
+
     if (this._isFirst) {
-      this.once('click', e => {
-        if (!this._hasFirstIcon()) {
+      this.once('click', function (e) {
+        if (!_this._hasFirstIcon()) {
           return;
         }
-        var map = this._map;
-        var mGroup = this._mGroup;
+        var map = _this._map;
+        var mGroup = _this._mGroup;
 
         if (mGroup._markers.length < 3) {
-          this._onceClick();
+          _this._onceClick();
           return;
         }
 
         var latlng = e.target._latlng;
-        this._map._storedLayerPoint = e.target;
+        _this._map._storedLayerPoint = e.target;
 
         var hasIntersection = mGroup.hasIntersection(latlng);
 
         if (hasIntersection) {
           //map._showIntersectionError();
-          this._onceClick(); // bind 'once' again until has intersection
+          _this._onceClick(); // bind 'once' again until has intersection
         } else {
-          this._isFirst = false;
-          this.setIcon(__WEBPACK_IMPORTED_MODULE_1__marker_icons__["d" /* icon */]);
+          _this._isFirst = false;
+          _this.setIcon(_markerIcons.icon);
           //mGroup.setSelected(this);
           map.fire('editor:__join_path', { mGroup: mGroup });
         }
       });
     }
   },
-  _detectGroupDelete() {
-    let map = this._map;
+  _detectGroupDelete: function _detectGroupDelete() {
+    var map = this._map;
 
     var selectedMGroup = map.getSelectedMGroup();
     if (this._mGroup._isHole || !this.isPlain() || selectedMGroup && selectedMGroup.hasFirstMarker()) {
@@ -837,7 +919,7 @@ var _markerToDeleteGroup = null;
       if (selectedMGroup && !selectedMGroup._isHole) {
 
         /* todo: refactoring */
-        let plainMarkersLen = selectedMGroup.getLayers().filter(item => {
+        var plainMarkersLen = selectedMGroup.getLayers().filter(function (item) {
           return $(item._icon).hasClass('m-editor-div-icon');
         }).length;
 
@@ -853,33 +935,35 @@ var _markerToDeleteGroup = null;
     }
     return false;
   },
-  isAcceptedToDelete() {
+  isAcceptedToDelete: function isAcceptedToDelete() {
     return _markerToDeleteGroup === this && this.isSelectedInGroup();
   },
-  _bindCommonEvents() {
-    this.on('click', e => {
-      var map = this._map;
+  _bindCommonEvents: function _bindCommonEvents() {
+    var _this2 = this;
 
-      if (this._detectGroupDelete()) {
-        map.msgHelper.msg(map.options.text.acceptDeletion, 'error', this);
+    this.on('click', function (e) {
+      var map = _this2._map;
+
+      if (_this2._detectGroupDelete()) {
+        map.msgHelper.msg(map.options.text.acceptDeletion, 'error', _this2);
         return;
       }
 
-      this._map._storedLayerPoint = e.target;
+      _this2._map._storedLayerPoint = e.target;
 
-      var mGroup = this._mGroup;
+      var mGroup = _this2._mGroup;
 
-      if (mGroup.hasFirstMarker() && this !== mGroup.getFirst()) {
+      if (mGroup.hasFirstMarker() && _this2 !== mGroup.getFirst()) {
         return;
       }
 
-      if (this._hasFirstIcon() && this._mGroup.hasIntersection(this.getLatLng(), true)) {
+      if (_this2._hasFirstIcon() && _this2._mGroup.hasIntersection(_this2.getLatLng(), true)) {
         map.edgesIntersected(false);
         return;
       }
 
-      mGroup.setSelected(this);
-      if (this._hasFirstIcon()) {
+      mGroup.setSelected(_this2);
+      if (_this2._hasFirstIcon()) {
         return;
       }
 
@@ -887,43 +971,43 @@ var _markerToDeleteGroup = null;
         return;
       }
 
-      if (!this.isSelectedInGroup()) {
+      if (!_this2.isSelectedInGroup()) {
         mGroup.select();
 
-        if (this.isMiddle()) {
-          map.msgHelper.msg(map.options.text.clickToAddNewEdges, null, this);
+        if (_this2.isMiddle()) {
+          map.msgHelper.msg(map.options.text.clickToAddNewEdges, null, _this2);
         } else {
-          map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, this);
+          map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, _this2);
         }
 
         return;
       }
 
-      if (this.isMiddle()) {
+      if (_this2.isMiddle()) {
         //add edge
-        mGroup.setMiddleMarkers(this.position);
-        this._resetIcon(__WEBPACK_IMPORTED_MODULE_1__marker_icons__["d" /* icon */]);
+        mGroup.setMiddleMarkers(_this2.position);
+        _this2._resetIcon(_markerIcons.icon);
         mGroup.select();
-        map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, this);
+        map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, _this2);
         _markerToDeleteGroup = null;
       } else {
         //remove edge
         if (!mGroup.getFirst()._hasFirstIcon() && !dragend) {
           map.msgHelper.hide();
 
-          var rsltIntersection = this._detectIntersection({ target: { _latlng: mGroup._getMiddleLatLng(this.prev(), this.next()) } });
+          var rsltIntersection = _this2._detectIntersection({ target: { _latlng: mGroup._getMiddleLatLng(_this2.prev(), _this2.next()) } });
 
           if (rsltIntersection) {
-            this.resetStyle();
+            _this2.resetStyle();
             map._showIntersectionError(map.options.text.deletePointIntersection);
-            this._previewErrorLine();
+            _this2._previewErrorLine();
             return;
           }
 
-          var oldLatLng = this.getLatLng();
+          var oldLatLng = _this2.getLatLng();
 
-          var nextMarker = this.next();
-          mGroup.removeMarker(this);
+          var nextMarker = _this2.next();
+          mGroup.removeMarker(_this2);
 
           if (!mGroup.isEmpty()) {
             var newLatLng = nextMarker._prev.getLatLng();
@@ -946,74 +1030,74 @@ var _markerToDeleteGroup = null;
       }
     });
 
-    this.on('mouseover', () => {
-      var map = this._map;
-      if (this._mGroup.getFirst()._hasFirstIcon()) {
-        if (this._mGroup.getLayers().length > 2) {
-          if (this._hasFirstIcon()) {
-            map.fire('editor:first_marker_mouseover', { marker: this });
-          } else if (this === this._mGroup._lastMarker) {
-            map.fire('editor:last_marker_dblclick_mouseover', { marker: this });
+    this.on('mouseover', function () {
+      var map = _this2._map;
+      if (_this2._mGroup.getFirst()._hasFirstIcon()) {
+        if (_this2._mGroup.getLayers().length > 2) {
+          if (_this2._hasFirstIcon()) {
+            map.fire('editor:first_marker_mouseover', { marker: _this2 });
+          } else if (_this2 === _this2._mGroup._lastMarker) {
+            map.fire('editor:last_marker_dblclick_mouseover', { marker: _this2 });
           }
         }
       } else {
-        if (this.isSelectedInGroup()) {
-          if (this.isMiddle()) {
-            map.fire('editor:selected_middle_marker_mouseover', { marker: this });
+        if (_this2.isSelectedInGroup()) {
+          if (_this2.isMiddle()) {
+            map.fire('editor:selected_middle_marker_mouseover', { marker: _this2 });
           } else {
-            map.fire('editor:selected_marker_mouseover', { marker: this });
+            map.fire('editor:selected_marker_mouseover', { marker: _this2 });
           }
         } else {
-          map.fire('editor:not_selected_marker_mouseover', { marker: this });
+          map.fire('editor:not_selected_marker_mouseover', { marker: _this2 });
         }
       }
-      if (this.isAcceptedToDelete()) {
-        map.msgHelper.msg(map.options.text.acceptDeletion, 'error', this);
+      if (_this2.isAcceptedToDelete()) {
+        map.msgHelper.msg(map.options.text.acceptDeletion, 'error', _this2);
       }
     });
-    this.on('mouseout', () => {
-      this._map.fire('editor:marker_mouseout');
+    this.on('mouseout', function () {
+      _this2._map.fire('editor:marker_mouseout');
     });
 
     this._onceClick();
 
-    this.on('dblclick', () => {
-      var mGroup = this._mGroup;
+    this.on('dblclick', function () {
+      var mGroup = _this2._mGroup;
       if (mGroup && mGroup.getFirst() && mGroup.getFirst()._hasFirstIcon()) {
-        if (this === mGroup._lastMarker) {
+        if (_this2 === mGroup._lastMarker) {
           mGroup.getFirst().fire('click');
           //this._map.fire('editor:__join_path', {marker: this});
         }
       }
     });
 
-    this.on('drag', e => {
+    this.on('drag', function (e) {
       var marker = e.target;
 
       marker.changePrevNextPos();
 
-      var map = this._map;
+      var map = _this2._map;
       map._convertToEdit(map.getEMarkersGroup());
 
-      this._setDragIcon();
+      _this2._setDragIcon();
 
-      map.fire('editor:drag_marker', { marker: this });
+      map.fire('editor:drag_marker', { marker: _this2 });
     });
 
-    this.on('dragend', () => {
+    this.on('dragend', function () {
 
-      this._mGroup.select();
-      this._map.fire('editor:dragend_marker', { marker: this });
+      _this2._mGroup.select();
+      _this2._map.fire('editor:dragend_marker', { marker: _this2 });
 
       dragend = true;
-      setTimeout(() => {
+      setTimeout(function () {
         dragend = false;
       }, 200);
 
-      this._map.fire('editor:selected_marker_mouseover', { marker: this });
+      _this2._map.fire('editor:selected_marker_mouseover', { marker: _this2 });
     });
   },
-  _isInsideHole() {
+  _isInsideHole: function _isInsideHole() {
     var map = this._map;
     var holes = map.getEHMarkersGroup().getLayers();
     for (var i = 0; i < holes.length; i++) {
@@ -1026,10 +1110,10 @@ var _markerToDeleteGroup = null;
     }
     return false;
   },
-  _isOutsideOfPolygon(polygon) {
+  _isOutsideOfPolygon: function _isOutsideOfPolygon(polygon) {
     return !polygon._isMarkerInPolygon(this.getLatLng());
   },
-  _detectIntersection(e) {
+  _detectIntersection: function _detectIntersection(e) {
     var map = this._map;
 
     if (map.options.allowIntersection) {
@@ -1055,7 +1139,9 @@ var _markerToDeleteGroup = null;
 
     return map.edgesIntersected();
   },
-  _detectIntersectionWithHoles(e) {
+  _detectIntersectionWithHoles: function _detectIntersectionWithHoles(e) {
+    var _this3 = this;
+
     var map = this._map,
         hasIntersection = false,
         hole,
@@ -1086,8 +1172,8 @@ var _markerToDeleteGroup = null;
           tmpArray = [];
           layers = hole.getLayers();
 
-          layers._each(layer => {
-            if (this._mGroup._isMarkerInPolygon(layer.getLatLng())) {
+          layers._each(function (layer) {
+            if (_this3._mGroup._isMarkerInPolygon(layer.getLatLng())) {
               tmpArray.push("");
             }
           });
@@ -1121,46 +1207,49 @@ var _markerToDeleteGroup = null;
     }
     return hasIntersection;
   },
-  onAdd(map) {
+  onAdd: function onAdd(map) {
+    var _this4 = this;
+
     L.Marker.prototype.onAdd.call(this, map);
 
-    this.on('dragstart', e => {
-      this._storedLayerPoint = null; //reset point
+    this.on('dragstart', function (e) {
+      _this4._storedLayerPoint = null; //reset point
 
-      this._mGroup.setSelected(this);
-      this._oldLatLngState = e.target._latlng;
+      _this4._mGroup.setSelected(_this4);
+      _this4._oldLatLngState = e.target._latlng;
 
-      if (this._prev.isPlain()) {
-        this._mGroup.setMiddleMarkers(this.position);
+      if (_this4._prev.isPlain()) {
+        _this4._mGroup.setMiddleMarkers(_this4.position);
       }
-    }).on('drag', e => {
-      this._onDrag(e);
-    }).on('dragend', e => {
-      this._onDragEnd(e);
+    }).on('drag', function (e) {
+      _this4._onDrag(e);
+    }).on('dragend', function (e) {
+      _this4._onDragEnd(e);
     });
 
-    this.on('mousedown', () => {
-      if (!this.dragging._enabled) {
+    this.on('mousedown', function () {
+      if (!_this4.dragging._enabled) {
         return false;
       }
     });
 
     this._bindCommonEvents(map);
   },
-  _onDrag(e) {
+  _onDrag: function _onDrag(e) {
     this._detectIntersection(e);
   },
-  _onDragEnd(e) {
+  _onDragEnd: function _onDragEnd(e) {
     var rslt = this._detectIntersection(e);
     if (rslt && !this._map.options.allowCorrectIntersection) {
       this._restoreOldPosition();
     }
   },
+
   //todo: continue with option 'allowCorrectIntersection'
-  _restoreOldPosition() {
+  _restoreOldPosition: function _restoreOldPosition() {
     var map = this._map;
     if (map.edgesIntersected()) {
-      let stateLatLng = this._oldLatLngState;
+      var stateLatLng = this._oldLatLngState;
       this.setLatLng(L.latLng(stateLatLng.lat, stateLatLng.lng));
 
       this.changePrevNextPos();
@@ -1174,27 +1263,27 @@ var _markerToDeleteGroup = null;
       this._oldLatLngState = this.getLatLng();
     }
   },
-  _animateZoom(opt) {
+  _animateZoom: function _animateZoom(opt) {
     if (this._map) {
       var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
       this._setPos(pos);
     }
   },
-  resetIcon() {
+  resetIcon: function resetIcon() {
     this._removeIconClass('m-editor-intersection-div-icon');
     this._removeIconClass('m-editor-div-icon-drag');
   },
-  unSelectIconInGroup() {
+  unSelectIconInGroup: function unSelectIconInGroup() {
     this._removeIconClass('group-selected');
   },
-  _selectIconInGroup() {
+  _selectIconInGroup: function _selectIconInGroup() {
     if (!this.isMiddle()) {
       this._addIconClass('m-editor-div-icon');
     }
     this._addIconClass('group-selected');
   },
-  selectIconInGroup() {
+  selectIconInGroup: function selectIconInGroup() {
     if (this._prev) {
       this._prev._selectIconInGroup();
     }
@@ -1203,18 +1292,19 @@ var _markerToDeleteGroup = null;
       this._next._selectIconInGroup();
     }
   },
-  isSelectedInGroup() {
+  isSelectedInGroup: function isSelectedInGroup() {
     return L.DomUtil.hasClass(this._icon, 'group-selected');
   },
-  onRemove(map) {
+  onRemove: function onRemove(map) {
     this.off('mouseout');
 
     L.Marker.prototype.onRemove.call(this, map);
   },
+
   _errorLines: [],
   _prevErrorLine: null,
   _nextErrorLine: null,
-  _drawErrorLines() {
+  _drawErrorLines: function _drawErrorLines() {
     var map = this._map;
     this._clearErrorLines();
 
@@ -1233,16 +1323,20 @@ var _markerToDeleteGroup = null;
     this._errorLines.push(this._prevErrorLine);
     this._errorLines.push(this._nextErrorLine);
   },
-  _clearErrorLines() {
-    this._errorLines._each(line => this._map.removeLayer(line));
+  _clearErrorLines: function _clearErrorLines() {
+    var _this5 = this;
+
+    this._errorLines._each(function (line) {
+      return _this5._map.removeLayer(line);
+    });
   },
-  setIntersectedStyle() {
+  setIntersectedStyle: function setIntersectedStyle() {
     this._setIntersectionIcon();
 
     //show intersected lines
     this._drawErrorLines();
   },
-  resetStyle() {
+  resetStyle: function resetStyle() {
     this.resetIcon();
     this.selectIconInGroup();
 
@@ -1262,9 +1356,12 @@ var _markerToDeleteGroup = null;
     //hide intersected lines
     this._clearErrorLines();
   },
+
   _previewErLine: null,
   _pt: null,
-  _previewErrorLine() {
+  _previewErrorLine: function _previewErrorLine() {
+    var _this6 = this;
+
     if (this._previewErLine) {
       this._map.removeLayer(this._previewErLine);
     }
@@ -1281,22 +1378,31 @@ var _markerToDeleteGroup = null;
 
     this._previewErLine.addTo(this._map);
 
-    this._pt = setTimeout(() => {
-      this._map.removeLayer(this._previewErLine);
+    this._pt = setTimeout(function () {
+      _this6._map.removeLayer(_this6._previewErLine);
     }, 900);
   }
-}));
+});
 
 /***/ }),
 /* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (object = {}, array = []) {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function () {
+  var object = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var array = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
   var rslt = object;
 
   var tmp;
-  var _func = function (id, index) {
+  var _func = function _func(id, index) {
     var position = rslt[id].position;
     if (position !== undefined) {
       if (position !== index) {
@@ -1313,37 +1419,54 @@ var _markerToDeleteGroup = null;
   array.forEach(_func);
 
   return rslt;
-});;
+};
+
+;
 
 /***/ }),
 /* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hooks_controls__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layers__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__options__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_array__ = __webpack_require__(28);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _base = __webpack_require__(11);
 
+var _base2 = _interopRequireDefault(_base);
 
+var _controls = __webpack_require__(15);
 
+var _controls2 = _interopRequireDefault(_controls);
 
+var _layers = __webpack_require__(22);
+
+var _layers2 = _interopRequireDefault(_layers);
+
+var _options = __webpack_require__(7);
+
+var _options2 = _interopRequireDefault(_options);
+
+__webpack_require__(28);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function map(type) {
-  let Instance = type === 'mapbox' ? L.mapbox.Map : L.Map;
-  let map = Instance.extend(Object.assign(__WEBPACK_IMPORTED_MODULE_0__base__["a" /* default */], {
+  var _this = this;
+
+  var Instance = type === 'mapbox' ? L.mapbox.Map : L.Map;
+  var map = Instance.extend(Object.assign(_base2.default, {
     $: undefined,
-    initialize(id, options) {
+    initialize: function initialize(id, options) {
       if (options.text) {
-        Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].text, options.text);
+        Object.assign(_options2.default.text, options.text);
         delete options.text;
       }
 
-      let controls = options.controls;
+      var controls = options.controls;
       if (controls) {
         if (controls.zoom === false) {
           options.zoomControl = false;
@@ -1356,22 +1479,22 @@ function map(type) {
       //}
       if (options.style) {
         if (options.style.draw) {
-          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.draw, options.style.draw);
+          Object.assign(_options2.default.style.draw, options.style.draw);
         }
         //delete options.style.draw;
         if (options.style.view) {
-          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.view, options.style.view);
+          Object.assign(_options2.default.style.view, options.style.view);
         }
         if (options.style.startDraw) {
-          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.startDraw, options.style.startDraw);
+          Object.assign(_options2.default.style.startDraw, options.style.startDraw);
         }
         if (options.style.drawLine) {
-          Object.assign(__WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */].style.drawLine, options.style.drawLine);
+          Object.assign(_options2.default.style.drawLine, options.style.drawLine);
         }
         delete options.style;
       }
 
-      Object.assign(this.options, __WEBPACK_IMPORTED_MODULE_3__options__["a" /* default */], options);
+      Object.assign(this.options, _options2.default, options);
       //L.Util.setOptions(this, opts);
 
       if (type === 'mapbox') {
@@ -1382,9 +1505,9 @@ function map(type) {
 
       this.$ = $(this._container);
 
-      __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].setLayers();
+      _layers2.default.setLayers();
 
-      this._addLayers([__WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].viewGroup, __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editGroup, __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editPolygon, __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editMarkersGroup, __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editLineGroup, __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].dashedEditLineGroup, __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editHoleMarkersGroup]);
+      this._addLayers([_layers2.default.viewGroup, _layers2.default.editGroup, _layers2.default.editPolygon, _layers2.default.editMarkersGroup, _layers2.default.editLineGroup, _layers2.default.dashedEditLineGroup, _layers2.default.editHoleMarkersGroup]);
 
       this._setOverlays(options);
 
@@ -1392,7 +1515,7 @@ function map(type) {
         this.mode('draw');
       }
     },
-    _setOverlays(opts) {
+    _setOverlays: function _setOverlays(opts) {
       var overlays = opts.overlays;
 
       for (var i in overlays) {
@@ -1408,71 +1531,83 @@ function map(type) {
         });
       }
     },
-    getVGroup() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].viewGroup;
+    getVGroup: function getVGroup() {
+      return _layers2.default.viewGroup;
     },
-    getEGroup() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editGroup;
+    getEGroup: function getEGroup() {
+      return _layers2.default.editGroup;
     },
-    getEPolygon() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editPolygon;
+    getEPolygon: function getEPolygon() {
+      return _layers2.default.editPolygon;
     },
-    getEMarkersGroup() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editMarkersGroup;
+    getEMarkersGroup: function getEMarkersGroup() {
+      return _layers2.default.editMarkersGroup;
     },
-    getELineGroup() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editLineGroup;
+    getELineGroup: function getELineGroup() {
+      return _layers2.default.editLineGroup;
     },
-    getDELine() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].dashedEditLineGroup;
+    getDELine: function getDELine() {
+      return _layers2.default.dashedEditLineGroup;
     },
-    getEHMarkersGroup() {
-      return __WEBPACK_IMPORTED_MODULE_2__layers__["a" /* default */].editHoleMarkersGroup;
+    getEHMarkersGroup: function getEHMarkersGroup() {
+      return _layers2.default.editHoleMarkersGroup;
     },
-    getSelectedPolygon: () => this._selectedPolygon,
-    getSelectedMGroup() {
+
+    getSelectedPolygon: function getSelectedPolygon() {
+      return _this._selectedPolygon;
+    },
+    getSelectedMGroup: function getSelectedMGroup() {
       return this._selectedMGroup;
     }
   }));
 
-  map.addInitHook(__WEBPACK_IMPORTED_MODULE_1__hooks_controls__["a" /* default */]);
+  map.addInitHook(_controls2.default);
 
   return map;
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (map);
+exports.default = map;
 
 /***/ }),
 /* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__draw_events__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_polygon__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_precision__ = __webpack_require__(14);
-var _this = this;
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _events = __webpack_require__(12);
 
+var _events2 = _interopRequireDefault(_events);
 
-/* harmony default export */ __webpack_exports__["a"] = (Object.assign({
+var _polygon = __webpack_require__(3);
+
+var _polygon2 = _interopRequireDefault(_polygon);
+
+var _precision = __webpack_require__(14);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = Object.assign({
   _selectedMarker: undefined,
   _selectedVLayer: undefined,
   _oldSelectedMarker: undefined,
   __polygonEdgesIntersected: false,
   _modeType: 'draw',
   _controlLayers: undefined,
-  _getSelectedVLayer() {
+  _getSelectedVLayer: function _getSelectedVLayer() {
     return this._selectedVLayer;
   },
-  _setSelectedVLayer(layer) {
+  _setSelectedVLayer: function _setSelectedVLayer(layer) {
     this._selectedVLayer = layer;
   },
-  _clearSelectedVLayer() {
+  _clearSelectedVLayer: function _clearSelectedVLayer() {
     this._selectedVLayer = undefined;
   },
-  _hideSelectedVLayer(layer) {
+  _hideSelectedVLayer: function _hideSelectedVLayer(layer) {
     layer.bringToBack();
 
     if (!layer) {
@@ -1484,23 +1619,25 @@ var _this = this;
     this._setSelectedVLayer(layer);
     layer._path.style.visibility = 'hidden';
   },
-  _showSelectedVLayer(layer = this._selectedVLayer) {
+  _showSelectedVLayer: function _showSelectedVLayer() {
+    var layer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._selectedVLayer;
+
     if (!layer) {
       return;
     }
     layer._path.style.visibility = '';
   },
-  hasSelectedVLayer() {
+  hasSelectedVLayer: function hasSelectedVLayer() {
     return this._getSelectedVLayer() !== undefined;
   },
-  _addEGroup_To_VGroup() {
-    let vGroup = this.getVGroup();
-    let eGroup = this.getEGroup();
+  _addEGroup_To_VGroup: function _addEGroup_To_VGroup() {
+    var vGroup = this.getVGroup();
+    var eGroup = this.getEGroup();
 
-    eGroup.eachLayer(layer => {
+    eGroup.eachLayer(function (layer) {
       if (!layer.isEmpty()) {
-        let holes = layer._holes;
-        let latlngs = layer.getLatLngs();
+        var holes = layer._holes;
+        var latlngs = layer.getLatLngs();
         if ($.isArray(holes)) {
           if (holes) {
             latlngs = [latlngs].concat(holes);
@@ -1510,12 +1647,12 @@ var _this = this;
       }
     });
   },
-  _addEPolygon_To_VGroup() {
-    let vGroup = this.getVGroup();
-    let ePolygon = this.getEPolygon();
+  _addEPolygon_To_VGroup: function _addEPolygon_To_VGroup() {
+    var vGroup = this.getVGroup();
+    var ePolygon = this.getEPolygon();
 
-    let holes = ePolygon.getHoles();
-    let latlngs = ePolygon.getLatLngs();
+    var holes = ePolygon.getHoles();
+    var latlngs = ePolygon.getLatLngs();
 
     if (latlngs.length <= 2) {
       return;
@@ -1528,9 +1665,9 @@ var _this = this;
     }
     vGroup.addLayer(L.polygon(latlngs));
   },
-  _setEPolygon_To_VGroup() {
-    let ePolygon = this.getEPolygon();
-    let selectedVLayer = this._getSelectedVLayer();
+  _setEPolygon_To_VGroup: function _setEPolygon_To_VGroup() {
+    var ePolygon = this.getEPolygon();
+    var selectedVLayer = this._getSelectedVLayer();
 
     if (!selectedVLayer) {
       return;
@@ -1540,36 +1677,42 @@ var _this = this;
     selectedVLayer._holes = ePolygon.getHoles();
     selectedVLayer.redraw();
   },
-  _convert_EGroup_To_VGroup() {
+  _convert_EGroup_To_VGroup: function _convert_EGroup_To_VGroup() {
     this.getVGroup().clearLayers();
     this._addEGroup_To_VGroup();
   },
-  _convertToEdit(group) {
+  _convertToEdit: function _convertToEdit(group) {
+    var _this = this;
+
     if (group instanceof L.MultiPolygon) {
-      let eGroup = this.getEGroup();
+      var eGroup = this.getEGroup();
 
       eGroup.clearLayers();
 
-      group.eachLayer(layer => {
-        let latlngs = layer.getLatLngs();
+      group.eachLayer(function (layer) {
+        var latlngs = layer.getLatLngs();
 
-        let holes = layer._holes;
+        var holes = layer._holes;
         if ($.isArray(holes)) {
           latlngs = [latlngs].concat(holes);
         }
 
-        let editPolygon = new __WEBPACK_IMPORTED_MODULE_1__edit_polygon__["a" /* default */](latlngs);
-        editPolygon.addTo(this);
+        var editPolygon = new _polygon2.default(latlngs);
+        editPolygon.addTo(_this);
         eGroup.addLayer(editPolygon);
       });
       return eGroup;
     } else if (group instanceof L.MarkerGroup) {
-      let ePolygon = this.getEPolygon();
-      let layers = group.getLayers();
-      layers = layers.filter(layer => !layer.isMiddle());
-      let pointsArray = layers.map(layer => layer.getLatLng());
+      var ePolygon = this.getEPolygon();
+      var layers = group.getLayers();
+      layers = layers.filter(function (layer) {
+        return !layer.isMiddle();
+      });
+      var pointsArray = layers.map(function (layer) {
+        return layer.getLatLng();
+      });
 
-      let holes = ePolygon.getHoles();
+      var holes = ePolygon.getHoles();
 
       if (holes) {
         pointsArray = [pointsArray].concat(holes);
@@ -1581,29 +1724,28 @@ var _this = this;
       return ePolygon;
     }
   },
-  _setMode(type) {
-    let options = this.options;
+  _setMode: function _setMode(type) {
+    var options = this.options;
     this.getEPolygon().setStyle(options.style[type]);
   },
-
-  _getModeType() {
+  _getModeType: function _getModeType() {
     return this._modeType;
   },
-  _setModeType(type) {
+  _setModeType: function _setModeType(type) {
     this.$.removeClass('map-' + this._modeType);
     this._modeType = type;
     this.$.addClass('map-' + this._modeType);
   },
-  _setMarkersGroupIcon(markerGroup) {
-    let mIcon = this.options.markerIcon;
-    let mHoverIcon = this.options.markerHoverIcon;
+  _setMarkersGroupIcon: function _setMarkersGroupIcon(markerGroup) {
+    var mIcon = this.options.markerIcon;
+    var mHoverIcon = this.options.markerHoverIcon;
 
-    let mode = this._getModeType();
+    var mode = this._getModeType();
     if (mIcon) {
       if (!mIcon.mode) {
         markerGroup.options.mIcon = mIcon;
       } else {
-        let icon = mIcon.mode[mode];
+        var icon = mIcon.mode[mode];
         if (icon !== undefined) {
           markerGroup.options.mIcon = icon;
         }
@@ -1614,9 +1756,9 @@ var _this = this;
       if (!mHoverIcon.mode) {
         markerGroup.options.mHoverIcon = mHoverIcon;
       } else {
-        let icon = mHoverIcon[mode];
-        if (icon !== undefined) {
-          markerGroup.options.mHoverIcon = icon;
+        var _icon = mHoverIcon[mode];
+        if (_icon !== undefined) {
+          markerGroup.options.mHoverIcon = _icon;
         }
       }
     }
@@ -1627,7 +1769,7 @@ var _this = this;
       markerGroup.updateStyle();
     }
   },
-  mode(type) {
+  mode: function mode(type) {
     this.fire(this._modeType + '_events_disable');
     this.fire(type + '_events_enable');
 
@@ -1641,30 +1783,31 @@ var _this = this;
       this._setMode(type);
     }
   },
-  isMode(type) {
+  isMode: function isMode(type) {
     return type === this._modeType;
   },
-  draw() {
+  draw: function draw() {
     if (this.isMode('edit') || this.isMode('view') || this.isMode('afterDraw')) {
       this._clearMap();
     }
     this._bindDrawEvents();
   },
-  cancel() {
+  cancel: function cancel() {
     this._clearMap();
 
     this.mode('view');
   },
-  clear() {
+  clear: function clear() {
     this._clearEvents();
     this._clearMap();
     this.fire('editor:map_cleared');
   },
-  clearAll() {
+  clearAll: function clearAll() {
     this.mode('view');
     this.clear();
     this.getVGroup().clearLayers();
   },
+
   /**
    *
    * The main idea is to save EPolygon to VGroup when:
@@ -1672,9 +1815,9 @@ var _this = this;
    * 2) when user edit polygon
    *
    * */
-  saveState() {
+  saveState: function saveState() {
 
-    let ePolygon = _map.getEPolygon();
+    var ePolygon = _map.getEPolygon();
 
     if (!ePolygon.isEmpty()) {
       //this.fitBounds(ePolygon.getBounds());
@@ -1690,14 +1833,14 @@ var _this = this;
     this.clear();
     this.mode('draw');
 
-    let geojson = this.getVGroup().toGeoJSON();
+    var geojson = this.getVGroup().toGeoJSON();
     if (geojson.geometry) {
       return geojson.geometry;
     }
     return {};
   },
-  geoJSONArea(geoJSON) {
-    let areaFunc = window.turf && window.turf.area || this.options.geoJSONArea;
+  geoJSONArea: function geoJSONArea(geoJSON) {
+    var areaFunc = window.turf && window.turf.area || this.options.geoJSONArea;
 
     if (!areaFunc) {
       console.warn('Warning: Implement "geoJSONArea" function ( leaflet-editor )');
@@ -1705,21 +1848,23 @@ var _this = this;
 
     return areaFunc ? areaFunc(geoJSON) : 0;
   },
-  area(props = {}) {
+  area: function area() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var _props$precLatLng = props.precLatLng,
+        precLatLng = _props$precLatLng === undefined ? 2 : _props$precLatLng;
 
-    let { precLatLng = 2 } = props;
-    let vLayer = this.getVGroup();
-    let ePolygonLayer = this.getEPolygon();
-    let selectedLayer = this._getSelectedVLayer();
+    var vLayer = this.getVGroup();
+    var ePolygonLayer = this.getEPolygon();
+    var selectedLayer = this._getSelectedVLayer();
 
-    let sum = 0;
+    var sum = 0;
 
     if (!ePolygonLayer.isEmpty()) {
       // if "eArea" < 0 than "ePolygonLayer" is hole layer
-      let eArea = this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(ePolygonLayer.toGeoJSON(), precLatLng));
-      let vArea = this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(vLayer.toGeoJSON(), precLatLng));
+      var eArea = this.geoJSONArea((0, _precision.precisionGeoJSON)(ePolygonLayer.toGeoJSON(), precLatLng));
+      var vArea = this.geoJSONArea((0, _precision.precisionGeoJSON)(vLayer.toGeoJSON(), precLatLng));
 
-      let hArea = selectedLayer ? this.geoJSONArea(Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["b" /* precisionGeoJSON */])(selectedLayer.toGeoJSON(), precLatLng)) : 0;
+      var hArea = selectedLayer ? this.geoJSONArea((0, _precision.precisionGeoJSON)(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
       if (this.hasSelectedVLayer() && eArea > 0) {
         vArea -= hArea;
@@ -1727,20 +1872,20 @@ var _this = this;
       sum = eArea > 0 ? vArea + eArea : vArea;
     }
 
-    return Object(__WEBPACK_IMPORTED_MODULE_2__utils_precision__["a" /* precision */])(sum, precLatLng);
+    return (0, _precision.precision)(sum, precLatLng);
   },
-  getSelectedMarker() {
+  getSelectedMarker: function getSelectedMarker() {
     return this._selectedMarker;
   },
-  clearSelectedMarker() {
+  clearSelectedMarker: function clearSelectedMarker() {
     this._selectedMarker = null;
   },
-  removeSelectedMarker() {
-    let selectedMarker = this._selectedMarker;
-    let prevMarker = selectedMarker.prev();
-    let nextMarker = selectedMarker.next();
-    let midlePrevMarker = selectedMarker._middlePrev;
-    let middleNextMarker = selectedMarker._middleNext;
+  removeSelectedMarker: function removeSelectedMarker() {
+    var selectedMarker = this._selectedMarker;
+    var prevMarker = selectedMarker.prev();
+    var nextMarker = selectedMarker.next();
+    var midlePrevMarker = selectedMarker._middlePrev;
+    var middleNextMarker = selectedMarker._middleNext;
     selectedMarker.remove();
     this._selectedMarker = midlePrevMarker;
     this._selectedMarker.remove();
@@ -1749,7 +1894,7 @@ var _this = this;
     prevMarker._middleNext = null;
     nextMarker._middlePrev = null;
   },
-  removePolygon(polygon) {
+  removePolygon: function removePolygon(polygon) {
     //this.getELineGroup().clearLayers();
     this.getEMarkersGroup().clearLayers();
     //this.getEMarkersGroup().getELineGroup().clearLayers();
@@ -1764,8 +1909,8 @@ var _this = this;
     this.clearSelectedMarker();
     this._setEPolygon_To_VGroup();
   },
-  createEditPolygon(json) {
-    let geoJson = L.geoJson(json);
+  createEditPolygon: function createEditPolygon(json) {
+    var geoJson = L.geoJson(json);
 
     //avoid to lose changes
     if (this._getSelectedVLayer()) {
@@ -1776,13 +1921,13 @@ var _this = this;
 
     this.clear();
 
-    let layer = geoJson.getLayers()[0];
+    var layer = geoJson.getLayers()[0];
 
     if (layer) {
-      let layers = layer.getLayers();
-      let vGroup = this.getVGroup();
-      for (let i = 0; i < layers.length; i++) {
-        let _l = layers[i];
+      var layers = layer.getLayers();
+      var vGroup = this.getVGroup();
+      for (var i = 0; i < layers.length; i++) {
+        var _l = layers[i];
         vGroup.addLayer(_l);
       }
     }
@@ -1791,20 +1936,20 @@ var _this = this;
 
     this._fitVBounds();
   },
-  moveMarker(latlng) {
+  moveMarker: function moveMarker(latlng) {
     this.getEMarkersGroup().getSelected().setLatLng(latlng);
   },
-  _fitVBounds() {
+  _fitVBounds: function _fitVBounds() {
     if (this.getVGroup().getLayers().length !== 0) {
       this.fitBounds(this.getVGroup().getBounds(), { padding: [30, 30] });
       //this.invalidateSize();
     }
   },
-  _clearMap() {
+  _clearMap: function _clearMap() {
     this.getEGroup().clearLayers();
     this.getEPolygon().clear();
     this.getEMarkersGroup().clear();
-    let selectedMGroup = this.getSelectedMGroup();
+    var selectedMGroup = this.getSelectedMGroup();
 
     if (selectedMGroup) {
       selectedMGroup.getDELine().clear();
@@ -1818,66 +1963,67 @@ var _this = this;
     this._clearSelectedVLayer();
     this.clearSelectedMarker();
   },
-  _clearEvents() {
+  _clearEvents: function _clearEvents() {
     //this._unBindViewEvents();
     this._unBindDrawEvents();
   },
+
   _activeEditLayer: undefined,
-  _setActiveEditLayer(layer) {
+  _setActiveEditLayer: function _setActiveEditLayer(layer) {
     this._activeEditLayer = layer;
   },
-  _getActiveEditLayer() {
+  _getActiveEditLayer: function _getActiveEditLayer() {
     return this._activeEditLayer;
   },
-  _clearActiveEditLayer() {
+  _clearActiveEditLayer: function _clearActiveEditLayer() {
     this._activeEditLayer = null;
   },
-  _setEHMarkerGroup(arrayLatLng) {
-    let holeMarkerGroup = new L.MarkerGroup();
+  _setEHMarkerGroup: function _setEHMarkerGroup(arrayLatLng) {
+    var holeMarkerGroup = new L.MarkerGroup();
     holeMarkerGroup._isHole = true;
 
     this._setMarkersGroupIcon(holeMarkerGroup);
 
-    let ehMarkersGroup = this.getEHMarkersGroup();
+    var ehMarkersGroup = this.getEHMarkersGroup();
     holeMarkerGroup.addTo(ehMarkersGroup);
 
-    let ehMarkersGroupLayers = ehMarkersGroup.getLayers();
+    var ehMarkersGroupLayers = ehMarkersGroup.getLayers();
 
-    let hGroupPos = ehMarkersGroupLayers.length - 1;
+    var hGroupPos = ehMarkersGroupLayers.length - 1;
     holeMarkerGroup._position = hGroupPos;
 
-    for (let i = 0; i < arrayLatLng.length; i++) {
+    for (var i = 0; i < arrayLatLng.length; i++) {
       // set hole marker
       holeMarkerGroup.setHoleMarker(arrayLatLng[i], undefined, {}, { hGroup: hGroupPos, hMarker: i });
     }
 
-    let layers = holeMarkerGroup.getLayers();
-    layers.map((layer, position) => {
+    var layers = holeMarkerGroup.getLayers();
+    layers.map(function (layer, position) {
       holeMarkerGroup._setMiddleMarkers(layer, position);
     });
 
-    let ePolygon = this.getEPolygon();
+    var ePolygon = this.getEPolygon();
 
     layers = holeMarkerGroup.getLayers();
 
-    layers.forEach(layer => {
+    layers.forEach(function (layer) {
       ePolygon.updateHolePoint(hGroupPos, layer.__position, layer._latlng);
     });
 
     //ePolygon.setHole()
     return holeMarkerGroup;
   },
-  _moveEPolygonOnTop() {
-    let ePolygon = this.getEPolygon();
+  _moveEPolygonOnTop: function _moveEPolygonOnTop() {
+    var ePolygon = this.getEPolygon();
     if (ePolygon._container) {
-      let lastChild = $(ePolygon._container.parentNode).children().last();
-      let $ePolygon = $(ePolygon._container);
+      var lastChild = $(ePolygon._container.parentNode).children().last();
+      var $ePolygon = $(ePolygon._container);
       if ($ePolygon[0] !== lastChild) {
         $ePolygon.detach().insertAfter(lastChild);
       }
     }
   },
-  restoreEPolygon(polygon) {
+  restoreEPolygon: function restoreEPolygon(polygon) {
     polygon = polygon || this.getEPolygon();
 
     if (!polygon) {
@@ -1885,22 +2031,25 @@ var _this = this;
     }
 
     // set markers
-    let latlngs = polygon.getLatLngs();
+    var latlngs = polygon.getLatLngs();
 
     this.getEMarkersGroup().setAll(latlngs);
 
     //this.getEMarkersGroup()._connectMarkers();
 
     // set hole markers
-    let holes = polygon.getHoles();
+    var holes = polygon.getHoles();
     if (holes) {
-      for (let j = 0; j < holes.length; j++) {
+      for (var j = 0; j < holes.length; j++) {
         this._setEHMarkerGroup(holes[j]);
       }
     }
   },
-  getControlLayers: () => _this._controlLayers,
-  edgesIntersected(value) {
+
+  getControlLayers: function getControlLayers() {
+    return undefined._controlLayers;
+  },
+  edgesIntersected: function edgesIntersected(value) {
     if (value === undefined) {
       return this.__polygonEdgesIntersected;
     } else {
@@ -1912,8 +2061,10 @@ var _this = this;
       }
     }
   },
+
   _errorTimeout: null,
-  _showIntersectionError(text) {
+  _showIntersectionError: function _showIntersectionError(text) {
+    var _this2 = this;
 
     if (this._errorTimeout) {
       clearTimeout(this._errorTimeout);
@@ -1923,26 +2074,34 @@ var _this = this;
 
     this._storedLayerPoint = null;
 
-    this._errorTimeout = setTimeout(() => {
-      this.msgHelper.hide();
+    this._errorTimeout = setTimeout(function () {
+      _this2.msgHelper.hide();
     }, 10000);
   }
-}, __WEBPACK_IMPORTED_MODULE_0__draw_events__["a" /* default */]));
+}, _events2.default);
 
 /***/ }),
 /* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__marker_icons__ = __webpack_require__(0);
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-  _bindDrawEvents() {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _markerIcons = __webpack_require__(0);
+
+exports.default = {
+  _bindDrawEvents: function _bindDrawEvents() {
+    var _this = this;
+
     this._unBindDrawEvents();
 
     // click on map
-    this.on('click', e => {
-      this._storedLayerPoint = e.layerPoint;
+    this.on('click', function (e) {
+      _this._storedLayerPoint = e.layerPoint;
       // bug fix
       if (e.originalEvent && e.originalEvent.clientX === 0 && e.originalEvent.clientY === 0) {
         return;
@@ -1956,18 +2115,18 @@ var _this = this;
 
       // start add new polygon
       if (eMarkersGroup.isEmpty()) {
-        this._addMarker(e);
+        _this._addMarker(e);
 
-        this.fire('editor:start_add_new_polygon');
-        var startDrawStyle = this.options.style['startDraw'];
+        _this.fire('editor:start_add_new_polygon');
+        var startDrawStyle = _this.options.style['startDraw'];
 
         if (startDrawStyle) {
-          this.getEPolygon().setStyle(startDrawStyle);
+          _this.getEPolygon().setStyle(startDrawStyle);
         }
 
-        this._clearSelectedVLayer();
+        _this._clearSelectedVLayer();
 
-        this._selectedMGroup = eMarkersGroup;
+        _this._selectedMGroup = eMarkersGroup;
         return false;
       }
 
@@ -1976,24 +2135,24 @@ var _this = this;
 
       if (firstMarker && firstMarker._hasFirstIcon()) {
         if (!(e.target instanceof L.Marker)) {
-          this._addMarker(e);
+          _this._addMarker(e);
         }
         return false;
       }
 
       // start draw new hole polygon
-      var ehMarkersGroup = this.getEHMarkersGroup();
+      var ehMarkersGroup = _this.getEHMarkersGroup();
       var lastHole = ehMarkersGroup.getLastHole();
       if (firstMarker && !firstMarker._hasFirstIcon()) {
         if (e.target.getEPolygon()._path === e.originalEvent.target) {
           if (!lastHole || !lastHole.getFirst() || !lastHole.getFirst()._hasFirstIcon()) {
-            this.clearSelectedMarker();
+            _this.clearSelectedMarker();
 
             var lastHGroup = ehMarkersGroup.addHoleGroup();
-            lastHGroup.set(e.latlng, null, { icon: __WEBPACK_IMPORTED_MODULE_0__marker_icons__["b" /* firstIcon */] });
+            lastHGroup.set(e.latlng, null, { icon: _markerIcons.firstIcon });
 
-            this._selectedMGroup = lastHGroup;
-            this.fire('editor:start_add_new_hole');
+            _this._selectedMGroup = lastHGroup;
+            _this.fire('editor:start_add_new_hole');
 
             return false;
           }
@@ -2002,34 +2161,34 @@ var _this = this;
 
       // continue with new hole polygon
       if (lastHole && !lastHole.isEmpty() && lastHole.hasFirstMarker()) {
-        if (this.getEMarkersGroup()._isMarkerInPolygon(e.latlng)) {
+        if (_this.getEMarkersGroup()._isMarkerInPolygon(e.latlng)) {
           var marker = ehMarkersGroup.getLastHole().set(e.latlng);
           var rslt = marker._detectIntersection(); // in case of hole
           if (rslt) {
-            this._showIntersectionError();
+            _this._showIntersectionError();
 
             //marker._mGroup.removeMarker(marker); //todo: detect intersection for hole
           }
         } else {
-          this._showIntersectionError();
+          _this._showIntersectionError();
         }
         return false;
       }
 
       // reset
 
-      if (this._getSelectedVLayer()) {
-        this._setEPolygon_To_VGroup();
+      if (_this._getSelectedVLayer()) {
+        _this._setEPolygon_To_VGroup();
       } else {
-        this._addEPolygon_To_VGroup();
+        _this._addEPolygon_To_VGroup();
       }
-      this.clear();
-      this.mode('draw');
+      _this.clear();
+      _this.mode('draw');
 
-      this.fire('editor:marker_group_clear');
+      _this.fire('editor:marker_group_clear');
     });
 
-    this.on('editor:__join_path', e => {
+    this.on('editor:__join_path', function (e) {
       var eMarkersGroup = e.mGroup;
 
       if (!eMarkersGroup) {
@@ -2037,53 +2196,53 @@ var _this = this;
       }
 
       if (eMarkersGroup._isHole) {
-        this.getEHMarkersGroup().resetLastHole();
+        _this.getEHMarkersGroup().resetLastHole();
       }
       //1. set middle markers
       var layers = eMarkersGroup.getLayers();
 
       var position = -1;
-      layers.forEach(() => {
-        var marker = eMarkersGroup.addMarker(position, null, { icon: __WEBPACK_IMPORTED_MODULE_0__marker_icons__["f" /* middleIcon */] });
+      layers.forEach(function () {
+        var marker = eMarkersGroup.addMarker(position, null, { icon: _markerIcons.middleIcon });
         position = marker.position + 2;
       });
 
       //2. clear line
       eMarkersGroup.getDELine().clear();
 
-      eMarkersGroup.getLayers()._each(marker => {
+      eMarkersGroup.getLayers()._each(function (marker) {
         marker.dragging.enable();
       });
 
       eMarkersGroup.select();
 
       //reset style if 'startDraw' was used
-      this.getEPolygon().setStyle(this.options.style.draw);
+      _this.getEPolygon().setStyle(_this.options.style.draw);
 
       if (eMarkersGroup._isHole) {
-        this.fire('editor:polygon:hole_created');
+        _this.fire('editor:polygon:hole_created');
       } else {
-        this.fire('editor:polygon:created');
+        _this.fire('editor:polygon:created');
       }
     });
 
     var vGroup = this.getVGroup();
 
-    vGroup.on('click', e => {
+    vGroup.on('click', function (e) {
       vGroup.onClick(e);
 
-      this.msgHelper.msg(this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
-      this.fire('editor:polygon:selected');
+      _this.msgHelper.msg(_this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
+      _this.fire('editor:polygon:selected');
     });
 
-    this.on('editor:delete_marker', () => {
-      this._convertToEdit(this.getEMarkersGroup());
+    this.on('editor:delete_marker', function () {
+      _this._convertToEdit(_this.getEMarkersGroup());
     });
-    this.on('editor:delete_polygon', () => {
-      this.getEHMarkersGroup().remove();
+    this.on('editor:delete_polygon', function () {
+      _this.getEHMarkersGroup().remove();
     });
   },
-  _addMarker(e) {
+  _addMarker: function _addMarker(e) {
     var latlng = e.latlng;
 
     var eMarkersGroup = this.getEMarkersGroup();
@@ -2094,10 +2253,10 @@ var _this = this;
 
     return marker;
   },
-  _updateDELine(latlng) {
+  _updateDELine: function _updateDELine(latlng) {
     return this.getEMarkersGroup().getDELine().update(latlng);
   },
-  _unBindDrawEvents() {
+  _unBindDrawEvents: function _unBindDrawEvents() {
     this.off('click');
     this.getVGroup().off('click');
     //this.off('mouseout');
@@ -2112,46 +2271,51 @@ var _this = this;
       delete this._openPopup;
     }
   }
-});
+};
 
 /***/ }),
 /* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.Polygon.extend({
-  isEmpty() {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.Polygon.extend({
+  isEmpty: function isEmpty() {
     var latLngs = this.getLatLngs();
     return latLngs === null || latLngs === undefined || latLngs && latLngs.length === 0;
   },
-  getHole(holeGroupNumber) {
+  getHole: function getHole(holeGroupNumber) {
     if (!$.isNumeric(holeGroupNumber)) {
       return;
     }
     return this._holes[holeGroupNumber];
   },
-  getHolePoint(holeGroupNumber, holeNumber) {
+  getHolePoint: function getHolePoint(holeGroupNumber, holeNumber) {
     if (!$.isNumeric(holeGroupNumber) && !$.isNumeric(holeNumber)) {
       return;
     }
 
     return this._holes[holeGroupNumber][holeNumber];
   },
-  getHoles() {
+  getHoles: function getHoles() {
     return this._holes;
   },
-  clearHoles() {
+  clearHoles: function clearHoles() {
     this._holes = [];
     this.redraw();
   },
-  clear() {
+  clear: function clear() {
     this.clearHoles();
 
     if ($.isArray(this._latlngs) && this._latlngs[0] !== undefined) {
       this.setLatLngs([]);
     }
   },
-  updateHolePoint(holeGroupNumber, holeNumber, latlng) {
+  updateHolePoint: function updateHolePoint(holeGroupNumber, holeNumber, latlng) {
     if ($.isNumeric(holeGroupNumber) && $.isNumeric(holeNumber)) {
       this._holes[holeGroupNumber][holeNumber] = latlng;
     } else if ($.isNumeric(holeGroupNumber) && !$.isNumeric(holeNumber)) {
@@ -2161,10 +2325,10 @@ var _this = this;
     }
     return this;
   },
-  setHoles(latlngs) {
+  setHoles: function setHoles(latlngs) {
     this._holes = latlngs;
   },
-  setHolePoint(holeGroupNumber, holeNumber, latlng) {
+  setHolePoint: function setHolePoint(holeGroupNumber, holeNumber, latlng) {
     var layer = this.getLayers()[0];
     if (layer) {
       if ($.isNumeric(holeGroupNumber) && $.isNumeric(holeNumber)) {
@@ -2173,44 +2337,53 @@ var _this = this;
     }
     return this;
   }
-}));
+});
 
 /***/ }),
 /* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-const precision = function (number, prec) {
-  let arrayStrings = `${number}`.split('.');
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var precision = exports.precision = function precision(number, prec) {
+  var arrayStrings = ('' + number).split('.');
   prec = prec || 0;
 
   if (!number || arrayStrings.length === 1) {
     return number;
   }
 
-  let isFloat = arrayStrings[1].length > 0;
+  var isFloat = arrayStrings[1].length > 0;
 
-  let rslt = 0;
+  var rslt = 0;
 
   if (isFloat) {
-    let _prec = arrayStrings[1].length < prec ? arrayStrings[1].length : prec;
+    var _prec = arrayStrings[1].length < prec ? arrayStrings[1].length : prec;
     rslt = number.toPrecision(arrayStrings[0].length + _prec);
   }
 
   return Number(rslt);
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = precision;
 
+var precisionGeoJSON = exports.precisionGeoJSON = function precisionGeoJSON(geoJSON) {
+  var prec = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-const precisionGeoJSON = function (geoJSON, prec = 0) {
-  let json;
+  var json = void 0;
   if (geoJSON === null || geoJSON === undefined) {
     throw new Error('Please, make sure that first arguments is geoJSON');
   }
 
   json = JSON.parse(JSON.stringify(geoJSON));
 
-  let { geometry: { type, coordinates } } = json;
+  var _json = json,
+      _json$geometry = _json.geometry,
+      type = _json$geometry.type,
+      coordinates = _json$geometry.coordinates;
+
 
   if (!Array.isArray(coordinates)) {
     throw new Error('Please, make sure that geoJSON has correct structure');
@@ -2218,8 +2391,8 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
   if (type === 'Polygon') {
     if (prec > 0) {
-      coordinates.forEach(outlet => {
-        outlet.forEach(edge => {
+      coordinates.forEach(function (outlet) {
+        outlet.forEach(function (edge) {
           edge[0] = precision(edge[0], prec);
           edge[1] = precision(edge[1], prec);
         });
@@ -2229,9 +2402,9 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
   if (type === 'MultiPolygon') {
     if (prec > 0) {
-      coordinates.forEach(polygon => {
-        polygon.forEach(outlet => {
-          outlet.forEach(edge => {
+      coordinates.forEach(function (polygon) {
+        polygon.forEach(function (outlet) {
+          outlet.forEach(function (edge) {
             edge[0] = precision(edge[0], prec);
             edge[1] = precision(edge[1], prec);
           });
@@ -2242,36 +2415,23 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
   return json;
 };
-/* harmony export (immutable) */ __webpack_exports__["b"] = precisionGeoJSON;
-
 
 /***/ }),
 /* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__extended_SearchBtn__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extended_TrashBtn__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__extended_LoadBtn__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__extended_BtnControl__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__extended_MsgHelper__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_mobile__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__titles_zoomTitle__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__titles_fullScreenTitle__ = __webpack_require__(21);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+exports.default = function () {
+  var _this = this;
 
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = (function () {
-
-  Object(__WEBPACK_IMPORTED_MODULE_6__titles_zoomTitle__["a" /* default */])(this);
-  Object(__WEBPACK_IMPORTED_MODULE_7__titles_fullScreenTitle__["a" /* default */])(this);
+  (0, _zoomTitle2.default)(this);
+  (0, _fullScreenTitle2.default)(this);
 
   if (this.options.defaultControlLayers) {
     var OSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -2282,7 +2442,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
     this._controlLayers = new L.Control.Layers({
       Google: new L.Google(),
-      OSM
+      OSM: OSM
     });
 
     this.addControl(this._controlLayers);
@@ -2299,110 +2459,110 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
   if (controls) {
     if (controls.geoSearch) {
-      this.addControl(new __WEBPACK_IMPORTED_MODULE_0__extended_SearchBtn__["a" /* default */]());
+      this.addControl(new _SearchBtn2.default());
     }
   }
 
-  this._BtnControl = __WEBPACK_IMPORTED_MODULE_3__extended_BtnControl__["a" /* default */];
+  this._BtnControl = _BtnControl2.default;
 
-  var trashBtn = new __WEBPACK_IMPORTED_MODULE_1__extended_TrashBtn__["a" /* default */]({
+  var trashBtn = new _TrashBtn2.default({
     btns: [{ className: 'fa fa-trash' }]
   });
 
-  let loadBtn;
+  var loadBtn = void 0;
 
   if (controls && controls.loadBtn) {
-    loadBtn = new __WEBPACK_IMPORTED_MODULE_2__extended_LoadBtn__["a" /* default */]({
+    loadBtn = new _LoadBtn2.default({
       btns: [{ className: 'fa fa-arrow-circle-o-down load' }]
     });
   }
 
-  var msgHelper = this.msgHelper = new __WEBPACK_IMPORTED_MODULE_4__extended_MsgHelper__["a" /* default */]({
+  var msgHelper = this.msgHelper = new _MsgHelper2.default({
     defaultMsg: this.options.text.clickToStartDrawPolygonOnMap
   });
 
-  this.on('msgHelperAdded', () => {
-    var text = this.options.text;
+  this.on('msgHelperAdded', function () {
+    var text = _this.options.text;
 
-    this.on('editor:marker_group_select', () => {
+    _this.on('editor:marker_group_select', function () {
 
-      this.off('editor:not_selected_marker_mouseover');
-      this.on('editor:not_selected_marker_mouseover', data => {
+      _this.off('editor:not_selected_marker_mouseover');
+      _this.on('editor:not_selected_marker_mouseover', function (data) {
         msgHelper.msg(text.clickToSelectEdges, null, data.marker);
       });
 
-      this.off('editor:selected_marker_mouseover');
-      this.on('editor:selected_marker_mouseover', data => {
+      _this.off('editor:selected_marker_mouseover');
+      _this.on('editor:selected_marker_mouseover', function (data) {
         msgHelper.msg(text.clickToRemoveAllSelectedEdges, null, data.marker);
       });
 
-      this.off('editor:selected_middle_marker_mouseover');
-      this.on('editor:selected_middle_marker_mouseover', data => {
+      _this.off('editor:selected_middle_marker_mouseover');
+      _this.on('editor:selected_middle_marker_mouseover', function (data) {
         msgHelper.msg(text.clickToAddNewEdges, null, data.marker);
       });
 
       // on edit polygon
-      this.off('editor:edit_polygon_mousemove');
-      this.on('editor:edit_polygon_mousemove', data => {
+      _this.off('editor:edit_polygon_mousemove');
+      _this.on('editor:edit_polygon_mousemove', function (data) {
         msgHelper.msg(text.clickToDrawInnerEdges, null, data.layerPoint);
       });
 
-      this.off('editor:edit_polygon_mouseout');
-      this.on('editor:edit_polygon_mouseout', () => {
+      _this.off('editor:edit_polygon_mouseout');
+      _this.on('editor:edit_polygon_mouseout', function () {
         msgHelper.hide();
-        this._storedLayerPoint = null;
+        _this._storedLayerPoint = null;
       });
 
       // on view polygon
-      this.off('editor:view_polygon_mousemove');
-      this.on('editor:view_polygon_mousemove', data => {
+      _this.off('editor:view_polygon_mousemove');
+      _this.on('editor:view_polygon_mousemove', function (data) {
         msgHelper.msg(text.clickToEdit, null, data.layerPoint);
       });
 
-      this.off('editor:view_polygon_mouseout');
-      this.on('editor:view_polygon_mouseout', () => {
+      _this.off('editor:view_polygon_mouseout');
+      _this.on('editor:view_polygon_mouseout', function () {
         msgHelper.hide();
-        this._storedLayerPoint = null;
+        _this._storedLayerPoint = null;
       });
     });
 
     // hide msg
-    this.off('editor:marker_mouseout');
-    this.on('editor:marker_mouseout', () => {
+    _this.off('editor:marker_mouseout');
+    _this.on('editor:marker_mouseout', function () {
       msgHelper.hide();
     });
 
     // on start draw polygon
-    this.off('editor:first_marker_mouseover');
-    this.on('editor:first_marker_mouseover', data => {
+    _this.off('editor:first_marker_mouseover');
+    _this.on('editor:first_marker_mouseover', function (data) {
       msgHelper.msg(text.clickToJoinEdges, null, data.marker);
     });
 
     // dblclick to join
-    this.off('editor:last_marker_dblclick_mouseover');
-    this.on('editor:last_marker_dblclick_mouseover', data => {
+    _this.off('editor:last_marker_dblclick_mouseover');
+    _this.on('editor:last_marker_dblclick_mouseover', function (data) {
       msgHelper.msg(text.dblclickToJoinEdges, null, data.marker);
     });
 
-    this.on('editor:__join_path', data => {
+    _this.on('editor:__join_path', function (data) {
       if (data.marker) {
-        msgHelper.msg(this.options.text.clickToRemoveAllSelectedEdges, null, data.marker);
+        msgHelper.msg(_this.options.text.clickToRemoveAllSelectedEdges, null, data.marker);
       }
     });
 
     //todo: continue with option 'allowCorrectIntersection'
-    this.on('editor:intersection_detected', data => {
+    _this.on('editor:intersection_detected', function (data) {
       // msg
       if (data.intersection) {
-        msgHelper.msg(this.options.text.intersection, 'error', this._storedLayerPoint || this.getSelectedMarker());
-        this._storedLayerPoint = null;
+        msgHelper.msg(_this.options.text.intersection, 'error', _this._storedLayerPoint || _this.getSelectedMarker());
+        _this._storedLayerPoint = null;
       } else {
         msgHelper.hide();
       }
 
-      var selectedMarker = this.getSelectedMarker();
+      var selectedMarker = _this.getSelectedMarker();
 
-      if (!this.hasLayer(selectedMarker)) {
+      if (!_this.hasLayer(selectedMarker)) {
         return;
       }
 
@@ -2416,17 +2576,19 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
           selectedMarker.resetStyle();
 
           //restore other markers which are also need to reset style
-          var markersToReset = selectedMarker._mGroup.getLayers().filter(layer => {
+          var markersToReset = selectedMarker._mGroup.getLayers().filter(function (layer) {
             return L.DomUtil.hasClass(layer._icon, 'm-editor-intersection-div-icon');
           });
 
-          markersToReset.map(marker => marker.resetStyle());
+          markersToReset.map(function (marker) {
+            return marker.resetStyle();
+          });
         }
       }
     });
   });
 
-  if (!__WEBPACK_IMPORTED_MODULE_5__utils_mobile__["a" /* default */].isMobileBrowser()) {
+  if (!_mobile2.default.isMobileBrowser()) {
     this.addControl(msgHelper);
 
     if (controls && controls.loadBtn) {
@@ -2437,20 +2599,59 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
   if (controls && controls.trashBtn) {
     this.addControl(trashBtn);
   }
-});
+};
+
+var _SearchBtn = __webpack_require__(16);
+
+var _SearchBtn2 = _interopRequireDefault(_SearchBtn);
+
+var _TrashBtn = __webpack_require__(17);
+
+var _TrashBtn2 = _interopRequireDefault(_TrashBtn);
+
+var _LoadBtn = __webpack_require__(18);
+
+var _LoadBtn2 = _interopRequireDefault(_LoadBtn);
+
+var _BtnControl = __webpack_require__(1);
+
+var _BtnControl2 = _interopRequireDefault(_BtnControl);
+
+var _MsgHelper = __webpack_require__(19);
+
+var _MsgHelper2 = _interopRequireDefault(_MsgHelper);
+
+var _mobile = __webpack_require__(2);
+
+var _mobile2 = _interopRequireDefault(_mobile);
+
+var _zoomTitle = __webpack_require__(20);
+
+var _zoomTitle2 = _interopRequireDefault(_zoomTitle);
+
+var _fullScreenTitle = __webpack_require__(21);
+
+var _fullScreenTitle2 = _interopRequireDefault(_fullScreenTitle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 /* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.Control.extend({
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.Control.extend({
   options: {
     position: 'topleft',
     email: ''
   },
 
-  onAdd(map) {
+  onAdd: function onAdd(map) {
     this._map = map;
     var container = L.DomUtil.create('div', 'leaflet-bar leaflet-search-bar');
     var wrapper = document.createElement('div');
@@ -2503,8 +2704,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
     return container;
   },
-
-  _toggle() {
+  _toggle: function _toggle() {
     if (this._form.style.display != 'block') {
       this._form.style.display = 'block';
       this._input.focus();
@@ -2515,13 +2715,11 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     }
     L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   },
-
-  _collapse() {
+  _collapse: function _collapse() {
     this._form.style.display = 'none';
     this._input.value = '';
   },
-
-  _nominatimCallback(results) {
+  _nominatimCallback: function _nominatimCallback(results) {
 
     if (this._results && this._results.parentNode) {
       this._results.parentNode.removeChild(this._results);
@@ -2578,9 +2776,10 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     L.DomUtil.removeClass(this._submitBtn, 'loading');
   },
 
+
   _callbackId: 0,
 
-  _doSearch() {
+  _doSearch: function _doSearch() {
 
     L.DomUtil.addClass(this._submitBtn, 'loading');
 
@@ -2600,47 +2799,58 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     script.src = url;
     document.getElementsByTagName('head')[0].appendChild(script);
   },
-  _onMouseOver() {
+  _onMouseOver: function _onMouseOver() {
     if (this._form.style.display === 'block') {
       return;
     }
     L.DomUtil.removeClass(this._titleContainer, 'title-hidden');
   },
-  _onMouseOut() {
+  _onMouseOut: function _onMouseOut() {
     L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   }
-}));
+});
 
 /***/ }),
 /* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BtnControl__ = __webpack_require__(1);
 
 
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__BtnControl__["a" /* default */].extend({
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _BtnControl = __webpack_require__(1);
+
+var _BtnControl2 = _interopRequireDefault(_BtnControl);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _BtnControl2.default.extend({
   options: {
     eventName: 'trashAdded',
     pressEventName: 'trashBtnPressed'
   },
   _btn: null,
-  onAdd(map) {
-    map.on('trashAdded', data => {
+  onAdd: function onAdd(map) {
+    var _this = this;
+
+    map.on('trashAdded', function (data) {
       L.DomUtil.addClass(data.control._btn, 'disabled');
 
-      map.on('editor:marker_group_select', this._bindEvents, this);
-      map.on('editor:start_add_new_polygon', this._bindEvents, this);
-      map.on('editor:start_add_new_hole', this._bindEvents, this);
-      map.on('editor:marker_group_clear', this._disableBtn, this);
-      map.on('editor:delete_polygon', this._disableBtn, this);
-      map.on('editor:delete_hole', this._disableBtn, this);
-      map.on('editor:map_cleared', this._disableBtn, this);
+      map.on('editor:marker_group_select', _this._bindEvents, _this);
+      map.on('editor:start_add_new_polygon', _this._bindEvents, _this);
+      map.on('editor:start_add_new_hole', _this._bindEvents, _this);
+      map.on('editor:marker_group_clear', _this._disableBtn, _this);
+      map.on('editor:delete_polygon', _this._disableBtn, _this);
+      map.on('editor:delete_hole', _this._disableBtn, _this);
+      map.on('editor:map_cleared', _this._disableBtn, _this);
 
-      this._disableBtn();
+      _this._disableBtn();
     });
 
-    var container = __WEBPACK_IMPORTED_MODULE_0__BtnControl__["a" /* default */].prototype.onAdd.call(this, map);
+    var container = _BtnControl2.default.prototype.onAdd.call(this, map);
 
     this._titleContainer = L.DomUtil.create('div', 'btn-leaflet-msg-container title-hidden');
     this._titleContainer.innerHTML = this._map.options.text.loadJson;
@@ -2648,21 +2858,21 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
     return container;
   },
-  _bindEvents() {
+  _bindEvents: function _bindEvents() {
     L.DomUtil.removeClass(this._btn, 'disabled');
 
     L.DomEvent.addListener(this._btn, 'mouseover', this._onMouseOver, this);
     L.DomEvent.addListener(this._btn, 'mouseout', this._onMouseOut, this);
     L.DomEvent.addListener(this._btn, 'click', this._onPressBtn, this);
   },
-  _disableBtn() {
+  _disableBtn: function _disableBtn() {
     L.DomUtil.addClass(this._btn, 'disabled');
 
     L.DomEvent.removeListener(this._btn, 'mouseover', this._onMouseOver);
     L.DomEvent.removeListener(this._btn, 'mouseout', this._onMouseOut);
     L.DomEvent.removeListener(this._btn, 'click', this._onPressBtn, this);
   },
-  _onPressBtn() {
+  _onPressBtn: function _onPressBtn() {
     var map = this._map;
     var selectedMGroup = map.getSelectedMGroup();
 
@@ -2678,7 +2888,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     this._onMouseOut();
     L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   },
-  _onMouseOver() {
+  _onMouseOver: function _onMouseOver() {
     if (!L.DomUtil.hasClass(this._btn, 'disabled')) {
       var map = this._map;
       var layer = map.getEMarkersGroup().getLayers()[0];
@@ -2690,40 +2900,51 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       L.DomUtil.removeClass(this._titleContainer, 'title-hidden');
     }
   },
-  _onMouseOut() {
+  _onMouseOut: function _onMouseOut() {
     if (!L.DomUtil.hasClass(this._btn, 'disabled')) {
       L.DomUtil.addClass(this._titleContainer, 'title-hidden');
     }
   }
-}));
+});
 
 /***/ }),
 /* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BtnControl__ = __webpack_require__(1);
 
 
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__BtnControl__["a" /* default */].extend({
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _BtnControl = __webpack_require__(1);
+
+var _BtnControl2 = _interopRequireDefault(_BtnControl);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _BtnControl2.default.extend({
   options: {
     eventName: 'loadBtnAdded',
     pressEventName: 'loadBtnPressed'
   },
-  onAdd(map) {
-    var container = __WEBPACK_IMPORTED_MODULE_0__BtnControl__["a" /* default */].prototype.onAdd.call(this, map);
+  onAdd: function onAdd(map) {
+    var _this = this;
 
-    map.on('loadBtnAdded', () => {
-      this._map.on('searchEnabled', this._collapse, this);
+    var container = _BtnControl2.default.prototype.onAdd.call(this, map);
 
-      this._renderForm(container);
+    map.on('loadBtnAdded', function () {
+      _this._map.on('searchEnabled', _this._collapse, _this);
+
+      _this._renderForm(container);
     });
 
     L.DomUtil.addClass(container, 'load-json-container');
 
     return container;
   },
-  _onPressBtn() {
+  _onPressBtn: function _onPressBtn() {
     if (this._timeout) {
       clearTimeout(this._timeout);
     }
@@ -2737,11 +2958,11 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       this._map.fire('loadBtnHidden');
     }
   },
-  _collapse() {
+  _collapse: function _collapse() {
     this._form.style.display = 'none';
     this._textarea.value = '';
   },
-  _renderForm(container) {
+  _renderForm: function _renderForm(container) {
     var form = this._form = L.DomUtil.create('form');
 
     var textarea = this._textarea = L.DomUtil.create('textarea');
@@ -2770,8 +2991,11 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     this._titleContainer.innerHTML = this._map.options.text.loadJson;
     container.appendChild(this._titleContainer);
   },
+
   _timeout: null,
-  _submitForm() {
+  _submitForm: function _submitForm() {
+    var _this2 = this;
+
     if (this._timeout) {
       clearTimeout(this._timeout);
     }
@@ -2789,8 +3013,8 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
       map.createEditPolygon(json);
 
-      this._timeout = setTimeout(() => {
-        L.DomUtil.addClass(this._titleContainer, 'title-hidden');
+      this._timeout = setTimeout(function () {
+        L.DomUtil.addClass(_this2._titleContainer, 'title-hidden');
       }, 2000);
 
       this._collapse();
@@ -2802,15 +3026,15 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
       this._titleContainer.innerHTML = map.options.text.checkJson;
 
-      this._timeout = setTimeout(() => {
-        L.DomUtil.addClass(this._titleContainer, 'title-hidden');
+      this._timeout = setTimeout(function () {
+        L.DomUtil.addClass(_this2._titleContainer, 'title-hidden');
       }, 2000);
       this._collapse();
       this._map.fire('loadBtnHidden');
       this._map.mode('draw');
     }
   },
-  _onMouseOver() {
+  _onMouseOver: function _onMouseOver() {
     if (this._form.style.display === 'block') {
       return;
     }
@@ -2819,46 +3043,56 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     L.DomUtil.removeClass(this._titleContainer, 'title-success');
     this._titleContainer.innerHTML = this._map.options.text.loadJson;
   },
-  _onMouseOut() {
+  _onMouseOut: function _onMouseOut() {
     L.DomUtil.addClass(this._titleContainer, 'title-hidden');
   }
-}));
+});
 
 /***/ }),
 /* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.Control.extend({
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.Control.extend({
   options: {
     position: 'msgcenter',
     defaultMsg: null
   },
-  initialize(options) {
+  initialize: function initialize(options) {
     L.Util.setOptions(this, options);
   },
+
   _titleContainer: null,
-  onAdd(map) {
+  onAdd: function onAdd(map) {
+    var _this = this;
+
     var corner = L.DomUtil.create('div', 'leaflet-bottom');
     var container = L.DomUtil.create('div', 'leaflet-msg-editor');
 
     map._controlCorners['msgcenter'] = corner;
     map._controlContainer.appendChild(corner);
 
-    setTimeout(() => {
-      this._setContainer(container, map);
-      map.fire('msgHelperAdded', { control: this });
+    setTimeout(function () {
+      _this._setContainer(container, map);
+      map.fire('msgHelperAdded', { control: _this });
 
-      this._changePos();
+      _this._changePos();
     }, 1000);
 
-    map.getBtnControl = () => this;
+    map.getBtnControl = function () {
+      return _this;
+    };
 
     this._bindEvents(map);
 
     return container;
   },
-  _changePos() {
+  _changePos: function _changePos() {
     var controlCorner = this._map._controlCorners['msgcenter'];
     if (controlCorner && controlCorner.children.length) {
       var child = controlCorner.children[0].children[0];
@@ -2873,14 +3107,16 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       }
     }
   },
-  _bindEvents() {
-    setTimeout(() => {
-      window.addEventListener('resize', () => {
-        this._changePos();
+  _bindEvents: function _bindEvents() {
+    var _this2 = this;
+
+    setTimeout(function () {
+      window.addEventListener('resize', function () {
+        _this2._changePos();
       });
     }, 1);
   },
-  _setContainer(container) {
+  _setContainer: function _setContainer(container) {
     this._titleContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');
     this._titlePosContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');
     container.appendChild(this._titleContainer);
@@ -2891,7 +3127,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       this._titleContainer.innerHTML = this.options.defaultMsg;
     }
   },
-  getOffset(el) {
+  getOffset: function getOffset(el) {
     var _x = 0;
     var _y = 0;
     if (!this._map.isFullscreen || !this._map.isFullscreen()) {
@@ -2903,7 +3139,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
     }
     return { y: _y, x: _x };
   },
-  msg(text, type, object) {
+  msg: function msg(text, type, object) {
     if (!text || !this._titlePosContainer) {
       return;
     }
@@ -2949,7 +3185,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       this._changePos();
     }
   },
-  hide() {
+  hide: function hide() {
     if (this._titleContainer) {
       L.DomUtil.addClass(this._titleContainer, 'title-hidden');
     }
@@ -2958,26 +3194,32 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       L.DomUtil.addClass(this._titlePosContainer, 'title-hidden');
     }
   },
-  getBtnContainer() {
+  getBtnContainer: function getBtnContainer() {
     return this._map._controlCorners['msgcenter'];
   },
-  getBtnAt(pos) {
+  getBtnAt: function getBtnAt(pos) {
     return this.getBtnContainer().child[pos];
   },
-  disableBtn(pos) {
+  disableBtn: function disableBtn(pos) {
     L.DomUtil.addClass(this.getBtnAt(pos), 'disabled');
   },
-  enableBtn(pos) {
+  enableBtn: function enableBtn(pos) {
     L.DomUtil.removeClass(this.getBtnAt(pos), 'disabled');
   }
-}));
+});
 
 /***/ }),
 /* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (map) {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (map) {
   var controls = map.options.controls;
   if (controls && !controls.zoom) {
     return;
@@ -2992,10 +3234,10 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
   map._titleZoomContainer.innerHTML = map.options.text.zoom;
   zoomContainer.appendChild(map._titleZoomContainer);
 
-  var _onMouseOverZoom = () => {
+  var _onMouseOverZoom = function _onMouseOverZoom() {
     L.DomUtil.removeClass(map._titleZoomContainer, 'title-hidden');
   };
-  var _onMouseOutZoom = () => {
+  var _onMouseOutZoom = function _onMouseOutZoom() {
     L.DomUtil.addClass(map._titleZoomContainer, 'title-hidden');
   };
 
@@ -3004,14 +3246,20 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
   map.zoomControl._zoomInButton.title = "";
   map.zoomControl._zoomOutButton.title = "";
-});
+};
 
 /***/ }),
 /* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (map) {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (map) {
   if (!map.options.fullscreenControl) {
     return;
   }
@@ -3021,7 +3269,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
   L.DomUtil.addClass(link, 'full-screen');
 
   map.off('fullscreenchange');
-  map.on('fullscreenchange', () => {
+  map.on('fullscreenchange', function () {
     L.DomUtil.addClass(map._titleFullScreenContainer, 'title-hidden');
 
     if (map.isFullscreen()) {
@@ -3037,39 +3285,57 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
   map._titleFullScreenContainer.innerHTML = map.options.text.showFullScreen;
   fullScreenContainer.appendChild(map._titleFullScreenContainer);
 
-  var _onMouseOver = () => {
+  var _onMouseOver = function _onMouseOver() {
     L.DomUtil.removeClass(map._titleFullScreenContainer, 'title-hidden');
   };
-  var _onMouseOut = () => {
+  var _onMouseOut = function _onMouseOut() {
     L.DomUtil.addClass(map._titleFullScreenContainer, 'title-hidden');
   };
 
   L.DomEvent.addListener(fullScreenContainer, 'mouseover', _onMouseOver, this);
   L.DomEvent.addListener(fullScreenContainer, 'mouseout', _onMouseOut, this);
-});
+};
 
 /***/ }),
 /* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__view_group__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_polygon__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__edit_holesGroup__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__edit_line__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__draw_dashed_line__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__draw_group__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__edit_marker_group__ = __webpack_require__(26);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _group = __webpack_require__(23);
 
+var _group2 = _interopRequireDefault(_group);
 
+var _polygon = __webpack_require__(3);
 
+var _polygon2 = _interopRequireDefault(_polygon);
 
+var _holesGroup = __webpack_require__(24);
 
+var _holesGroup2 = _interopRequireDefault(_holesGroup);
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+var _line = __webpack_require__(5);
+
+var _line2 = _interopRequireDefault(_line);
+
+var _dashedLine = __webpack_require__(6);
+
+var _dashedLine2 = _interopRequireDefault(_dashedLine);
+
+var _group3 = __webpack_require__(25);
+
+var _group4 = _interopRequireDefault(_group3);
+
+__webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
   viewGroup: null,
   editGroup: null,
   editPolygon: null,
@@ -3077,44 +3343,51 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
   editLineGroup: null,
   dashedEditLineGroup: null,
   editHoleMarkersGroup: null,
-  setLayers() {
-    this.viewGroup = new __WEBPACK_IMPORTED_MODULE_0__view_group__["a" /* default */]([]);
-    this.editGroup = new __WEBPACK_IMPORTED_MODULE_5__draw_group__["a" /* default */]([]);
-    this.editPolygon = new __WEBPACK_IMPORTED_MODULE_1__edit_polygon__["a" /* default */]([]);
+  setLayers: function setLayers() {
+    this.viewGroup = new _group2.default([]);
+    this.editGroup = new _group4.default([]);
+    this.editPolygon = new _polygon2.default([]);
     this.editMarkersGroup = new L.MarkerGroup([]);
-    this.editLineGroup = new __WEBPACK_IMPORTED_MODULE_3__edit_line__["a" /* default */]([]);
-    this.dashedEditLineGroup = new __WEBPACK_IMPORTED_MODULE_4__draw_dashed_line__["a" /* default */]([]);
-    this.editHoleMarkersGroup = new __WEBPACK_IMPORTED_MODULE_2__edit_holesGroup__["a" /* default */]([]);
+    this.editLineGroup = new _line2.default([]);
+    this.dashedEditLineGroup = new _dashedLine2.default([]);
+    this.editHoleMarkersGroup = new _holesGroup2.default([]);
   }
-});
+};
 
 /***/ }),
 /* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.MultiPolygon.extend({
-  initialize(latlngs, options) {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.MultiPolygon.extend({
+  initialize: function initialize(latlngs, options) {
+    var _this = this;
+
     L.MultiPolygon.prototype.initialize.call(this, latlngs, options);
 
-    this.on('layeradd', e => {
-      var mViewStyle = this._map.options.style.view;
+    this.on('layeradd', function (e) {
+      var mViewStyle = _this._map.options.style.view;
       e.target.setStyle($.extend({
         opacity: 0.7,
         fillOpacity: 0.35,
         color: '#00ABFF'
       }, mViewStyle));
 
-      this._map._moveEPolygonOnTop();
+      _this._map._moveEPolygonOnTop();
     });
   },
-  isEmpty() {
+  isEmpty: function isEmpty() {
     return this.getLayers().length === 0;
   },
-  onAdd(map) {
+  onAdd: function onAdd(map) {
     L.MultiPolygon.prototype.onAdd.call(this, map);
 
-    this.on('mousemove', e => {
+    this.on('mousemove', function (e) {
       var eMarkersGroup = map.getEMarkersGroup();
       if (eMarkersGroup.isEmpty()) {
         map.fire('editor:view_polygon_mousemove', { layerPoint: e.layerPoint });
@@ -3124,7 +3397,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
         }
       }
     });
-    this.on('mouseout', () => {
+    this.on('mouseout', function () {
       var eMarkersGroup = map.getEMarkersGroup();
       if (eMarkersGroup.isEmpty()) {
         map.fire('editor:view_polygon_mouseout');
@@ -3135,7 +3408,7 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       }
     });
   },
-  onClick(e) {
+  onClick: function onClick(e) {
     var map = this._map;
     var selectedMGroup = map.getSelectedMGroup();
     var eMarkersGroup = map.getEMarkersGroup();
@@ -3161,25 +3434,30 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
       eMarkersGroup.select();
     }
   },
-  onRemove(map) {
+  onRemove: function onRemove(map) {
     this.off('mouseover');
     this.off('mouseout');
 
     map.off('editor:view_polygon_mousemove');
     map.off('editor:view_polygon_mouseout');
   }
-}));
+});
 
 /***/ }),
 /* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.FeatureGroup.extend({
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.FeatureGroup.extend({
   _selected: false,
   _lastHole: undefined,
   _lastHoleToDraw: undefined,
-  addHoleGroup() {
+  addHoleGroup: function addHoleGroup() {
     this._lastHole = new L.MarkerGroup();
     this._lastHole._isHole = true;
     this._lastHole.addTo(this);
@@ -3190,114 +3468,140 @@ const precisionGeoJSON = function (geoJSON, prec = 0) {
 
     return this._lastHole;
   },
-  getLength() {
+  getLength: function getLength() {
     return this.getLayers().length;
   },
-  resetLastHole() {
+  resetLastHole: function resetLastHole() {
     this._lastHole = undefined;
   },
-  setLastHole(layer) {
+  setLastHole: function setLastHole(layer) {
     this._lastHole = layer;
   },
-  getLastHole() {
+  getLastHole: function getLastHole() {
     return this._lastHole;
   },
-  remove() {
-    this.eachLayer(hole => {
+  remove: function remove() {
+    this.eachLayer(function (hole) {
       while (hole.getLayers().length) {
         hole.removeMarkerAt(0);
       }
     });
   },
-  repos(position) {
-    this.eachLayer(layer => {
+  repos: function repos(position) {
+    this.eachLayer(function (layer) {
       if (layer.position >= position) {
         layer.position -= 1;
       }
     });
   },
-  resetSelection() {
-    this.eachLayer(layer => {
-      layer.getLayers()._each(marker => {
+  resetSelection: function resetSelection() {
+    this.eachLayer(function (layer) {
+      layer.getLayers()._each(function (marker) {
         marker.unSelectIconInGroup();
       });
     });
     this._selected = false;
   }
-}));
+});
 
 /***/ }),
 /* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (L.FeatureGroup.extend({
-  isEmpty() {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = L.FeatureGroup.extend({
+  isEmpty: function isEmpty() {
     return this.getLayers().length === 0;
   }
-}));
+});
 
 /***/ }),
 /* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__extended_BaseMarkerGroup__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_marker__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__edit_line__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__draw_dashed_line__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_sortByPosition__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__marker_icons__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _BaseMarkerGroup = __webpack_require__(27);
 
+var _BaseMarkerGroup2 = _interopRequireDefault(_BaseMarkerGroup);
 
+var _marker = __webpack_require__(8);
 
+var _marker2 = _interopRequireDefault(_marker);
 
+var _line = __webpack_require__(5);
+
+var _line2 = _interopRequireDefault(_line);
+
+var _dashedLine = __webpack_require__(6);
+
+var _dashedLine2 = _interopRequireDefault(_dashedLine);
+
+var _sortByPosition2 = __webpack_require__(9);
+
+var _sortByPosition3 = _interopRequireDefault(_sortByPosition2);
+
+var _markerIcons = __webpack_require__(0);
+
+var icons = _interopRequireWildcard(_markerIcons);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 L.Util.extend(L.LineUtil, {
   // Checks to see if two line segments intersect. Does not handle degenerate cases.
   // http://compgeom.cs.uiuc.edu/~jeffe/teaching/373/notes/x06-sweepline.pdf
-  segmentsIntersect( /*Point*/p, /*Point*/p1, /*Point*/p2, /*Point*/p3) {
+  segmentsIntersect: function segmentsIntersect( /*Point*/p, /*Point*/p1, /*Point*/p2, /*Point*/p3) {
     return this._checkCounterclockwise(p, p2, p3) !== this._checkCounterclockwise(p1, p2, p3) && this._checkCounterclockwise(p, p1, p2) !== this._checkCounterclockwise(p, p1, p3);
   },
 
+
   // check to see if points are in counterclockwise order
-  _checkCounterclockwise( /*Point*/p, /*Point*/p1, /*Point*/p2) {
+  _checkCounterclockwise: function _checkCounterclockwise( /*Point*/p, /*Point*/p1, /*Point*/p2) {
     return (p2.y - p.y) * (p1.x - p.x) > (p1.y - p.y) * (p2.x - p.x);
   }
 });
 
-let turnOffMouseMove = false;
+var turnOffMouseMove = false;
 
-/* unused harmony default export */ var _unused_webpack_default_export = (L.MarkerGroup = __WEBPACK_IMPORTED_MODULE_0__extended_BaseMarkerGroup__["a" /* default */].extend({
+exports.default = L.MarkerGroup = _BaseMarkerGroup2.default.extend({
   _isHole: false,
   _editLineGroup: undefined,
   _position: undefined,
-  dashedEditLineGroup: new __WEBPACK_IMPORTED_MODULE_3__draw_dashed_line__["a" /* default */]([]),
+  dashedEditLineGroup: new _dashedLine2.default([]),
   options: {
     mIcon: undefined,
     mHoverIcon: undefined
   },
-  initialize(layers) {
+  initialize: function initialize(layers) {
     L.LayerGroup.prototype.initialize.call(this, layers);
 
     this._markers = [];
     //this._bindEvents();
   },
-  onAdd(map) {
+  onAdd: function onAdd(map) {
     this._map = map;
     this.dashedEditLineGroup.addTo(map);
   },
-  _updateDELine(latlng) {
+  _updateDELine: function _updateDELine(latlng) {
     var deLine = this.getDELine();
     if (this._firstMarker) {
       deLine.update(latlng);
     }
     return deLine;
   },
-  _addMarker(latlng) {
+  _addMarker: function _addMarker(latlng) {
     //var eMarkersGroup = this.getEMarkersGroup();
 
     this.set(latlng);
@@ -3305,20 +3609,20 @@ let turnOffMouseMove = false;
 
     this._map._convertToEdit(this);
   },
-  getDELine() {
+  getDELine: function getDELine() {
     if (!this.dashedEditLineGroup._map) {
       this.dashedEditLineGroup.addTo(this._map);
     }
     return this.dashedEditLineGroup;
   },
-  _setHoverIcon() {
+  _setHoverIcon: function _setHoverIcon() {
     var map = this._map;
     if (map._oldSelectedMarker !== undefined) {
       map._oldSelectedMarker._resetIcon(this.options.mIcon);
     }
     map._selectedMarker._setHoverIcon(this.options.mHoverIcon);
   },
-  _sortByPosition() {
+  _sortByPosition: function _sortByPosition() {
     if (!this._isHole) {
       var layers = this.getLayers();
 
@@ -3328,15 +3632,15 @@ let turnOffMouseMove = false;
 
       var idArray = [];
       var posArray = [];
-      layers.forEach(layer => {
+      layers.forEach(function (layer) {
         idArray.push(layer._leaflet_id);
         posArray.push(layer.__position);
       });
 
-      Object(__WEBPACK_IMPORTED_MODULE_4__utils_sortByPosition__["a" /* default */])(this._layers, idArray);
+      (0, _sortByPosition3.default)(this._layers, idArray);
     }
   },
-  updateStyle() {
+  updateStyle: function updateStyle() {
     var markers = this.getLayers();
 
     for (var i = 0; i < markers.length; i++) {
@@ -3347,7 +3651,7 @@ let turnOffMouseMove = false;
       }
     }
   },
-  setSelected(marker) {
+  setSelected: function setSelected(marker) {
     var map = this._map;
 
     if (map.__polygonEdgesIntersected && this.hasFirstMarker()) {
@@ -3359,33 +3663,33 @@ let turnOffMouseMove = false;
     map._oldSelectedMarker = map._selectedMarker;
     map._selectedMarker = marker;
   },
-  resetSelected() {
+  resetSelected: function resetSelected() {
     var map = this._map;
     if (map._selectedMarker) {
       map._selectedMarker._resetIcon(this.options.mIcon);
       map._selectedMarker = undefined;
     }
   },
-  getSelected() {
+  getSelected: function getSelected() {
     return this._map._selectedMarker;
   },
-  _setFirst(marker) {
+  _setFirst: function _setFirst(marker) {
     this._firstMarker = marker;
     this._firstMarker._setFirstIcon();
   },
-  getFirst() {
+  getFirst: function getFirst() {
     return this._firstMarker;
   },
-  getLast() {
+  getLast: function getLast() {
     if (this.hasFirstMarker()) {
       var layers = this.getLayers();
       return layers[layers.length - 1];
     }
   },
-  hasFirstMarker() {
+  hasFirstMarker: function hasFirstMarker() {
     return this.getFirst() && this.getFirst()._hasFirstIcon();
   },
-  convertToLatLngs() {
+  convertToLatLngs: function convertToLatLngs() {
     var latlngs = [];
     this.eachLayer(function (layer) {
       if (!layer.isMiddle()) {
@@ -3394,15 +3698,19 @@ let turnOffMouseMove = false;
     });
     return latlngs;
   },
-  restore(layer) {
+  restore: function restore(layer) {
     this.setAll(layer._latlngs);
     this.setAllHoles(layer._holes);
   },
-  _add(latlng, position, options = {}) {
+  _add: function _add(latlng, position) {
+    var _this = this;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
 
     if (this._map.isMode('draw')) {
       if (!this._firstMarker) {
-        options.icon = __WEBPACK_IMPORTED_MODULE_5__marker_icons__["b" /* firstIcon */];
+        options.icon = icons.firstIcon;
       }
     }
 
@@ -3413,9 +3721,9 @@ let turnOffMouseMove = false;
     //this._map.off('mousemove');
     turnOffMouseMove = true;
     if (this.getFirst()._hasFirstIcon()) {
-      this._map.on('mousemove', e => {
+      this._map.on('mousemove', function (e) {
         if (!turnOffMouseMove) {
-          this._updateDELine(e.latlng);
+          _this._updateDELine(e.latlng);
         }
       });
       turnOffMouseMove = false;
@@ -3431,10 +3739,10 @@ let turnOffMouseMove = false;
 
     return marker;
   },
-  _closestNotMiddleMarker(layers, position, direction) {
+  _closestNotMiddleMarker: function _closestNotMiddleMarker(layers, position, direction) {
     return layers[position].isMiddle() ? layers[position + direction] : layers[position];
   },
-  _setPrevNext(marker, position) {
+  _setPrevNext: function _setPrevNext(marker, position) {
     var layers = this.getLayers();
 
     var maxLength = layers.length - 1;
@@ -3455,20 +3763,20 @@ let turnOffMouseMove = false;
 
     return marker;
   },
-  setMiddleMarker(position) {
-    this.addMarker(position, null, { icon: __WEBPACK_IMPORTED_MODULE_5__marker_icons__["f" /* middleIcon */] });
+  setMiddleMarker: function setMiddleMarker(position) {
+    this.addMarker(position, null, { icon: icons.middleIcon });
   },
-  setMiddleMarkers(position) {
+  setMiddleMarkers: function setMiddleMarkers(position) {
     this.setMiddleMarker(position);
     this.setMiddleMarker(position + 2);
   },
-  set(latlng, position, options) {
+  set: function set(latlng, position, options) {
     if (!this.hasIntersection(latlng)) {
       this._map.edgesIntersected(false);
       return this._add(latlng, position, options);
     }
   },
-  setMiddle(latlng, position, options) {
+  setMiddle: function setMiddle(latlng, position, options) {
     position = position < 0 ? 0 : position;
 
     //var func = (this._isHole) ? 'set' : 'setHoleMarker';
@@ -3477,19 +3785,23 @@ let turnOffMouseMove = false;
     marker._setMiddleIcon();
     return marker;
   },
-  setAll(latlngs) {
-    latlngs.forEach((latlng, position) => {
-      this.set(latlng, position);
+  setAll: function setAll(latlngs) {
+    var _this2 = this;
+
+    latlngs.forEach(function (latlng, position) {
+      _this2.set(latlng, position);
     });
 
     this.getFirst().fire('click');
   },
-  setAllHoles(holes) {
-    holes.forEach(hole => {
-      //this.set(hole);
-      var lastHGroup = this._map.getEHMarkersGroup().addHoleGroup();
+  setAllHoles: function setAllHoles(holes) {
+    var _this3 = this;
 
-      hole._each((latlng, position) => {
+    holes.forEach(function (hole) {
+      //this.set(hole);
+      var lastHGroup = _this3._map.getEHMarkersGroup().addHoleGroup();
+
+      hole._each(function (latlng, position) {
         lastHGroup.set(latlng, position);
       });
       //var length = hole.length;
@@ -3501,8 +3813,10 @@ let turnOffMouseMove = false;
       lastHGroup.getFirst().fire('click');
     });
   },
-  setHoleMarker(latlng, options = { isHoleMarker: true, holePosition: {} }) {
-    var marker = new __WEBPACK_IMPORTED_MODULE_1__edit_marker__["a" /* default */](this, latlng, options || {});
+  setHoleMarker: function setHoleMarker(latlng) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { isHoleMarker: true, holePosition: {} };
+
+    var marker = new _marker2.default(this, latlng, options || {});
     marker.addTo(this);
 
     //this.setSelected(marker);
@@ -3513,7 +3827,7 @@ let turnOffMouseMove = false;
 
     return marker;
   },
-  removeHole() {
+  removeHole: function removeHole() {
     var map = this._map;
     //remove edit line
     //this.getELineGroup().clearLayers();
@@ -3533,7 +3847,9 @@ let turnOffMouseMove = false;
       map._setEHMarkerGroup(holes[i]);
     }
   },
-  removeSelected() {
+  removeSelected: function removeSelected() {
+    var _this4 = this;
+
     var selectedEMarker = this.getSelected();
     var markerLayersArray = this.getLayers();
     var latlng = selectedEMarker.getLatLng();
@@ -3564,9 +3880,9 @@ let turnOffMouseMove = false;
         }
 
         var _position = 0;
-        this.eachLayer(layer => {
+        this.eachLayer(function (layer) {
           layer.options.holePosition = {
-            hGroup: this._position,
+            hGroup: _this4._position,
             hMarker: _position++
           };
         });
@@ -3583,20 +3899,24 @@ let turnOffMouseMove = false;
     }
 
     var position = 0;
-    this.eachLayer(layer => {
+    this.eachLayer(function (layer) {
       layer.options.title = position;
       layer.__position = position++;
     });
   },
-  getPointsForIntersection(polygon) {
+  getPointsForIntersection: function getPointsForIntersection(polygon) {
+    var _this5 = this;
+
     var map = this._map;
     this._originalPoints = [];
-    var layers = (polygon ? polygon.getLayers() : this.getLayers()).filter(l => !l.isMiddle());
+    var layers = (polygon ? polygon.getLayers() : this.getLayers()).filter(function (l) {
+      return !l.isMiddle();
+    });
 
     this._originalPoints = [];
-    layers._each(layer => {
+    layers._each(function (layer) {
       var latlng = layer.getLatLng();
-      this._originalPoints.push(new L.Point(latlng.lng, latlng.lat));
+      _this5._originalPoints.push(new L.Point(latlng.lng, latlng.lat));
       // this._originalPoints.push(this._map.latLngToLayerPoint(latlng));
     });
 
@@ -3622,8 +3942,9 @@ let turnOffMouseMove = false;
     }
     return this._originalPoints;
   },
+
   _bindLineEvents: undefined,
-  _hasIntersection(points, newPoint, isFinish) {
+  _hasIntersection: function _hasIntersection(points, newPoint, isFinish) {
     var len = points ? points.length : 0,
         lastPoint = points ? points[len - 1] : null,
 
@@ -3636,8 +3957,7 @@ let turnOffMouseMove = false;
 
     return this._lineSegmentsIntersectsRange(lastPoint, newPoint, maxIndex, isFinish);
   },
-
-  _hasIntersectionWithHole(points, newPoint, lastPoint) {
+  _hasIntersectionWithHole: function _hasIntersectionWithHole(points, newPoint, lastPoint) {
     var len = points ? points.length : 0,
 
     //lastPoint = points ? points[len - 1] : null,
@@ -3650,8 +3970,7 @@ let turnOffMouseMove = false;
 
     return this._lineHoleSegmentsIntersectsRange(lastPoint, newPoint);
   },
-
-  hasIntersection(latlng, isFinish) {
+  hasIntersection: function hasIntersection(latlng, isFinish) {
     var map = this._map;
     if (map.options.allowIntersection) {
       return false;
@@ -3678,7 +3997,7 @@ let turnOffMouseMove = false;
     var edgesIntersected = map.edgesIntersected();
     return edgesIntersected;
   },
-  hasIntersectionWithHole(lArray, hole) {
+  hasIntersectionWithHole: function hasIntersectionWithHole(lArray, hole) {
 
     if (this._map.options.allowIntersection) {
       return false;
@@ -3706,7 +4025,7 @@ let turnOffMouseMove = false;
 
     return edgesIntersected;
   },
-  _tooFewPointsForIntersection(extraPoints) {
+  _tooFewPointsForIntersection: function _tooFewPointsForIntersection(extraPoints) {
     var points = this._originalPoints,
         len = points ? points.length : 0;
     // Increment length by extraPoints if present
@@ -3714,7 +4033,7 @@ let turnOffMouseMove = false;
 
     return !this._originalPoints || len <= 3;
   },
-  _lineHoleSegmentsIntersectsRange(p, p1) {
+  _lineHoleSegmentsIntersectsRange: function _lineHoleSegmentsIntersectsRange(p, p1) {
     var points = this._originalPoints,
         p2,
         p3;
@@ -3730,7 +4049,7 @@ let turnOffMouseMove = false;
 
     return false;
   },
-  _lineSegmentsIntersectsRange(p, p1, maxIndex, isFinish) {
+  _lineSegmentsIntersectsRange: function _lineSegmentsIntersectsRange(p, p1, maxIndex, isFinish) {
     var points = this._originalPoints,
         p2,
         p3;
@@ -3748,7 +4067,7 @@ let turnOffMouseMove = false;
 
     return false;
   },
-  _isMarkerInPolygon(marker) {
+  _isMarkerInPolygon: function _isMarkerInPolygon(marker) {
     var j = 0;
 
     var layers = this.getLayers();
@@ -3775,19 +4094,30 @@ let turnOffMouseMove = false;
 
     return inPoly;
   }
-}));
+});
 
 /***/ }),
 /* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__edit_marker__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_sortByPosition__ = __webpack_require__(9);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-/* harmony default export */ __webpack_exports__["a"] = (L.Class.extend({
+var _marker2 = __webpack_require__(8);
+
+var _marker3 = _interopRequireDefault(_marker2);
+
+var _sortByPosition = __webpack_require__(9);
+
+var _sortByPosition2 = _interopRequireDefault(_sortByPosition);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = L.Class.extend({
   includes: L.Mixin.Events,
 
   _selected: false,
@@ -3796,25 +4126,27 @@ let turnOffMouseMove = false;
   _positionHash: undefined,
   _lastPosition: 0,
   _markers: [],
-  onAdd(map) {
+  onAdd: function onAdd(map) {
     this._map = map;
     this.clearLayers();
     //L.LayerGroup.prototype.onAdd.call(this, map);
   },
-  onRemove(map) {
+  onRemove: function onRemove(map) {
     //L.LayerGroup.prototype.onRemove.call(this, map);
     this.clearLayers();
   },
-  clearLayers() {
-    this._markers.forEach(marker => {
-      this._map.removeLayer(marker);
+  clearLayers: function clearLayers() {
+    var _this = this;
+
+    this._markers.forEach(function (marker) {
+      _this._map.removeLayer(marker);
     });
     this._markers = [];
   },
-  addTo(map) {
+  addTo: function addTo(map) {
     map.addLayer(this);
   },
-  addLayer(marker) {
+  addLayer: function addLayer(marker) {
     this._map.addLayer(marker);
     this._markers.push(marker);
     if (marker.position != null) {
@@ -3822,11 +4154,13 @@ let turnOffMouseMove = false;
     }
     marker.position = marker.position != null ? marker.position : this._markers.length - 1;
   },
-  remove() {
+  remove: function remove() {
+    var _this2 = this;
+
     var markers = this.getLayers();
-    markers._each(marker => {
-      while (this.getLayers().length) {
-        this.removeMarker(marker);
+    markers._each(function (marker) {
+      while (_this2.getLayers().length) {
+        _this2.removeMarker(marker);
       }
     });
 
@@ -3839,18 +4173,18 @@ let turnOffMouseMove = false;
       map.fire('editor:polygon:deleted');
     }
   },
-  removeLayer(marker) {
+  removeLayer: function removeLayer(marker) {
     var position = marker.position;
     this._map.removeLayer(marker);
     this._markers.splice(position, 1);
   },
-  getLayers() {
+  getLayers: function getLayers() {
     return this._markers;
   },
-  eachLayer(cb) {
+  eachLayer: function eachLayer(cb) {
     this._markers.forEach(cb);
   },
-  markerAt(position) {
+  markerAt: function markerAt(position) {
     var rslt = this._markers[position];
 
     if (position < 0) {
@@ -3863,14 +4197,14 @@ let turnOffMouseMove = false;
 
     return rslt;
   },
-  firstMarker() {
+  firstMarker: function firstMarker() {
     return this._markers[0];
   },
-  lastMarker() {
+  lastMarker: function lastMarker() {
     var markers = this._markers;
     return markers[markers.length - 1];
   },
-  removeMarker(marker) {
+  removeMarker: function removeMarker(marker) {
     var b = !marker.isMiddle();
 
     var prevMarker = marker._prev;
@@ -3900,7 +4234,7 @@ let turnOffMouseMove = false;
       map.fire('editor:marker_group_clear');
     }
   },
-  removeMarkerAt(position) {
+  removeMarkerAt: function removeMarkerAt(position) {
     if (this.getLayers().length === 0) {
       return;
     }
@@ -3914,7 +4248,7 @@ let turnOffMouseMove = false;
 
     var _changePos = false;
     var markers = this._markers;
-    markers.forEach(_marker => {
+    markers.forEach(function (_marker) {
       if (_changePos) {
         _marker.position = _marker.position === 0 ? 0 : _marker.position - 1;
       }
@@ -3936,7 +4270,7 @@ let turnOffMouseMove = false;
       }
     }
   },
-  addMarker(latlng, position, options) {
+  addMarker: function addMarker(latlng, position, options) {
     // 1. recalculate positions
     if (typeof latlng === 'number') {
       position = this.markerAt(latlng).position;
@@ -3955,7 +4289,7 @@ let turnOffMouseMove = false;
       options.draggable = !this.getFirst()._hasFirstIcon();
     }
 
-    var marker = new __WEBPACK_IMPORTED_MODULE_0__edit_marker__["a" /* default */](this, latlng, options);
+    var marker = new _marker3.default(this, latlng, options);
     if (!this._firstMarker) {
       this._firstMarker = marker;
       this._lastMarker = marker;
@@ -3998,76 +4332,84 @@ let turnOffMouseMove = false;
 
     return marker;
   },
-  clear() {
+  clear: function clear() {
+    var _this3 = this;
+
     var ids = this._ids();
 
     this.clearLayers();
 
-    ids.forEach(id => {
-      this._deleteEvents(id);
+    ids.forEach(function (id) {
+      _this3._deleteEvents(id);
     });
 
     this._lastPosition = 0;
 
     this._firstMarker = undefined;
   },
-  _deleteEvents(id) {
+  _deleteEvents: function _deleteEvents(id) {
     delete this._map._leaflet_events.viewreset_idx[id];
     delete this._map._leaflet_events.zoomanim_idx[id];
   },
-  _getMiddleLatLng(marker1, marker2) {
+  _getMiddleLatLng: function _getMiddleLatLng(marker1, marker2) {
     var map = this._map,
         p1 = map.project(marker1.getLatLng()),
         p2 = map.project(marker2.getLatLng());
 
     return map.unproject(p1._add(p2)._divideBy(2));
   },
-  _recalcPositions(position) {
+  _recalcPositions: function _recalcPositions(position) {
+    var _this4 = this;
+
     var markers = this._markers;
 
     var changePos = false;
-    markers.forEach((marker, _position) => {
+    markers.forEach(function (marker, _position) {
       if (position === _position) {
         changePos = true;
       }
       if (changePos) {
-        this._markers[_position].position += 1;
+        _this4._markers[_position].position += 1;
       }
     });
   },
-  _recalcRelations() {
+  _recalcRelations: function _recalcRelations() {
+    var _this5 = this;
+
     var markers = this._markers;
 
-    markers.forEach((marker, position) => {
+    markers.forEach(function (marker, position) {
 
-      marker._prev = this.markerAt(position - 1);
-      marker._next = this.markerAt(position + 1);
+      marker._prev = _this5.markerAt(position - 1);
+      marker._next = _this5.markerAt(position + 1);
 
       // first
       if (position === 0) {
-        marker._prev = this.lastMarker();
-        marker._next = this.markerAt(1);
+        marker._prev = _this5.lastMarker();
+        marker._next = _this5.markerAt(1);
       }
 
       // last
       if (position === markers.length - 1) {
-        marker._prev = this.markerAt(position - 1);
-        marker._next = this.markerAt(0);
+        marker._prev = _this5.markerAt(position - 1);
+        marker._next = _this5.markerAt(0);
       }
     });
   },
-  _ids() {
+  _ids: function _ids() {
     var rslt = [];
 
-    for (let id in this._layers) {
+    for (var id in this._layers) {
       rslt.push(id);
     }
 
-    rslt.sort((a, b) => a - b);
+    rslt.sort(function (a, b) {
+      return a - b;
+    });
 
     return rslt;
   },
-  select() {
+  select: function select() {
     if (this.isEmpty()) {
       this._map._selectedMGroup = null;
       return;
@@ -4083,7 +4425,7 @@ let turnOffMouseMove = false;
       map.getEHMarkersGroup().resetLastHole();
     }
 
-    this.getLayers()._each(marker => {
+    this.getLayers()._each(function (marker) {
       marker.selectIconInGroup();
     });
     this._selected = true;
@@ -4091,22 +4433,27 @@ let turnOffMouseMove = false;
     this._map._selectedMGroup = this;
     this._map.fire('editor:marker_group_select');
   },
-  isEmpty() {
+  isEmpty: function isEmpty() {
     return this.getLayers().length === 0;
   },
-  resetSelection() {
-    this.getLayers()._each(marker => {
+  resetSelection: function resetSelection() {
+    this.getLayers()._each(function (marker) {
       marker.unSelectIconInGroup();
     });
     this._selected = false;
   }
-}));
+});
 
 /***/ }),
 /* 28 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 Array.prototype.move = function (from, to) {
   this.splice(to, 0, this.splice(from, 1)[0]);
 };
@@ -4117,18 +4464,22 @@ Array.prototype._each = function (func) {
     func.call(this, this[i], i);
   }
 };
-/* unused harmony default export */ var _unused_webpack_default_export = (Array);
+exports.default = Array;
 
 /***/ }),
 /* 29 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__map__ = __webpack_require__(10);
 
 
-window.LeafletEditor = Object(__WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */])();
+var _map = __webpack_require__(10);
+
+var _map2 = _interopRequireDefault(_map);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.LeafletEditor = (0, _map2.default)();
 
 /***/ })
 /******/ ]);
