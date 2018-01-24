@@ -1434,6 +1434,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _base = __webpack_require__(11);
 
 var _base2 = _interopRequireDefault(_base);
@@ -1458,11 +1460,11 @@ function map(type) {
   var _this = this;
 
   var Instance = type === 'mapbox' ? L.mapbox.Map : L.Map;
-  var map = Instance.extend(Object.assign(_base2.default, {
+  var map = Instance.extend(_extends(_base2.default, {
     $: undefined,
     initialize: function initialize(id, options) {
       if (options.text) {
-        Object.assign(_options2.default.text, options.text);
+        _extends(_options2.default.text, options.text);
         delete options.text;
       }
 
@@ -1479,22 +1481,22 @@ function map(type) {
       //}
       if (options.style) {
         if (options.style.draw) {
-          Object.assign(_options2.default.style.draw, options.style.draw);
+          _extends(_options2.default.style.draw, options.style.draw);
         }
         //delete options.style.draw;
         if (options.style.view) {
-          Object.assign(_options2.default.style.view, options.style.view);
+          _extends(_options2.default.style.view, options.style.view);
         }
         if (options.style.startDraw) {
-          Object.assign(_options2.default.style.startDraw, options.style.startDraw);
+          _extends(_options2.default.style.startDraw, options.style.startDraw);
         }
         if (options.style.drawLine) {
-          Object.assign(_options2.default.style.drawLine, options.style.drawLine);
+          _extends(_options2.default.style.drawLine, options.style.drawLine);
         }
         delete options.style;
       }
 
-      Object.assign(this.options, _options2.default, options);
+      _extends(this.options, _options2.default, options);
       //L.Util.setOptions(this, opts);
 
       if (type === 'mapbox') {
@@ -1579,6 +1581,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _events = __webpack_require__(12);
 
 var _events2 = _interopRequireDefault(_events);
@@ -1591,7 +1595,7 @@ var _precision = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = Object.assign({
+exports.default = _extends({
   _selectedMarker: undefined,
   _selectedVLayer: undefined,
   _oldSelectedMarker: undefined,
