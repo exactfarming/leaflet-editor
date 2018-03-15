@@ -248,7 +248,7 @@ export default Object.assign({
     return {};
   },
   geoJSONArea(geoJSON) {
-    let areaFunc = window.turf && window.turf.area || this.options.geoJSONArea;
+    let areaFunc = this.options.geoJSONArea || window.turf && window.turf.area;
 
     if (!areaFunc) {
       console.warn('Warning: Implement "geoJSONArea" function ( leaflet-editor )');
