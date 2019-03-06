@@ -1,9 +1,6 @@
-import assert from 'assert';
-import area from '@turf/area';
-
 import {
   precision
-} from '../src/js/utils/precision';
+} from '../../src/js/utils/precision.js';
 
 describe('area', function() {
   it('test area precision', function() {
@@ -27,8 +24,8 @@ describe('area', function() {
     };
 
 
-    let m2 = area(json);/*?*/
-    let ha = precision(m2/10000, 2);/*?*/
+    let m2 = turf.area(json);
+    let ha = precision(m2/10000, 2);
 
     assert.equal(ha, 542.07);
   });

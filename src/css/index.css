@@ -36,6 +36,8 @@
   margin-top: -5px !important;
   width: 10px !important;
   height: 10px !important;
+
+  box-sizing: border-box;
 }
 
 .static {
@@ -56,21 +58,6 @@
   height: 20px;
   margin-left: -10px;
   margin-right: -10px;
-}
-
-.m-editor-intersection-div-icon {
-  background: #ff3928;
-  margin-left: -5px !important;
-  margin-top: -5px !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50%;
-  border: none;
-}
-
-.group-selected.m-editor-intersection-div-icon {
-  background: #ff3928 !important;
-  box-shadow: inherit !important;
 }
 
 /*.m-editor-div-icon:hover {*/
@@ -253,6 +240,8 @@
   border-radius: 50%;
   opacity: 0.8;
   box-shadow: 0 0 6px 1px #212121;
+
+  box-sizing: border-box;
 }
 
 .m-editor-middle-div-icon.group-selected {

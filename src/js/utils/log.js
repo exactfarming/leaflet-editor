@@ -1,3 +1,3 @@
 export default function () {
-  console.log.apply(null, arguments);
+  console.log(...arguments);
 }

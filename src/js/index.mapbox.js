@@ -1,3 +1,3 @@
-import map from './map';
+import Map from './map.js';
 
-window.LeafletEditor = map('mapbox');
+window.LeafletEditor = Map;

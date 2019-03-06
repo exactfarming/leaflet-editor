@@ -1,0 +1,57 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="../node_modules/mocha/mocha.css" rel="stylesheet" />
+    <link href="../node_modules/mapbox.js/dist/mapbox.css" rel="stylesheet" />
+    <link href="../dist/css/index.css" rel="stylesheet" />
+</head>
+<body>
+
+<script src="../node_modules/mapbox.js/dist/mapbox.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script src="../node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai-spies/chai-spies.js"></script>
+
+<script src="../vendor/js/turf_kinks.min.js"></script>
+<script src="../vendor/js/turf-area.min.js"></script>
+<script src="../src/js/index.js" type="module"></script>
+
+<script src="../test/helper/template.js"></script>
+<script src="../test/helper/events.js"></script>
+
+<script>
+  L.mapbox.accessToken = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejh2N21nMzAxMmQzMnA5emRyN2lucW0ifQ.jSE-g2vsn48Ry928pqylcg";
+</script>
+
+<script src="/testem.js"></script> <!-- !!! only for running on testem (CI server) !!! -->
+
+<script type="module">
+  mocha.setup({
+    ui: 'bdd',
+    ignoreLeaks: true,
+    timeout: 120000
+  });
+</script>
+<script type="module">
+  window.expect = chai.expect;
+  window.assert = chai.assert;
+</script>
+
+<script src="./e2e/index.e2e.spec.js" type="module"></script>
+<script src="./e2e/methods.e2e.spec.js" type="module"></script>
+<script src="./e2e/msghelper.e2e.spec.js" type="module"></script>
+<script src="./e2e/options.e2e.spec.js" type="module"></script>
+
+<script src="unit/log.spec.js" type="module"></script>
+<script src="unit/precision.spec.js" type="module"></script>
+<script src="unit/mobile.spec.js" type="module"></script>
+<script src="unit/area-with-precision.spec.js" type="module"></script>
+
+<script type="module">
+  mocha.run();
+</script>
+
+<div id="test-container"></div>
+<div id="mocha"></div>
+</body>

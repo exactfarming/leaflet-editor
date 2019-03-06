@@ -3,10 +3,13 @@ export default L.Control.extend({
     position: 'msgcenter',
     defaultMsg: null
   },
+  _onResizeEvent: null,
+  _titleContainer: null,
+
   initialize (options) {
     L.Util.setOptions(this, options);
   },
-  _titleContainer: null,
+
   onAdd (map) {
     var corner = L.DomUtil.create('div', 'leaflet-bottom');
     var container = L.DomUtil.create('div', 'leaflet-msg-editor');
@@ -14,40 +17,41 @@ export default L.Control.extend({
     map._controlCorners['msgcenter'] = corner;
     map._controlContainer.appendChild(corner);
 
-    setTimeout(() => {
-      this._setContainer(container, map);
-      map.fire('msgHelperAdded', { control: this });
+    this._setContainer(container, map);
+    map.fire('msgHelperAdded', { control: this });
 
-      this._changePos();
-    }, 1000);
-
-    map.getBtnControl = () => this;
+    this._changePos();
 
     this._bindEvents(map);
 
     return container;
   },
+  onRemove() {
+    this._unBindEvents(map);
+    document.body.removeChild(this._titlePosContainer);
+  },
   _changePos () {
-    var controlCorner = this._map._controlCorners['msgcenter'];
+    let controlCorner = this._map._controlCorners['msgcenter'];
     if (controlCorner && controlCorner.children.length) {
-      var child = controlCorner.children[0].children[0];
+      let child = controlCorner.children[0].children[0];
 
       if (!child) {
         return;
       }
 
-      var width = child.clientWidth;
+      let width = child.clientWidth;
       if (width) {
         controlCorner.style.left = (this._map._container.clientWidth - width) / 2 + 'px';
       }
     }
   },
+  _unBindEvents() {
+    window.removeEventListener('resize', this._onResizeEvent);
+  },
   _bindEvents () {
-    setTimeout(() => {
-      window.addEventListener('resize', () => {
-        this._changePos();
-      });
-    }, 1);
+    this._onResizeEvent = this._changePos.bind(this);
+    window.addEventListener('resize', this._onResizeEvent);
+    this._onResizeEvent = null;
   },
   _setContainer (container) {
     this._titleContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');

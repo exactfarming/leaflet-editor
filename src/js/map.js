@@ -1,124 +1,259 @@
-import Base from './base';
-import ControlsHook from './hooks/controls';
+import BaseMap from './base.js';
+import ControlsHook from './hooks/controls.js';
 
-import layers from './layers';
-import opts from './options';
+import opts from './options.js';
 
-import './utils/array';
+import './utils/array.js';
+import ViewGroup from './view/group.js';
+import DrawGroup from './modes/draw/group.js';
+import EditPolygon from './modes/edit/polygon.js';
+import MarkerGroup from './modes/edit/marker-group.js';
+import DashedEditLineGroup from './modes/draw/dashed-line.js';
+import HolesGroup from './modes/edit/holesGroup.js';
 
-function map(type) {
-  let Instance = (type === 'mapbox') ? L.mapbox.Map : L.Map;
-  let map = Instance.extend(Object.assign(Base, {
-    $: undefined,
-    initialize(id, options) {
-      if (options.text) {
-        Object.assign(opts.text, options.text);
-        delete options.text;
-      }
+// function Map(type) {
+//   // let Instance;
+//   //
+//   // try {
+//   //   Instance = (type === 'mapbox') ? L.mapbox.Map : L.Map;
+//   // } catch (e) {
+//   //   console.error('"L.mapbox" in undefined. Load mapbox script.');
+//   //   console.warn('Fallback to leaflet');
+//
+//     // Instance = L.Map;
+//   // }
+//
+//   Instance = L.Map;
+//
+//   let map = Instance.extend(Object.assign(Base, {
+//     viewGroup: null,
+//     editGroup: null,
+//     editPolygon: null,
+//     editMarkersGroup: null,
+//     dashedEditLineGroup: null,
+//     editHoleMarkersGroup: null,
+//     setLayers() {
+//       this.viewGroup = new ViewGroup([]);
+//       this.editGroup = new DrawGroup([]);
+//       this.editPolygon = new EditPolygon([]);
+//       this.editMarkersGroup = new MarkerGroup([]);
+//       this.dashedEditLineGroup = new DashedEditLineGroup([]);
+//       this.editHoleMarkersGroup = new HolesGroup([]);
+//
+//       this.viewGroup.addTo(this);
+//       this.editGroup.addTo(this);
+//       this.editPolygon.addTo(this);
+//       this.editMarkersGroup.addTo(this);
+//       this.dashedEditLineGroup.addTo(this);
+//       this.editHoleMarkersGroup.addTo(this);
+//     },
+//     removeLayers() {
+//       this.removeLayer(this.viewGroup);
+//       this.removeLayer(this.editGroup);
+//       this.removeLayer(this.editPolygon);
+//       this.removeLayer(this.editMarkersGroup);
+//       this.removeLayer(this.dashedEditLineGroup);
+//       this.removeLayer(this.editHoleMarkersGroup);
+//     },
+//     initialize(id, options) {
+//       if (options.text) {
+//         Object.assign(opts.text, options.text);
+//         delete options.text;
+//       }
+//
+//       let controls = options.controls;
+//       if (controls) {
+//         if (controls.zoom === false) {
+//           options.zoomControl = false;
+//         }
+//       }
+//
+//       if (options.style) {
+//         if (options.style.draw) {
+//           Object.assign(opts.style.draw, options.style.draw);
+//         }
+//         //delete options.style.draw;
+//         if (options.style.view) {
+//           Object.assign(opts.style.view, options.style.view);
+//         }
+//         if (options.style.startDraw) {
+//           Object.assign(opts.style.startDraw, options.style.startDraw);
+//         }
+//         if (options.style.drawLine) {
+//           Object.assign(opts.style.drawLine, options.style.drawLine);
+//         }
+//         delete options.style;
+//       }
+//
+//       Object.assign(this.options, opts, options);
+//       //L.Util.setOptions(this, opts);
+//
+//       if (type === 'mapbox') {
+//         L.mapbox.Map.prototype.initialize.call(this, id, this.options.mapboxId, this.options);
+//       } else {
+//         L.Map.prototype.initialize.call(this, id, this.options);
+//       }
+//
+//       this.whenReady(() => {
+//         this.setLayers();
+//       });
+//
+//       if (this.options.forceToDraw) {
+//         this.mode('draw');
+//       }
+//
+//       this.on('unload', () => {
+//         this.removeControl(this.msgHelper);
+//         this.removeLayers();
+//       });
+//     },
+//     getVGroup() {
+//       return this.viewGroup;
+//     },
+//     getEGroup() {
+//       return this.editGroup;
+//     },
+//     getEPolygon() {
+//       return this.editPolygon;
+//     },
+//     getEMarkersGroup() {
+//       return this.editMarkersGroup;
+//     },
+//     getDELine() {
+//       return this.dashedEditLineGroup;
+//     },
+//     getEHMarkersGroup() {
+//       return this.editHoleMarkersGroup;
+//     },
+//     getSelectedMGroup() {
+//       return this._selectedMGroup;
+//     }
+//   }));
+//
+//   map.addInitHook(ControlsHook);
+//
+//   return map;
+// }
 
-      let controls = options.controls;
-      if (controls) {
-        if (controls.zoom === false) {
-          options.zoomControl = false;
-        }
-      }
+// class BaseMap extends L.Map {}
 
-      //if (options.drawLineStyle) {
-      //  Object.assign(opts.drawLineStyle, options.drawLineStyle);
-      //  delete options.drawLineStyle;
-      //}
-      if (options.style) {
-        if (options.style.draw) {
-          Object.assign(opts.style.draw, options.style.draw);
-        }
-        //delete options.style.draw;
-        if (options.style.view) {
-          Object.assign(opts.style.view, options.style.view);
-        }
-        if (options.style.startDraw) {
-          Object.assign(opts.style.startDraw, options.style.startDraw);
-        }
-        if (options.style.drawLine) {
-          Object.assign(opts.style.drawLine, options.style.drawLine);
-        }
-        delete options.style;
-      }
+let Map = L.Map.extend({
+  setLayers() {
+    this.viewGroup = new ViewGroup([]);
+    this.editGroup = new DrawGroup([]);
+    this.editPolygon = new EditPolygon([]);
+    this.editMarkersGroup = new MarkerGroup([]);
+    this.dashedEditLineGroup = new DashedEditLineGroup([]);
+    this.editHoleMarkersGroup = new HolesGroup([]);
 
-      Object.assign(this.options, opts, options);
-      //L.Util.setOptions(this, opts);
+    this.viewGroup.addTo(this);
+    this.editGroup.addTo(this);
+    this.editPolygon.addTo(this);
+    this.editMarkersGroup.addTo(this);
+    this.dashedEditLineGroup.addTo(this);
+    this.editHoleMarkersGroup.addTo(this);
+  },
 
-      if (type === 'mapbox') {
-        L.mapbox.Map.prototype.initialize.call(this, id, this.options.mapboxId, this.options);
-      } else {
-        L.Map.prototype.initialize.call(this, id, this.options);
-      }
+  removeLayers() {
+    this.removeLayer(this.viewGroup);
+    this.removeLayer(this.editGroup);
+    this.removeLayer(this.editPolygon);
+    this.removeLayer(this.editMarkersGroup);
+    this.removeLayer(this.dashedEditLineGroup);
+    this.removeLayer(this.editHoleMarkersGroup);
+  },
 
-      this.$ = $(this._container);
+  initialize(id, options) {
+    this.viewGroup = null;
 
-      layers.setLayers();
+    this.editGroup = null;
 
-      this._addLayers([
-        layers.viewGroup
-        , layers.editGroup
-        , layers.editPolygon
-        , layers.editMarkersGroup
-        , layers.editLineGroup
-        , layers.dashedEditLineGroup
-        , layers.editHoleMarkersGroup
-      ]);
+    this.editPolygon = null;
 
-      this._setOverlays(options);
+    this.editMarkersGroup = null;
 
-      if (this.options.forceToDraw) {
-        this.mode('draw');
-      }
-    },
-    _setOverlays (opts) {
-      var overlays = opts.overlays;
+    this.dashedEditLineGroup = null;
 
-      for (var i in overlays) {
-        var oi = overlays[i];
-        this._controlLayers.addOverlay(oi, i);
-        oi.addTo(this);
-        oi.bringToBack();
-        oi.on('click', function () {
-          return false;
-        });
-        oi.on('mouseup', function () {
-          return false;
-        });
-      }
-    },
-    getVGroup () {
-      return layers.viewGroup;
-    },
-    getEGroup () {
-      return layers.editGroup;
-    },
-    getEPolygon () {
-      return layers.editPolygon;
-    },
-    getEMarkersGroup () {
-      return layers.editMarkersGroup;
-    },
-    getELineGroup () {
-      return layers.editLineGroup;
-    },
-    getDELine () {
-      return layers.dashedEditLineGroup;
-    },
-    getEHMarkersGroup () {
-      return layers.editHoleMarkersGroup;
-    },
-    getSelectedPolygon: () => this._selectedPolygon,
-    getSelectedMGroup () {
-      return this._selectedMGroup;
+    this.editHoleMarkersGroup = null;
+
+    if (options.text) {
+      Object.assign(opts.text, options.text);
+      delete options.text;
     }
-  }));
 
-  map.addInitHook(ControlsHook);
+    let controls = options.controls;
+    if (controls) {
+      if (controls.zoom === false) {
+        options.zoomControl = false;
+      }
+    }
 
-  return map;
-}
+    if (options.style) {
+      if (options.style.draw) {
+        Object.assign(opts.style.draw, options.style.draw);
+      }
+      //delete options.style.draw;
+      if (options.style.view) {
+        Object.assign(opts.style.view, options.style.view);
+      }
+      if (options.style.startDraw) {
+        Object.assign(opts.style.startDraw, options.style.startDraw);
+      }
+      if (options.style.drawLine) {
+        Object.assign(opts.style.drawLine, options.style.drawLine);
+      }
+      delete options.style;
+    }
 
-export default map;
+    Object.assign(this.options, opts, options);
+
+    L.Map.prototype.initialize.call(this, id, options);
+
+    this.whenReady(() => {
+      this.setLayers();
+    });
+
+    if (this.options.forceToDraw) {
+      this.mode('draw');
+    }
+
+    this.on('unload', () => {
+      this.removeControl(this.msgHelper);
+      this.removeLayers();
+    });
+  },
+
+  getVGroup() {
+    return this.viewGroup;
+  },
+
+  getEGroup() {
+    return this.editGroup;
+  },
+
+  getEPolygon() {
+    return this.editPolygon;
+  },
+
+  getEMarkersGroup() {
+    return this.editMarkersGroup;
+  },
+
+  getDELine() {
+    return this.dashedEditLineGroup;
+  },
+
+  getEHMarkersGroup() {
+    return this.editHoleMarkersGroup;
+  },
+
+  getSelectedMGroup() {
+    return this._selectedMGroup;
+  }
+});
+
+Map.include(BaseMap);
+Map.addInitHook(ControlsHook);
+
+export default Map;
+

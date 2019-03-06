@@ -1,9 +1,11 @@
+import MarkerGroup from '../../modes/edit/marker-group.js';
+
 export default L.FeatureGroup.extend({
   _selected: false,
   _lastHole: undefined,
   _lastHoleToDraw: undefined,
   addHoleGroup () {
-    this._lastHole = new L.MarkerGroup();
+    this._lastHole = new MarkerGroup();
     this._lastHole._isHole = true;
     this._lastHole.addTo(this);
 

@@ -1,5 +1,6 @@
-import Marker from '../edit/marker';
-import sort from '../utils/sortByPosition';
+import Marker from '../modes/edit/marker.js';
+
+import EVENTS from '../event-names.js';
 
 export default L.Class.extend({
   includes: L.Mixin.Events,
@@ -10,13 +11,7 @@ export default L.Class.extend({
   _positionHash: undefined,
   _lastPosition: 0,
   _markers: [],
-  onAdd (map) {
-    this._map = map;
-    this.clearLayers();
-    //L.LayerGroup.prototype.onAdd.call(this, map);
-  },
-  onRemove (map) {
-    //L.LayerGroup.prototype.onRemove.call(this, map);
+  onRemove () {
     this.clearLayers();
   },
   clearLayers () {
@@ -47,10 +42,10 @@ export default L.Class.extend({
     var map = this._map;
 
     if (this._isHole) {
-      map.fire('editor:polygon:hole_deleted');
+      map.fire(EVENTS.hole_deleted);
     } else {
       map.getVGroup().removeLayer(map._getSelectedVLayer());
-      map.fire('editor:polygon:deleted');
+      map.fire(EVENTS.polygon_deleted);
 
     }
   },
@@ -101,18 +96,18 @@ export default L.Class.extend({
       this.setMiddleMarker(nextnextMarker.position);
 
       if (b) {
-        map.fire('editor:delete_marker', { marker: marker });
+        map.fire(EVENTS.delete_marker, { marker: marker });
       }
     } else {
       if (this._isHole) {
         map.removeLayer(this);
-        map.fire('editor:delete_hole', { marker: marker });
+        map.fire(EVENTS.delete_hole, { marker: marker });
       } else {
-        map.removePolygon(map.getEPolygon());
+        map.fire(EVENTS.delete_polygon);
 
-        map.fire('editor:delete_polygon');
+        map.removePolygon(map.getEPolygon());
       }
-      map.fire('editor:marker_group_clear');
+      map.fire(EVENTS.marker_group_clear);
     }
   },
   removeMarkerAt (position) {
@@ -208,7 +203,7 @@ export default L.Class.extend({
     }
     // 3. trigger event
     if (!marker.isMiddle()) {
-      this._map.fire('editor:add_marker', { marker: marker });
+      this._map.fire(EVENTS.add_marker, { marker: marker });
     }
 
     return marker;
@@ -304,7 +299,7 @@ export default L.Class.extend({
     this._selected = true;
 
     this._map._selectedMGroup = this;
-    this._map.fire('editor:marker_group_select');
+    this._map.fire(EVENTS.marker_group_select);
   },
   isEmpty () {
     return this.getLayers().length === 0;

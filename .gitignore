@@ -1,11 +1,12 @@
 /node_modules/
 
 .idea/
-/wallaby.js
+
 /bower_components
 /tests
 
-.DS_Store/
+.DS_Store
+**/.DS_Store
 
 
 /cypress/

@@ -4,6 +4,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = () => {
   return {
+    devtool: 'source-map',
     entry: {
       'index': './src/js/index.js',
       'index.min': './src/js/index.js',
@@ -16,7 +17,8 @@ module.exports = () => {
     },
     plugins: [
       new CopyWebpackPlugin([
-        { from: 'src/css', to: 'css' }
+        { from: 'src/css', to: 'css' },
+        { from: 'vendor', to: 'vendor' }
       ]),
       new UglifyJsPlugin({
         include: /\.min\.js$/
@@ -27,7 +29,7 @@ module.exports = () => {
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          exclude: /(node_modules|bower_components)/
+          exclude: /(node_modules|bower_components|vendor)/
         }
       ]
     }

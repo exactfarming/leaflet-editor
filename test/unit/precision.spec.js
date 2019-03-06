@@ -1,8 +1,8 @@
-import assert from 'assert';
+// import assert from 'assert';
 import {
   precision,
   precisionGeoJSON
-} from '../../src/js/utils/precision';
+} from '../../src/js/utils/precision.js';
 
 describe('precision', function() {
   it('undefined', function() {
@@ -130,7 +130,7 @@ describe('precisionGeoJSON', function() {
         "type": "Polygon",
         "coordinates": [
           [
-            ['73.804779', '54.650002'],
+            [73.804779, 54.650002],
             [74.008026, 54.681771],
             [74.058838, 54.612641],
             [73.881683, 54.596732],
@@ -148,8 +148,8 @@ describe('precisionGeoJSON', function() {
       "type": "Feature",
       "properties": {},
       "geometry": {
-        "type": "Polygon",
-        "coordinates": [
+        "type": "MultiPolygon",
+        "coordinates": [[
           [
             [73.80477905273438, 54.65000162223775],
             [73.970947265625, 54.68494654333107],
@@ -165,7 +165,7 @@ describe('precisionGeoJSON', function() {
             [73.90090942382812, 54.622183052287575],
             [73.94622802734375, 54.66112372206639]
           ]
-        ]
+        ]]
       }
     };
 
@@ -173,8 +173,8 @@ describe('precisionGeoJSON', function() {
       "type": "Feature",
       "properties": {},
       "geometry": {
-        "type": "Polygon",
-        "coordinates": [
+        "type": "MultiPolygon",
+        "coordinates": [[
           [
             [73.804779, 54.650002],
             [73.970947, 54.684947],
@@ -189,7 +189,7 @@ describe('precisionGeoJSON', function() {
             [73.900909, 54.622183],
             [73.946228, 54.661124]
           ]
-        ]
+        ]]
       }
     };
     assert.deepEqual(precisionGeoJSON(json, 6), precised_json);

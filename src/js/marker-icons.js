@@ -1,4 +1,4 @@
-import m from './utils/mobile';
+import m from './utils/mobile.js';
 
 var size = 1;
 var userAgent = navigator.userAgent.toLowerCase();
@@ -26,16 +26,4 @@ export var middleIcon = L.divIcon({
   className: "m-editor-middle-div-icon",
   iconSize: [10 * size, 10 * size]
 
-});
-
-// disable hover icon to simplify
-
-export var hoverIcon = icon || L.divIcon({
-    className: "m-editor-div-icon",
-    iconSize: [2 * 7 * size, 2 * 7 * size]
-  });
-
-export var intersectionIcon = L.divIcon({
-  className: "m-editor-intersection-div-icon",
-  iconSize: [2 * 7 * size, 2 * 7 * size]
 });

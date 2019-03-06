@@ -1,17 +1,14 @@
-const viewColor = '#00FFFF';
-const drawColor = '#00F800';
+const viewColor = '#0aaec9';
+const drawColor = '#00cd00';
 const weight = 3;
 
 export default {
-  allowIntersection: false,
-  allowCorrectIntersection: false, //todo: unfinished
   forceToDraw: true,
+  notifyClickMarkerDeletePolygon: false,
   translations: {
     removePolygon: 'remove polygon',
     removePoint: 'remove point'
   },
-  overlays: {},
-  defaultControlLayers: true,
   style: {
     view: {
       opacity: 0.5,
@@ -61,9 +58,8 @@ export default {
     dashArray: '5, 10'
   },
   text: {
-    intersection: 'Self-intersection is prohibited',
-    deletePointIntersection: 'Deletion of point is not possible. Self-intersection is prohibited',
     removePolygon: 'Remove polygon',
+    acceptDeletion: 'Click again to remove polygon',
     clickToEdit: 'click to edit',
     clickToAddNewEdges: '<div>click&nbsp;&nbsp;<div class=\'m-editor-middle-div-icon static group-selected\'></div>&nbsp;&nbsp;to add new edges</div>',
     clickToDrawInnerEdges: 'click to draw inner edges',
@@ -78,11 +74,7 @@ export default {
     checkJson: 'check JSON',
     loadJson: 'load GeoJSON',
     forgetToSave: 'Save changes by pressing outside of polygon',
-    searchLocation: 'Search location',
-    submitLoadBtn: 'submit',
-    zoom: 'Zoom',
-    hideFullScreen: 'Hide full screen',
-    showFullScreen: 'Show full screen'
+    zoom: 'Zoom'
   },
   worldCopyJump: true,
   geoJSONArea: null

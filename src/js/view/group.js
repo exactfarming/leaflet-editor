@@ -1,10 +1,12 @@
+import EVENTS from '../event-names.js';
+
 export default L.MultiPolygon.extend({
   initialize (latlngs, options) {
     L.MultiPolygon.prototype.initialize.call(this, latlngs, options);
 
     this.on('layeradd', (e) => {
       var mViewStyle = this._map.options.style.view;
-      e.target.setStyle($.extend({
+      e.target.setStyle(Object.assign({
         opacity: 0.7,
         fillOpacity: 0.35,
         color: '#00ABFF'
@@ -20,33 +22,19 @@ export default L.MultiPolygon.extend({
     L.MultiPolygon.prototype.onAdd.call(this, map);
 
     this.on('mousemove', (e) => {
-      var eMarkersGroup = map.getEMarkersGroup();
-      if (eMarkersGroup.isEmpty()) {
-        map.fire('editor:view_polygon_mousemove', { layerPoint: e.layerPoint });
-      } else {
-        if (!eMarkersGroup.getFirst()._hasFirstIcon()) {
-          map.fire('editor:view_polygon_mousemove', { layerPoint: e.layerPoint });
-        }
-      }
+      map.fire(EVENTS.view_polygon_mousemove, { layerPoint: e.layerPoint });
     });
     this.on('mouseout', () => {
-      var eMarkersGroup = map.getEMarkersGroup();
-      if (eMarkersGroup.isEmpty()) {
-        map.fire('editor:view_polygon_mouseout');
-      } else {
-        if (!eMarkersGroup.getFirst()._hasFirstIcon()) {
-          map.fire('editor:view_polygon_mouseout');
-        }
-      }
+      map.fire(EVENTS.view_polygon_mouseout);
     });
   },
   onClick (e) {
-    var map = this._map;
-    var selectedMGroup = map.getSelectedMGroup();
-    var eMarkersGroup = map.getEMarkersGroup();
+    const map = this._map;
+    const selectedMGroup = map.getSelectedMGroup();
+    const eMarkersGroup = map.getEMarkersGroup();
     if ((eMarkersGroup.getFirst() && eMarkersGroup.getFirst()._hasFirstIcon() && !eMarkersGroup.isEmpty()) ||
       (selectedMGroup && selectedMGroup.getFirst() && selectedMGroup.getFirst()._hasFirstIcon() && !selectedMGroup.isEmpty())) {
-      var eMarkersGroup = map.getEMarkersGroup();
+      const eMarkersGroup = map.getEMarkersGroup();
       eMarkersGroup.set(e.latlng);
       map._convertToEdit(eMarkersGroup);
     } else {
@@ -71,7 +59,7 @@ export default L.MultiPolygon.extend({
     this.off('mouseover');
     this.off('mouseout');
 
-    map.off('editor:view_polygon_mousemove');
-    map.off('editor:view_polygon_mouseout');
+    map.off(EVENTS.view_polygon_mousemove);
+    map.off(EVENTS.view_polygon_mouseout);
   }
 });

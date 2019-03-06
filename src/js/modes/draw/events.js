@@ -1,11 +1,12 @@
-import {firstIcon, icon, dragIcon, middleIcon, hoverIcon, intersectionIcon} from '../marker-icons';
+import { firstIcon, middleIcon } from '../../marker-icons.js';
+import EVENTS from '../../event-names.js';
+
 export default {
   _bindDrawEvents () {
     this._unBindDrawEvents();
 
     // click on map
     this.on('click', (e) => {
-      this._storedLayerPoint = e.layerPoint;
       // bug fix
       if (e.originalEvent && e.originalEvent.clientX === 0 && e.originalEvent.clientY === 0) {
         return;
@@ -21,7 +22,7 @@ export default {
       if (eMarkersGroup.isEmpty()) {
         this._addMarker(e);
 
-        this.fire('editor:start_add_new_polygon');
+        this.fire(EVENTS.start_add_new_polygon);
         var startDrawStyle = this.options.style['startDraw'];
 
         if (startDrawStyle) {
@@ -56,7 +57,7 @@ export default {
             lastHGroup.set(e.latlng, null, { icon: firstIcon });
 
             this._selectedMGroup = lastHGroup;
-            this.fire('editor:start_add_new_hole');
+            this.fire(EVENTS.start_add_new_hole);
 
             return false;
           }
@@ -65,17 +66,8 @@ export default {
 
       // continue with new hole polygon
       if (lastHole && !lastHole.isEmpty() && lastHole.hasFirstMarker()) {
-        if (this.getEMarkersGroup()._isMarkerInPolygon(e.latlng)) {
-          var marker = ehMarkersGroup.getLastHole().set(e.latlng);
-          var rslt = marker._detectIntersection(); // in case of hole
-          if (rslt) {
-            this._showIntersectionError();
+        ehMarkersGroup.getLastHole().set(e.latlng);
 
-            //marker._mGroup.removeMarker(marker); //todo: detect intersection for hole
-          }
-        } else {
-          this._showIntersectionError();
-        }
         return false;
       }
 
@@ -89,10 +81,10 @@ export default {
       this.clear();
       this.mode('draw');
 
-      this.fire('editor:marker_group_clear');
+      this.fire(EVENTS.marker_group_clear);
     });
 
-    this.on('editor:__join_path', (e) => {
+    this.on(EVENTS.join_path, (e) => {
       var eMarkersGroup = e.mGroup;
 
       if (!eMarkersGroup) {
@@ -125,9 +117,9 @@ export default {
 
 
       if (eMarkersGroup._isHole) {
-        this.fire('editor:polygon:hole_created');
+        this.fire(EVENTS.hole_created);
       } else {
-        this.fire('editor:polygon:created');
+        this.fire(EVENTS.polygon_created);
       }
     });
 
@@ -137,18 +129,17 @@ export default {
       vGroup.onClick(e);
 
       this.msgHelper.msg(this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
-      this.fire('editor:polygon:selected');
+      this.fire(EVENTS.polygon_selected);
     });
 
-    this.on('editor:delete_marker', () => {
+    this.on(EVENTS.delete_marker, () => {
       this._convertToEdit(this.getEMarkersGroup());
     });
-    this.on('editor:delete_polygon', () => {
+    this.on(EVENTS.delete_polygon, () => {
       this.getEHMarkersGroup().remove();
     });
   },
-  _addMarker (e) {
-    var latlng = e.latlng;
+  _addMarker ({ latlng }) {
 
     var eMarkersGroup = this.getEMarkersGroup();
 
@@ -158,21 +149,17 @@ export default {
 
     return marker;
   },
-  _updateDELine (latlng) {
-    return this.getEMarkersGroup().getDELine().update(latlng);
-  },
   _unBindDrawEvents () {
     this.off('click');
     this.getVGroup().off('click');
-    //this.off('mouseout');
+
     this.off('dblclick');
 
     this.getDELine().clear();
 
-    this.off('editor:__join_path');
+    this.off(EVENTS.join_path);
 
     if (this._openPopup) {
-      this.openPopup = this._openPopup;
       delete this._openPopup;
     }
   }
