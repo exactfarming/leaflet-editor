@@ -1,4 +1,5 @@
 import Marker from '../modes/edit/marker.js';
+import * as icons from '../marker-icons.js';
 
 import EVENTS from '../event-names.js';
 
@@ -145,6 +146,9 @@ export default L.Class.extend({
         map.getVGroup().removeLayer(map._getSelectedVLayer());
       }
     }
+  },
+  hasStartMarker() {
+    return !!this.getLayers().some(marker => marker._icon.classList.contains(icons.firstIcon.options.className));
   },
   addMarker (latlng, position, options) {
     // 1. recalculate positions
@@ -300,6 +304,9 @@ export default L.Class.extend({
 
     this._map._selectedMGroup = this;
     this._map.fire(EVENTS.marker_group_select);
+  },
+  isSelected() {
+    return this._selected;
   },
   isEmpty () {
     return this.getLayers().length === 0;

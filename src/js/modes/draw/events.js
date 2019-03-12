@@ -59,6 +59,9 @@ export default {
             this._selectedMGroup = lastHGroup;
             this.fire(EVENTS.start_add_new_hole);
 
+            this.getEHMarkersGroup().resetSelection();
+            this.getEMarkersGroup().resetSelection();
+
             return false;
           }
         }

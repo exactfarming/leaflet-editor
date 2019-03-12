@@ -58,7 +58,7 @@ describe('methods', function () {
     expect(document.querySelectorAll('path.leaflet-clickable:not(.editable-polygon)').length).to.eql(1);
   });
 
-  it('getEditableArea', async () => {
+  it('area', async () => {
 
     const geoJSON = {
       "type": "Feature",
@@ -90,11 +90,11 @@ describe('methods', function () {
 
     editor.fitBounds(layer.getBounds());
 
-    expect(editor.getEditableArea()).to.eql(0);
+    expect(editor.area()).to.eql(114178506.51615);
 
     await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
 
-    expect(editor.getEditableArea()).to.eql(114178506.51615);
+    expect(editor.area()).to.eql(114178506.51615);
   });
 
   it('geoJSONArea', async () => {
@@ -130,7 +130,7 @@ describe('methods', function () {
 
     await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
 
-    expect(editor.getEditableArea()).to.eql(114178506.51615);
+    expect(editor.area()).to.eql(114178506.51615);
     expect(editor.geoJSONArea(geoJSON)).to.eql(114178506.51615033);
   });
 

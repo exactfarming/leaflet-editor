@@ -26,6 +26,10 @@ export default L.Marker.extend({
     this._isFirst = group.getLayers().length === 0;
   },
 
+  group() {
+    return this._mGroup;
+  },
+
   next() {
     var next = this._next._next;
     if (!this._next.isMiddle()) {
@@ -43,8 +47,8 @@ export default L.Marker.extend({
   changePrevNextPos() {
     if (this._prev.isMiddle()) {
 
-      var prevLatLng = this._mGroup._getMiddleLatLng(this.prev(), this);
-      var nextLatLng = this._mGroup._getMiddleLatLng(this, this.next());
+      var prevLatLng = this.group()._getMiddleLatLng(this.prev(), this);
+      var nextLatLng = this.group()._getMiddleLatLng(this, this.next());
 
       this._prev.setLatLng(prevLatLng);
       this._next.setLatLng(nextLatLng);
@@ -91,8 +95,8 @@ export default L.Marker.extend({
         if (!this._hasFirstIcon()) {
           return;
         }
-        var map = this._map;
-        var mGroup = this._mGroup;
+        const map = this._map;
+        const mGroup = this.group();
 
         if (mGroup._markers.length < 3) {
           this._onceClick();
@@ -110,32 +114,36 @@ export default L.Marker.extend({
       !this.isMiddle() &&
       this.isSelectedInGroup() &&
       this._map.getSelectedMarker() === this &&
-      this._mGroup.hasMinimalMarkersLength();
+      this.group().hasMinimalMarkersLength();
   },
   needAcceptionToDelete() {
     return this._map.options.notifyClickMarkerDeletePolygon &&
       !this.isMiddle() &&
       this.isSelectedInGroup() &&
       this._map.getSelectedMarker() !== this &&
-      this._mGroup.hasMinimalMarkersLength();
+      this.group().hasMinimalMarkersLength();
   },
   _bindEvents() {
 
     this.on('dragstart', (e) => {
-      this._mGroup.setSelected(this);
+      this.group().setSelected(this);
       this._oldLatLngState = e.target._latlng;
 
       if (this._prev.isPlain()) {
-        this._mGroup.setMiddleMarkers(this.position);
+        this.group().setMiddleMarkers(this.position);
       }
 
       this._map.fire(EVENTS.marker_dragstart);
     });
 
     this.on('click', () => {
+      const mGroup = this.group();
+
+      if (this.group().hasFirstMarker()) {
+        return;
+      }
 
       const map = this._map;
-      const mGroup = this._mGroup;
 
       if (this.needAcceptionToDelete()) {
         mGroup.setSelected(this);
@@ -213,11 +221,11 @@ export default L.Marker.extend({
 
     this.on('mouseover', () => {
       var map = this._map;
-      if (this._mGroup.getFirst()._hasFirstIcon()) {
-        if (this._mGroup.getLayers().length > 2) {
+      if (this.group().getFirst()._hasFirstIcon()) {
+        if (this.group().getLayers().length > 2) {
           if (this._hasFirstIcon()) {
             map.fire(EVENTS.first_marker_mouseover, {marker: this});
-          } else if (this === this._mGroup._lastMarker) {
+          } else if (this === this.group()._lastMarker) {
             map.fire(EVENTS.last_marker_dblclick_mouseover, {marker: this});
           }
         }
@@ -243,7 +251,7 @@ export default L.Marker.extend({
     this._onceClick();
 
     this.on('dblclick', () => {
-      var mGroup = this._mGroup;
+      var mGroup = this.group();
       if (mGroup && mGroup.getFirst() && mGroup.getFirst()._hasFirstIcon()) {
         if (this === mGroup._lastMarker) {
           mGroup.getFirst().fire('click');
@@ -280,7 +288,7 @@ export default L.Marker.extend({
   },
   _onDragEnd() {
 
-    this._mGroup.select();
+    this.group().select();
     this._map.fire(EVENTS.dragend_marker, {marker: this});
 
     this._map.fire(EVENTS.selected_marker_mouseover, {marker: this});

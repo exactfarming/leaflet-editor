@@ -162,6 +162,10 @@ describe('e2e tests', function () {
     await triggerEvent('click', '.m-editor-div-icon.group-selected');
 
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon.group-selected').length).to.eql(0);
+
+    // await triggerEvent('click', '.m-editor-div-icon.group-selected');
+
+    // expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon.group-selected').length).to.eql(0);
   });
   it('draw polygon + 2 holes; remove holes; remove polygon', async function () {
     const x = 200;
@@ -303,8 +307,6 @@ describe('e2e tests', function () {
     };
 
     await drawPolygon();
-
-    let {x: _x, y: _y} = document.querySelector('.leaflet-marker-pane .m-editor-middle-div-icon').getBoundingClientRect();
 
     await triggerEvent('click', '.leaflet-marker-pane .m-editor-middle-div-icon');
 

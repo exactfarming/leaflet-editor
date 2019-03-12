@@ -91,7 +91,7 @@ export default Object.assign({
    * Default precision is 6 (precLatLng)
    *
    * */
-  getEditableArea(props = {}) {
+  area(props = {}) {
 
     let {precLatLng = 6} = props;
     let vLayer = this.getVGroup();
@@ -100,18 +100,16 @@ export default Object.assign({
 
     let sum = 0;
 
-    if (!ePolygonLayer.isEmpty()) {
-      // if "eArea" < 0 than "ePolygonLayer" is hole layer
-      let eArea = this.geoJSONArea(precisionGeoJSON(ePolygonLayer.toGeoJSON(), precLatLng));
-      let vArea = this.geoJSONArea(precisionGeoJSON(vLayer.toGeoJSON(), precLatLng));
+    let eArea = (!ePolygonLayer.isEmpty()) ? this.geoJSONArea(precisionGeoJSON(ePolygonLayer.toGeoJSON(), precLatLng)) : 0;
+    let vArea = this.geoJSONArea(precisionGeoJSON(vLayer.toGeoJSON(), precLatLng));
 
-      let hArea = (selectedLayer) ? this.geoJSONArea(precisionGeoJSON(selectedLayer.toGeoJSON(), precLatLng)) : 0;
+    let hArea = (selectedLayer) ? this.geoJSONArea(precisionGeoJSON(selectedLayer.toGeoJSON(), precLatLng)) : 0;
 
-      if (this.hasSelectedVLayer() && eArea > 0) {
-        vArea -= hArea;
-      }
-      sum = (eArea > 0) ? (vArea + eArea) : vArea;
+    if (this.hasSelectedVLayer() && eArea > 0) {
+      vArea -= hArea;
     }
+
+    sum = (eArea > 0) ? (vArea + eArea) : vArea;
 
     return precision(sum, precLatLng);
   },
