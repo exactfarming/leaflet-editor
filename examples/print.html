@@ -43,16 +43,17 @@
 <body style="padding: 50px;">
 
 <button onclick="deleteEdge()" class="delete-marker">Delete edge</button>
+<button onclick="print()" class="delete-marker">Print page</button>
 
 <div id="map" style="float: right; width: 100%; height: 500px;"></div>
 <div id="area"></div>
 <div id="event-type"></div>
 
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet-src.js"></script>
 <script src="https://npmcdn.com/@turf/turf@5.1.6/turf.min.js"></script>
-
-<script src="../dist/js/index.js"></script>
+<!--<script src="../dist/js/index.js"></script>-->
+<script src="./dist/js/index.js"></script>
 
 <script>
   const deleteEdge = function () {
@@ -219,6 +220,19 @@
     document.querySelector('#event-type').innerText = 'event "' + e.type + '"';
     info.update(map.area(areaOptions), e.type);
   });
+
+
+  ////////////// print //////////////////
+  const print = function () {
+    domtoimage
+      .toPng(document.body)
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'exportedMap.png';
+        link.href = dataUrl;
+        link.click();
+      });
+  };
 </script>
 </body>
 </html>

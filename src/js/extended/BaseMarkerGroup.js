@@ -161,14 +161,6 @@ export default L.Class.extend({
       latlng = this._getMiddleLatLng(prevMarker, nextMarker);
     }
 
-    if (this.getLayers().length === 0) {
-      options.draggable = false;
-    }
-
-    if (this.getFirst()) {
-      options.draggable = !this.getFirst()._hasFirstIcon();
-    }
-
     var marker = new Marker(this, latlng, options);
     if (!this._firstMarker) {
       this._firstMarker = marker;
@@ -178,12 +170,6 @@ export default L.Class.extend({
     if (position !== undefined) {
       marker.position = position;
     }
-
-    //if (this.getFirst()._hasFirstIcon()) {
-    //  marker.dragging.disable();
-    //} else {
-    //  marker.dragging.enable();
-    //}
 
     this.addLayer(marker);
 
@@ -207,7 +193,7 @@ export default L.Class.extend({
     }
     // 3. trigger event
     if (!marker.isMiddle()) {
-      this._map.fire(EVENTS.add_marker, { marker: marker });
+      this._map.fire(EVENTS.before_add_marker, { marker: marker });
     }
 
     return marker;
@@ -284,26 +270,27 @@ export default L.Class.extend({
   select () {
     if (this.isEmpty()) {
       this._map._selectedMGroup = null;
-      return;
-    }
-
-    var map = this._map;
-    if (this._isHole) {
-      map.getEHMarkersGroup().resetSelection();
-      map.getEMarkersGroup().resetSelection();
-      map.getEHMarkersGroup().setLastHole(this);
     } else {
-      map.getEHMarkersGroup().resetSelection();
-      map.getEHMarkersGroup().resetLastHole();
+      const map = this._map;
+
+      if (this._isHole) {
+        map.getEHMarkersGroup().resetSelection();
+        map.getEMarkersGroup().resetSelection();
+        map.getEHMarkersGroup().setLastHole(this);
+      } else {
+        map.getEHMarkersGroup().resetSelection();
+        map.getEHMarkersGroup().resetLastHole();
+      }
+
+      this.getLayers()._each((marker) => {
+        marker.dragging.enable();
+        marker.selectIconInGroup();
+      });
+      this._selected = true;
+
+      this._map._selectedMGroup = this;
+      this._map.fire(EVENTS.marker_group_select);
     }
-
-    this.getLayers()._each((marker) => {
-      marker.selectIconInGroup();
-    });
-    this._selected = true;
-
-    this._map._selectedMGroup = this;
-    this._map.fire(EVENTS.marker_group_select);
   },
   isSelected() {
     return this._selected;
@@ -313,6 +300,7 @@ export default L.Class.extend({
   },
   resetSelection () {
     this.getLayers()._each((marker) => {
+      marker.dragging.disable();
       marker.unSelectIconInGroup();
     });
     this._selected = false;

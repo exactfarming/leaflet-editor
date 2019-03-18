@@ -14,7 +14,7 @@ export default L.Polygon.extend({
     this.clearHoles();
 
     if (Array.isArray(this._latlngs) && this._latlngs[0] !== undefined) {
-      this.setLatLngs([]);
+      this.setLatLngs([[0,0],[0,0]]);
     }
   }
 })

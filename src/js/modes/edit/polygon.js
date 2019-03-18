@@ -7,8 +7,7 @@ export default L.EditPloygon = ExtendedPolygon.extend({
   _k: 1, // to decrease 'diff' value which helps build a hole
   _holes: [],
   initialize (latlngs, options) {
-    L.Polyline.prototype.initialize.call(this, latlngs, options);
-    this._initWithHoles(latlngs);
+    L.Polygon.prototype.initialize.call(this, latlngs, options);
 
     this.options.className = "leaflet-clickable editable-polygon";
   },
@@ -35,8 +34,8 @@ export default L.EditPloygon = ExtendedPolygon.extend({
   onAdd (map) {
     L.Polyline.prototype.onAdd.call(this, map);
 
-    map.off(EVENTS.add_marker);
-    map.on(EVENTS.add_marker, (e) => this._update(e));
+    map.off(EVENTS.before_add_marker);
+    map.on(EVENTS.before_add_marker, (e) => this._update(e));
     map.off(EVENTS.drag_marker);
     map.on(EVENTS.drag_marker, (e) => this._update(e));
     map.off(EVENTS.delete_marker);

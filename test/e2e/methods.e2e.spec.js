@@ -167,7 +167,6 @@ describe('methods', function () {
 
     expect(json).to.eql(geoJSON.geometry);
 
-
     await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
   });
 });

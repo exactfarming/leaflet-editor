@@ -7,23 +7,22 @@ if (m.isMobileBrowser()) {
   size = 2;
 }
 
-export var firstIcon = L.divIcon({
+export const firstIcon = L.divIcon({
   className: "m-editor-div-icon-first",
   iconSize: [10 * size, 10 * size]
 });
 
-export var icon = L.divIcon({
+export const icon = L.divIcon({
   className: "m-editor-div-icon",
   iconSize: [10 * size, 10 * size]
 });
 
-export var dragIcon = L.divIcon({
+export const dragIcon = L.divIcon({
   className: "m-editor-div-icon-drag",
   iconSize: [10 * size * 3, 10 * size * 3]
 });
 
-export var middleIcon = L.divIcon({
+export const middleIcon = L.divIcon({
   className: "m-editor-middle-div-icon",
   iconSize: [10 * size, 10 * size]
-
 });

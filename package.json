@@ -12,7 +12,7 @@
     "test:watch": "./node_modules/.bin/browser-sync start -s -w **/*.js --startPath test/index.html",
     "postinstall": "cd node_modules/mapbox.js && yarn && make",
     "watch": "webpack --watch",
-    "start:dev": "yarn watch & ./node_modules/.bin/browser-sync start --server -w dist/**/*.js test/**/*.js -f dist/**/*.js --startPath examples",
+    "start:dev": "yarn watch & ./node_modules/.bin/browser-sync start --server -w dist/**/*.min.js test/**/*.js -f dist/**/*.min.js --startPath examples",
     "build": "rm -rf dist && webpack"
   },
   "repository": {

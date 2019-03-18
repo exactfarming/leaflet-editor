@@ -43,9 +43,7 @@ export default L.FeatureGroup.extend({
   },
   resetSelection () {
     this.eachLayer((layer) => {
-      layer.getLayers()._each((marker) => {
-        marker.unSelectIconInGroup();
-      });
+      layer.resetSelection();
     });
     this._selected = false;
   }

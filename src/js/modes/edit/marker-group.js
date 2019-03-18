@@ -59,7 +59,7 @@ L.MarkerGroup = BaseMGroup.extend({
     }
   },
   hasFirstMarker () {
-    return this.getFirst() && this.getFirst()._hasFirstIcon();
+    return !!(this.getFirst() && this.getFirst()._hasFirstIcon());
   },
   restore (layer) {
     this.setAll(layer._latlngs);

@@ -109,10 +109,6 @@ export default {
       //2. clear line
       eMarkersGroup.getDELine().clear();
 
-      eMarkersGroup.getLayers()._each((marker) => {
-        marker.dragging.enable();
-      });
-
       eMarkersGroup.select();
 
       //reset style if 'startDraw' was used
@@ -126,13 +122,18 @@ export default {
       }
     });
 
-    var vGroup = this.getVGroup();
+    const vGroup = this.getVGroup();
 
     vGroup.on('click', (e) => {
-      vGroup.onClick(e);
+      const selectedMGroup = this.getSelectedMGroup();
 
-      this.msgHelper.msg(this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
-      this.fire(EVENTS.polygon_selected);
+      if (selectedMGroup && !selectedMGroup.hasFirstMarker()) {
+
+        vGroup.onClick(e);
+
+        this.msgHelper.msg(this.options.text.clickToDrawInnerEdges, null, e.layerPoint);
+        this.fire(EVENTS.polygon_selected);
+      }
     });
 
     this.on(EVENTS.delete_marker, () => {
@@ -149,6 +150,8 @@ export default {
     var marker = eMarkersGroup.set(latlng);
 
     this._convertToEdit(eMarkersGroup);
+
+    this.fire(EVENTS.add_marker, { marker });
 
     return marker;
   },

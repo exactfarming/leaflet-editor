@@ -90,7 +90,6 @@ export default L.Control.extend({
 
       var point;
 
-      //var offset = this.getOffset(document.getElementById(this._map._container.getAttribute('id')));
       var offset = this.getOffset(this._map._container);
 
       if (object instanceof L.Point) {

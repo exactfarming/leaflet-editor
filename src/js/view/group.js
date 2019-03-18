@@ -32,8 +32,7 @@ export default L.MultiPolygon.extend({
     const map = this._map;
     const selectedMGroup = map.getSelectedMGroup();
     const eMarkersGroup = map.getEMarkersGroup();
-    if ((eMarkersGroup.getFirst() && eMarkersGroup.getFirst()._hasFirstIcon() && !eMarkersGroup.isEmpty()) ||
-      (selectedMGroup && selectedMGroup.getFirst() && selectedMGroup.getFirst()._hasFirstIcon() && !selectedMGroup.isEmpty())) {
+    if ((selectedMGroup && selectedMGroup.getFirst() && selectedMGroup.getFirst()._hasFirstIcon() && !selectedMGroup.isEmpty())) {
       const eMarkersGroup = map.getEMarkersGroup();
       eMarkersGroup.set(e.latlng);
       map._convertToEdit(eMarkersGroup);

@@ -5,7 +5,7 @@ import EVENTS from '../../event-names.js';
 var size = 1;
 var userAgent = navigator.userAgent.toLowerCase();
 
-if (userAgent.indexOf("ipad") !== -1 || userAgent.indexOf("iphone") !== -1) {
+if (userAgent.indexOf('ipad') !== -1 || userAgent.indexOf('iphone') !== -1) {
   size = 2;
 }
 
@@ -71,10 +71,6 @@ export default L.Marker.extend({
   _removeIconClass(className) {
     L.DomUtil.removeClass(this._icon, className);
   },
-  // _setFirstIcon() {
-  //   this._isFirst = true;
-  //   this.setIcon(firstIcon);
-  // },
   _hasFirstIcon() {
     return this._icon && L.DomUtil.hasClass(this._icon, 'm-editor-div-icon-first');
   },
@@ -116,16 +112,22 @@ export default L.Marker.extend({
       this._map.getSelectedMarker() === this &&
       this.group().hasMinimalMarkersLength();
   },
-  needAcceptionToDelete() {
+  needAcceptToDelete() {
     return this._map.options.notifyClickMarkerDeletePolygon &&
       !this.isMiddle() &&
       this.isSelectedInGroup() &&
       this._map.getSelectedMarker() !== this &&
       this.group().hasMinimalMarkersLength();
   },
+  _disallowToExecuteEvent() {
+    const map = this._map;
+    const selectedMGroup = map.getSelectedMGroup();
+
+    return selectedMGroup && selectedMGroup.hasFirstMarker() && selectedMGroup !== this.group();
+  },
   _bindEvents() {
 
-    this.on('dragstart', (e) => {
+    this.on('dragstart', e => {
       this.group().setSelected(this);
       this._oldLatLngState = e.target._latlng;
 
@@ -134,18 +136,19 @@ export default L.Marker.extend({
       }
 
       this._map.fire(EVENTS.marker_dragstart);
+
+      this.__dragging = true;
     });
 
     this.on('click', () => {
       const mGroup = this.group();
+      const map = this._map;
 
-      if (this.group().hasFirstMarker()) {
+      if (this._disallowToExecuteEvent()) {
         return;
       }
 
-      const map = this._map;
-
-      if (this.needAcceptionToDelete()) {
+      if (this.needAcceptToDelete()) {
         mGroup.setSelected(this);
         map.msgHelper.msg(map.options.text.acceptDeletion, 'error', this);
         return;
@@ -184,12 +187,12 @@ export default L.Marker.extend({
         return;
       }
 
-      if (this.isMiddle()) { //add edge
+      if (this.isMiddle()) { //add vertex
         mGroup.setMiddleMarkers(this.position);
         this._resetIcon(icon);
         mGroup.select();
         map.msgHelper.msg(map.options.text.clickToRemoveAllSelectedEdges, null, this);
-        // _markerToDeleteGroup = null;
+
         map.clearSelectedMarker();
 
       } else { //remove vertex
@@ -219,8 +222,17 @@ export default L.Marker.extend({
       }
     });
 
-    this.on('mouseover', () => {
-      var map = this._map;
+    this.on('mouseover', (e) => {
+      e.originalEvent.stopPropagation();
+
+      const selectedMarker = this._map.getSelectedMarker();
+      const selectedMarkerDragging = !!(selectedMarker && selectedMarker.__dragging);
+
+      if (this._disallowToExecuteEvent() || selectedMarkerDragging) {
+        return;
+      }
+
+      const map = this._map;
       if (this.group().getFirst()._hasFirstIcon()) {
         if (this.group().getLayers().length > 2) {
           if (this._hasFirstIcon()) {
@@ -244,13 +256,26 @@ export default L.Marker.extend({
         map.msgHelper.msg(map.options.text.acceptDeletion, 'error', this);
       }
     });
-    this.on('mouseout', () => {
+    this.on('mouseout', (e) => {
+      e.originalEvent.stopPropagation();
+
+      const selectedMarker = this._map.getSelectedMarker();
+      const selectedMarkerDragging = !!(selectedMarker && selectedMarker.__dragging);
+
+      if (this._disallowToExecuteEvent() || selectedMarkerDragging) {
+        return;
+      }
+
       this._map.fire(EVENTS.marker_mouseout);
     });
 
     this._onceClick();
 
     this.on('dblclick', () => {
+      if (this._disallowToExecuteEvent()) {
+        return;
+      }
+
       var mGroup = this.group();
       if (mGroup && mGroup.getFirst() && mGroup.getFirst()._hasFirstIcon()) {
         if (this === mGroup._lastMarker) {
@@ -264,7 +289,9 @@ export default L.Marker.extend({
     });
 
     this.on('dragend', (e) => {
+
       this.__wasDragged = true;
+      this.__dragging = false;
       this._onDragEnd(e);
     });
   },

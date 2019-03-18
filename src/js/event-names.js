@@ -36,6 +36,7 @@ export default {
 
   delete_hole: 'editor:delete_hole',
 
+  before_add_marker: 'editor:before_add_marker',
   add_marker: 'editor:add_marker',
   marker_group_select: 'editor:marker_group_select',
 
