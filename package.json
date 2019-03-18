@@ -1,12 +1,11 @@
 {
   "name": "leaflet-editor",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Leaflet plugin which helps edit polygons with holes",
   "main": "src/js/map.js",
   "scripts": {
     "test:dev": "testem",
     "test:ci": "testem ci",
-    "postinstall": "cd node_modules/mapbox.js && yarn && make",
     "watch": "webpack --watch",
     "start:dev": "yarn watch & ./node_modules/.bin/browser-sync start --server -w dist/**/*.min.js test/**/*.js -f dist/**/*.min.js --startPath examples",
     "build": "rm -rf dist && webpack"
