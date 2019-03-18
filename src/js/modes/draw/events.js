@@ -81,10 +81,13 @@ export default {
       } else {
         this._addEPolygon_To_VGroup();
       }
+
+
       this.clear();
-      this.mode('draw');
 
       this.fire(EVENTS.marker_group_clear);
+
+      this.mode('draw');
     });
 
     this.on(EVENTS.join_path, (e) => {

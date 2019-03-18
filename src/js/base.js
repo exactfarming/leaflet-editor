@@ -45,9 +45,8 @@ export default Object.assign({
   clear() {
     this._clearEvents();
     this._clearMap();
-    setTimeout(() => {
-      this.fire(EVENTS.map_cleared);
-    }, 0);
+
+    this.fire(EVENTS.map_cleared);
   },
   /**
    *

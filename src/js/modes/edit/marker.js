@@ -121,7 +121,11 @@ export default L.Marker.extend({
   },
   _disallowToExecuteEvent() {
     const map = this._map;
-    const selectedMGroup = map.getSelectedMGroup();
+    let selectedMGroup;
+
+    if (!map) {
+      selectedMGroup = map.getSelectedMGroup()
+    }
 
     return selectedMGroup && selectedMGroup.hasFirstMarker() && selectedMGroup !== this.group();
   },
