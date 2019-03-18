@@ -127,7 +127,7 @@ export default {
     vGroup.on('click', (e) => {
       const selectedMGroup = this.getSelectedMGroup();
 
-      if (selectedMGroup && !selectedMGroup.hasFirstMarker()) {
+      if (!selectedMGroup || !selectedMGroup.hasFirstMarker()) {
 
         vGroup.onClick(e);
 
