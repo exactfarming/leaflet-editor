@@ -1,6 +1,9 @@
 module.exports = {
   'test_page': 'test/index.html',
   'framework': 'mocha',
+  'src_files': [
+    'dist/**/*.min.js'
+  ],
   'launch_in_ci': [
     'Chrome',
   ],
