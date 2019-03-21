@@ -1,4 +1,4 @@
-import {firstIcon, icon, dragIcon, middleIcon} from '../../marker-icons.js';
+import { icon, dragIcon } from '../../marker-icons.js';
 
 import EVENTS from '../../event-names.js';
 
@@ -123,7 +123,7 @@ export default L.Marker.extend({
     const map = this._map;
     let selectedMGroup;
 
-    if (!map) {
+    if (map) {
       selectedMGroup = map.getSelectedMGroup()
     }
 
@@ -306,11 +306,11 @@ export default L.Marker.extend({
     this._bindEvents(map);
   },
   _onDrag(e) {
-    var marker = e.target;
+    const marker = e.target;
 
     marker.changePrevNextPos();
 
-    var map = this._map;
+    const map = this._map;
     map._convertToEdit(map.getEMarkersGroup());
 
     this._setDragIcon();

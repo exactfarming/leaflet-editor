@@ -26,3 +26,8 @@ export const middleIcon = L.divIcon({
   className: "m-editor-middle-div-icon",
   iconSize: [10 * size, 10 * size]
 });
+
+export const middleSelectedIcon = L.divIcon({
+  className: "m-editor-middle-div-icon group-selected",
+  iconSize: [10 * size, 10 * size]
+});

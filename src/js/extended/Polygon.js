@@ -1,7 +1,10 @@
 export default L.Polygon.extend({
   isEmpty () {
-    var latLngs = this.getLatLngs();
-    return latLngs === null || latLngs === undefined || (latLngs && latLngs.length === 0);
+    const latLngs = this.getLatLngs();
+    return latLngs === null ||
+      latLngs === undefined ||
+      (latLngs && latLngs.length === 0) ||
+      latLngs.toString() === 'LatLng(0, 0),LatLng(0, 0)';
   },
   getHoles () {
     return this._holes;

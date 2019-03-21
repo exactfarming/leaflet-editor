@@ -94,7 +94,7 @@ L.MarkerGroup = BaseMGroup.extend({
     return marker;
   },
   setMiddleMarker (position) {
-    this.addMarker(position, null, {icon: icons.middleIcon});
+    this.addMarker(position, null, {icon: icons.middleSelectedIcon});
   },
   setMiddleMarkers (position) {
     this.setMiddleMarker(position);

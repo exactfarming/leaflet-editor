@@ -7,6 +7,28 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
   <link rel="stylesheet" href="../dist/css/index.css"/>
   <style>
+    :root {
+      --l-editor-icon-selected-background-color: #e68400;
+      --l-editor-icon-selected-border-color: #e68400;
+      --l-editor-icon-selected-box-shadow-color: #e68400;
+
+      --l-editor-icon-first-border-color: #e68400;
+      --l-editor-icon-first-background-color: #e68400;
+
+      --l-editor-icon-background-color: #FFFFFF;
+      --l-editor-icon-border-color: #e68400;
+      --l-editor-icon-box-shadow-color: #313131;
+      --l-editor-icon-drag-border-color: #e68400;
+
+      --l-editor-tooltip-background-color: rgba(0, 0, 0, 0.5);
+      --l-editor-tooltip-border-color: rgba(0, 0, 0, 0);
+
+      --l-editor-icon-middle-selected-border-color: #e68400;
+      --l-editor-icon-middle-background-color: #FFFFFF;
+
+      --l-editor-icon-middle-border-color: #e68400;
+      --l-editor-icon-middle-box-shadow-color: transparent;
+    }
     .intersection-marker {
       background: rgb(229, 81, 16);
       font-weight: bold;
@@ -73,17 +95,62 @@
   const map = new LeafletEditor('map', {
     notifyClickMarkerDeletePolygon: true,
     center: [54.521081495443596, 73.95996093749999],
-    zoom: 4
+    zoom: 4,
+    text: {
+      "clickToStartDrawPolygonOnMap": null,
+      "dblclickToJoinEdges": "Замкните контур двойным нажатием",
+      "clickToJoinEdges": "Замкните контур",
+      "clickToDrawInnerEdges": "Нажмите для отрисовки внутреннего контура",
+      "intersection": "Границы поля пересекаются",
+      "deletePointIntersection": "Удаление точки невозможно. Грани поля пересекаются.<br/>Попробуте отредактировать контур перед удалением",
+      "removePolygon": "Удалить поле",
+      "clickToEdit": "Нажмите для редактирования",
+      "clickToAddNewEdges": "Нажмите для добавления новых точек",
+      "clickToRemoveAllSelectedEdges": "Нажмите, чтобы удалить точку",
+      "clickToSelectEdges": "Нажмите, чтобы выбрать контур",
+      "deleteSelectedEdges": "Удалить выбраный контур",
+      "rejectChanges": "Отменить отрисовку контура",
+      "jsonWasLoaded": "JSON успешно загружен",
+      "checkJson": "Обнаружены ошибки. Проверьте JSON",
+      "loadJson": "Загрузить GeoJSON",
+      "forgetToSave": "Нажмите на карту вне полигона, чтобы сохранить изменения",
+      "searchLocation": "Геопоиск",
+      "submitLoadBtn": "Добавить на карту",
+      "zoom": "Масштаб",
+      "hideFullScreen": "Выйти из полноэкранного режима",
+      "showFullScreen": "Полноэкранный режим",
+      "acceptDeletion": "Нажмите для подтверджения удаления контура"
+    },
+    style: {
+      view: {
+        color: '#fba900',
+        dashArray: null
+      },
+      draw: {
+        color: '#fba900',
+        fill: true,
+        stroke: true
+      },
+      startDraw: {
+        fill: false,
+        stroke: false,
+        dashArray: null
+      },
+      drawLine: {
+        color: '#fba900',
+        fill: false
+      }
+    }
   });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //http://{switch:a,b,c}.tiles.mapbox.com/v3/openstreetmap.map-4wvf9l0l/{zoom}/{x}/{y}.png
+  // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer('http://{s}.tiles.mapbox.com/v3/openstreetmap.map-4wvf9l0l/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  let areaOfInterestView = L.featureGroup();
   let areaOfInterestEdit = L.featureGroup();
 
-  map.addLayer(areaOfInterestView);
   map.addLayer(areaOfInterestEdit);
 
   const checkSelfIntersections = function (geoJSON, areaOfInterest) {
@@ -100,14 +167,15 @@
       layer = L.geoJson(jsonWithPoints, {
         pointToLayer (feature, latlng) {
           const marker = L.circleMarker(latlng, {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5
+            color: '#c7294c',
+            fillColor: '#ff6471',
+            fillOpacity: 1,
+            opacity: 1
           });
 
           marker.on({
             mouseover() {
-              map.msgHelper.msg('Точка самопересечения', 'error', marker)
+              map.msgHelper.msg('Точка самопересечения', 'error', marker);
             },
             mouseout() {
               map.msgHelper.hide();
@@ -119,7 +187,7 @@
       });
 
       areaOfInterest.addLayer(layer);
-      // layer.bringToBack();
+      layer.bringToFront();
 
       console.log('turf.kinks', jsonWithPoints);
     }
@@ -179,6 +247,13 @@
   });
   map.on('editor:delete_hole', () => {
     console.log('editor:delete_hole');
+
+    const gJSON = map.getCurrentGeoJSON();
+
+    checkSelfIntersections(gJSON, areaOfInterestEdit);
+  });
+  map.on('editor:marker_group_clear', () => {
+    console.log('editor:marker_group_clear');
 
     const gJSON = map.getCurrentGeoJSON();
 
