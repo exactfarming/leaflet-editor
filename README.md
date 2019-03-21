@@ -38,14 +38,12 @@ Change style of markers using css variables
 :root {
   --l-editor-icon-selected-background-color: #B53200;
   --l-editor-icon-selected-border-color: #FFFFFF;
-  /*--l-editor-icon-selected-box-shadow-color: #B53200;*/
 
   --l-editor-icon-first-border-color: rgba(229, 81, 16, 1);
   --l-editor-icon-first-background-color: #88ff88;
 
   --l-editor-icon-background-color: #88ff88;
   --l-editor-icon-border-color: #88ff88;
-  /*--l-editor-icon-box-shadow-color: #313131;*/
   --l-editor-icon-drag-border-color: #00cd00;
 
   --l-editor-tooltip-background-color: rgba(0, 0, 0, 0.5);
@@ -55,7 +53,6 @@ Change style of markers using css variables
   --l-editor-icon-middle-background-color: transparent;
 
   --l-editor-icon-middle-border-color: #88ff88;
-  /*--l-editor-icon-middle-box-shadow-color: #212121;*/
 
   --l-editor-icon-width: 12px;
   --l-editor-icon-height: 12px;
