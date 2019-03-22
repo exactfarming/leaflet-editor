@@ -16,9 +16,16 @@ export default function () {
   });
 
   this.on('msgHelperAdded', () => {
+
     var text = this.options.text;
 
     this.on(EVENTS.marker_group_select, () => {
+
+      const _disallowToExecuteEvent = () => {
+        const selectedMGroup = this.getSelectedMGroup()
+
+        return selectedMGroup && selectedMGroup.hasFirstMarker();
+      };
 
       this.off(EVENTS.not_selected_marker_mouseover);
       this.on(EVENTS.not_selected_marker_mouseover, (data) => {
@@ -49,6 +56,10 @@ export default function () {
       // on view polygon
       this.off(EVENTS.view_polygon_mousemove);
       this.on(EVENTS.view_polygon_mousemove, (data) => {
+        if (_disallowToExecuteEvent()) {
+          return;
+        }
+
         msgHelper.msg(text.clickToEdit, null, data.layerPoint);
       });
 
