@@ -22,7 +22,7 @@ export default {
       if (eMarkersGroup.isEmpty()) {
         this._addMarker(e);
 
-        this.fire(EVENTS.start_add_new_polygon);
+        this.fire(EVENTS.start_add_new_polygon, e);
         var startDrawStyle = this.options.style['startDraw'];
 
         if (startDrawStyle) {

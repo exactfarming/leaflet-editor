@@ -57,10 +57,10 @@ export default function () {
       this.off(EVENTS.view_polygon_mousemove);
       this.on(EVENTS.view_polygon_mousemove, (data) => {
         if (_disallowToExecuteEvent()) {
-          return;
+          msgHelper.hide();
+        } else {
+          msgHelper.msg(text.clickToEdit, null, data.layerPoint);
         }
-
-        msgHelper.msg(text.clickToEdit, null, data.layerPoint);
       });
 
       this.off(EVENTS.view_polygon_mouseout);
