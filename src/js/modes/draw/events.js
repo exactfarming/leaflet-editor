@@ -69,7 +69,9 @@ export default {
 
       // continue with new hole polygon
       if (lastHole && !lastHole.isEmpty() && lastHole.hasFirstMarker()) {
-        ehMarkersGroup.getLastHole().set(e.latlng);
+        const marker = ehMarkersGroup.getLastHole().set(e.latlng);
+
+        this.fire(EVENTS.add_hole_marker, { marker });
 
         return false;
       }

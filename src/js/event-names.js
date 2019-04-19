@@ -38,6 +38,7 @@ export default {
 
   before_add_marker: 'editor:before_add_marker',
   add_marker: 'editor:add_marker',
+  add_hole_marker: 'editor:add_hole_marker',
   marker_group_select: 'editor:marker_group_select',
 
   view_polygon_mousemove: 'editor:view_polygon_mousemove',

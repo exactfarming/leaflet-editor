@@ -238,6 +238,14 @@
     checkSelfIntersections(gJSON, areaOfInterestEdit);
   });
 
+  map.on('editor:add_hole_marker', () => {
+    console.log('editor:add_hole_marker');
+
+    const gJSON = map.getCurrentGeoJSON();
+
+    checkSelfIntersections(gJSON, areaOfInterestEdit);
+  });
+
   map.on('editor:delete_polygon', () => {
     console.log('editor:delete_polygon');
 
@@ -288,6 +296,7 @@
     'editor:drag_marker ' +
     'editor:delete_marker ' +
     'editor:add_marker ' +
+    'editor:add_hole_marker ' +
     'editor:polygon:hole_deleted ' +
     'editor:polygon:deleted', (e) => {
 
