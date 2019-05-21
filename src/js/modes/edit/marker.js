@@ -1,4 +1,4 @@
-import { icon, dragIcon } from '../../marker-icons.js';
+import { icon } from '../../marker-icons.js';
 
 import EVENTS from '../../event-names.js';
 
@@ -26,6 +26,12 @@ export default L.Marker.extend({
     this._isFirst = group.getLayers().length === 0;
   },
 
+  enableDrag() {
+    this.dragging.enable();
+  },
+  disableDrag() {
+    this.dragging.disable();
+  },
   group() {
     return this._mGroup;
   },
@@ -80,7 +86,10 @@ export default L.Marker.extend({
   },
   _setDragIcon() {
     this._removeIconClass('m-editor-div-icon');
-    this.setIcon(dragIcon);
+    this._removeIconClass('m-editor-middle-div-icon');
+    this._addIconClass('m-editor-div-icon-drag');
+
+    this.update();
   },
   isPlain() {
     return L.DomUtil.hasClass(this._icon, 'm-editor-div-icon');
@@ -132,6 +141,8 @@ export default L.Marker.extend({
   _bindEvents() {
 
     this.on('dragstart', e => {
+      this._setDragIcon();
+
       this.group().setSelected(this);
       this._oldLatLngState = e.target._latlng;
 
@@ -200,7 +211,7 @@ export default L.Marker.extend({
         map.clearSelectedMarker();
 
       } else { //remove vertex
-        if (!mGroup.getFirst()._hasFirstIcon() && !this.__wasDragged) {
+        if (!mGroup.getFirst()._hasFirstIcon()) {
           map.msgHelper.hide();
 
           mGroup.removeMarker(this);
@@ -216,8 +227,6 @@ export default L.Marker.extend({
           mGroup.select();
         }
       }
-
-      this.__wasDragged = false;
     });
 
     this.on('mousedown', () => {
@@ -293,9 +302,6 @@ export default L.Marker.extend({
     });
 
     this.on('dragend', (e) => {
-
-      this.__wasDragged = true;
-      this.__dragging = false;
       this._onDragEnd(e);
     });
   },
@@ -306,6 +312,8 @@ export default L.Marker.extend({
     this._bindEvents(map);
   },
   _onDrag(e) {
+    console.log(e);
+
     const marker = e.target;
 
     marker.changePrevNextPos();
@@ -318,13 +326,14 @@ export default L.Marker.extend({
     map.fire(EVENTS.drag_marker, {marker: this});
   },
   _onDragEnd() {
+    setTimeout(() => {
+      this.group().select();
+      this._map.fire(EVENTS.dragend_marker, {marker: this});
 
-    this.group().select();
-    this._map.fire(EVENTS.dragend_marker, {marker: this});
+      this._map.fire(EVENTS.selected_marker_mouseover, {marker: this});
 
-    this._map.fire(EVENTS.selected_marker_mouseover, {marker: this});
-
-    this.resetStyle();
+      this.resetStyle();
+    }, 1);
   },
   resetIcon() {
     this._removeIconClass('m-editor-div-icon-drag');

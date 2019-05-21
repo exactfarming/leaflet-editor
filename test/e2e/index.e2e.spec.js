@@ -61,11 +61,11 @@ describe('e2e tests', function () {
 
     await triggerEvent('click', '#map', { position: {x: x - 10, y: y - 10 } });
 
-    await triggerEvent('mousemove', '.leaflet-clickable', {position: {x: 5, y: 5}});
+    await triggerEvent('mousemove', '.view-polygon', {position: {x: 5, y: 5}});
 
     expect(document.querySelector('.leaflet-msg-container:not(.title-hidden)').innerText).to.eql('click to edit');
 
-    await triggerEvent('mouseout', '.leaflet-clickable', {position: {x: 5, y: 5}});
+    await triggerEvent('mouseout', '.view-polygon');
 
     expect(document.querySelector('.leaflet-msg-container:not(.title-hidden)')).not.to.exist;
   });
@@ -130,11 +130,13 @@ describe('e2e tests', function () {
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-div-icon').length).to.eql(0);
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon').length).to.eql(0);
 
-    await triggerEvent('click', 'path.leaflet-clickable', {position: {x: 40, y: 40}});
+    expect(document.querySelector('path.view-polygon')).to.exist;
+
+    await triggerEvent('click', 'path.view-polygon', {position: {x: 40, y: 40}});
 
     await triggerEvent('click', '#map', {position: {x: x - 10, y: y - 10}});
 
-    await triggerEvent('click', 'path.leaflet-clickable', {position: {x: 40, y: 40}});
+    await triggerEvent('click', 'path.view-polygon', {position: {x: 40, y: 40}});
 
     //draw first hole
     await triggerEvent('click', 'path.editable-polygon', {position: {x: 50, y: 50}});
@@ -163,9 +165,9 @@ describe('e2e tests', function () {
 
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon.group-selected').length).to.eql(0);
 
-    // await triggerEvent('click', '.m-editor-div-icon.group-selected');
+    await triggerEvent('click', '.m-editor-div-icon.group-selected');
 
-    // expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon.group-selected').length).to.eql(0);
+    expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon.group-selected').length).to.eql(0);
   });
   it('draw polygon + 2 holes; remove holes; remove polygon', async function () {
     const x = 200;
@@ -211,7 +213,7 @@ describe('e2e tests', function () {
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-div-icon').length).to.eql(0);
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-middle-div-icon').length).to.eql(0);
 
-    await triggerEvent('click', 'path.leaflet-clickable', {position: {x: 40, y: 40}});
+    await triggerEvent('click', 'path.view-polygon', {position: {x: 40, y: 40}});
 
     //select inner edge
     await triggerEvent('click', '.m-editor-div-icon:not(.group-selected)');
@@ -333,8 +335,8 @@ describe('e2e tests', function () {
 
     await triggerEvent('mousedown', '.leaflet-marker-pane .m-editor-middle-div-icon');
     await triggerEvent('mousemove', '#map', {position: {x: _x, y: _y}});
-    await triggerEvent('mousemove', '.leaflet-marker-pane .m-editor-div-icon-drag', {position: {x: 14, y: 7 + 125}});
-    await triggerEvent('mouseup', '.leaflet-marker-pane .m-editor-div-icon-drag');
+    await triggerEvent('mousemove', '.leaflet-marker-pane', {position: {x: 14, y: 7 + 125}});
+    await triggerEvent('mouseup', '.leaflet-marker-pane');
     await triggerEvent('mouseout', '.leaflet-marker-pane .m-editor-div-icon');
 
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-div-icon').length).to.eql(5);

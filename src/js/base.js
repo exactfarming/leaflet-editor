@@ -70,11 +70,7 @@ export default Object.assign({
     this.clear();
     this.mode('draw');
 
-    let geojson = this.getVGroup().toGeoJSON();
-    if (geojson.geometry) {
-      return geojson.geometry;
-    }
-    return {};
+    return this._getGeometry(this.getVGroup().toGeoJSON());
   },
   geoJSONArea(geoJSON) {
     let areaFunc = this.options.geoJSONArea || window.turf && window.turf.area;
@@ -148,12 +144,10 @@ export default Object.assign({
     let layer = geoJson.getLayers()[0];
 
     if (layer) {
-      let layers = layer.getLayers();
-      let vGroup = this.getVGroup();
-      for (let i = 0; i < layers.length; i++) {
-        let _l = layers[i];
-        vGroup.addLayer(_l);
-      }
+      const latlngs = layer.getLatLngs();
+      const vGroup = this.getVGroup();
+
+      vGroup.addLayer(L.polygon(latlngs, { className: 'view-polygon' }));
     }
 
     this.mode('draw');
@@ -194,19 +188,14 @@ export default Object.assign({
     let vGroup = this.getVGroup();
     let ePolygon = this.getEPolygon();
 
-    let holes = ePolygon.getHoles();
+    // let holes = ePolygon.getHoles();
     let latlngs = ePolygon.getLatLngs();
 
-    if (latlngs.length <= 2) {
+    if (latlngs && latlngs[0] && latlngs[0].length <= 2) {
       return;
     }
 
-    if (Array.isArray(holes)) {
-      if (holes) {
-        latlngs = [latlngs].concat(holes);
-      }
-    }
-    vGroup.addLayer(L.polygon(latlngs));
+    vGroup.addLayer(L.polygon(latlngs, { className: 'view-polygon' }));
   },
   _setEPolygon_To_VGroup() {
     let ePolygon = this.getEPolygon();
@@ -217,7 +206,7 @@ export default Object.assign({
     }
 
     selectedVLayer._latlngs = ePolygon.getLatLngs();
-    selectedVLayer._holes = ePolygon.getHoles();
+    // selectedVLayer._holes = ePolygon.getHoles();
     selectedVLayer.redraw();
   },
 
@@ -270,7 +259,7 @@ export default Object.assign({
       selectedMGroup.getDELine().clear();
     }
 
-    this.getEHMarkersGroup().clearLayers();
+    this.getEHMarkersGroup().clear();
 
     this._activeEditLayer = undefined;
 
@@ -288,5 +277,16 @@ export default Object.assign({
     if (element) {
       element.parentElement.insertAdjacentElement('beforeend', element);
     }
+  },
+  _getGeometry(geoJson = {}) {
+    if (geoJson.geometry) {
+      return geoJson.geometry;
+    }
+
+    if (geoJson.features && geoJson.features[0]) {
+      return this._getGeometry(geoJson.features[0]);
+    }
+
+    return {};
   }
 }, DrawEvents);

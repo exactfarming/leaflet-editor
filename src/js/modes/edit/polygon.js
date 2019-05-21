@@ -5,29 +5,30 @@ import EVENTS from '../../event-names.js';
 export default L.EditPloygon = ExtendedPolygon.extend({
   _oldE: undefined, // to reuse event object after "bad hole" removing to build new hole
   _k: 1, // to decrease 'diff' value which helps build a hole
-  _holes: [],
-  initialize (latlngs, options) {
+  initialize (latlngs = [[0,0]], options) {
     L.Polygon.prototype.initialize.call(this, latlngs, options);
 
-    this.options.className = "leaflet-clickable editable-polygon";
+    this.options.className = 'leaflet-clickable editable-polygon';
   },
-  _update (e) {
-    var marker = e.marker;
+  _updateMarker (e) {
+    let marker = e.marker;
 
     if (marker._mGroup._isHole) {
-      var markers = marker._mGroup._markers;
+      let markers = marker._mGroup._markers;
       markers = markers.filter((marker) => !marker.isMiddle());
-      this._holes[marker._mGroup.position] = markers.map((marker) => marker.getLatLng());
-
+      this._latlngs[marker._mGroup.position + 1] = markers.map((marker) => marker.getLatLng());
     }
+
     this.redraw();
   },
   _removeHole (e) {
-    var holePosition = e.marker._mGroup.position;
-    this._holes.splice(holePosition, 1);
+    let holePosition = e.marker._mGroup.position;
+    this._latlngs.splice(holePosition + 1, 1);
 
-    this._map.getEHMarkersGroup().removeLayer(e.marker._mGroup._leaflet_id);
-    this._map.getEHMarkersGroup().repos(e.marker._mGroup.position);
+    const ehMarkersGroup = this._map.getEHMarkersGroup();
+
+    ehMarkersGroup.removeLayer(e.marker._mGroup._leaflet_id);
+    ehMarkersGroup.repos(e.marker._mGroup.position);
 
     this.redraw();
   },
@@ -35,11 +36,11 @@ export default L.EditPloygon = ExtendedPolygon.extend({
     L.Polyline.prototype.onAdd.call(this, map);
 
     map.off(EVENTS.before_add_marker);
-    map.on(EVENTS.before_add_marker, (e) => this._update(e));
+    map.on(EVENTS.before_add_marker, (e) => this._updateMarker(e));
     map.off(EVENTS.drag_marker);
-    map.on(EVENTS.drag_marker, (e) => this._update(e));
+    map.on(EVENTS.drag_marker, (e) => this._updateMarker(e));
     map.off(EVENTS.delete_marker);
-    map.on(EVENTS.delete_marker, (e) => this._update(e));
+    map.on(EVENTS.delete_marker, (e) => this._updateMarker(e));
     map.off(EVENTS.delete_hole);
     map.on(EVENTS.delete_hole, (e) => this._removeHole(e));
 
@@ -59,12 +60,11 @@ export default L.EditPloygon = ExtendedPolygon.extend({
     L.Polyline.prototype.onRemove.call(this, map);
   },
   addHole (hole) {
-    this._holes = this._holes || [];
-    this._holes.push(hole);
+    this._latlngs.push(hole);
 
     this.redraw();
   },
   hasHoles() {
-    return this._holes.length > 0;
+    return this._latlngs.length > 1;
   }
 });

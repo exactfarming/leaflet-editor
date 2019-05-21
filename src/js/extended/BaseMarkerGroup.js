@@ -3,8 +3,8 @@ import * as icons from '../marker-icons.js';
 
 import EVENTS from '../event-names.js';
 
-export default L.Class.extend({
-  includes: L.Mixin.Events,
+export default L.LayerGroup.extend({
+  includes: L.Evented,
 
   _selected: false,
   _lastMarker: undefined,
@@ -269,7 +269,9 @@ export default L.Class.extend({
   },
   select () {
     if (this.isEmpty()) {
-      this._map._selectedMGroup = null;
+      if (this._map) {
+        this._map._selectedMGroup = null;
+      }
     } else {
       const map = this._map;
 
@@ -283,7 +285,7 @@ export default L.Class.extend({
       }
 
       this.getLayers()._each((marker) => {
-        marker.dragging.enable();
+        marker.enableDrag();
         marker.selectIconInGroup();
       });
       this._selected = true;
@@ -300,9 +302,10 @@ export default L.Class.extend({
   },
   resetSelection () {
     this.getLayers()._each((marker) => {
-      marker.dragging.disable();
+      marker.disableDrag();
       marker.unSelectIconInGroup();
     });
+
     this._selected = false;
   }
 })

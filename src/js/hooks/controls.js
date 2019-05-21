@@ -22,7 +22,7 @@ export default function () {
     this.on(EVENTS.marker_group_select, () => {
 
       const _disallowToExecuteEvent = () => {
-        const selectedMGroup = this.getSelectedMGroup()
+        const selectedMGroup = this.getSelectedMGroup();
 
         return selectedMGroup && selectedMGroup.hasFirstMarker();
       };

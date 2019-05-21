@@ -46,5 +46,15 @@ export default L.FeatureGroup.extend({
       layer.resetSelection();
     });
     this._selected = false;
+  },
+
+  clear () {
+    this.eachLayer(layer => {
+      if (layer._markers) {
+        layer.clear();
+      }
+
+      this.removeLayer(layer);
+    })
   }
 });
