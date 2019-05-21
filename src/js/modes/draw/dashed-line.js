@@ -1,15 +1,34 @@
 import opts from '../../options.js';
 
+let style = Object.assign(opts.style.drawLine, {
+  className: 'dash-line'
+});
+
 export default L.Polyline.extend({
   options: Object.assign(opts.style.drawLine, {
     className: 'dash-line'
   }),
   _latlngToMove: undefined,
-  onAdd: function (map) {
-    L.Polyline.prototype.onAdd.call(this, map);
-    this.setStyle(map.options.style.drawLine);
+  _isHiddenLine: true,
+
+  initialize: function (latlngs = [[0,0]], options) {
+    if (latlngs.toString() === '0,0') {
+      this._isHiddenLine = true;
+      this.setStyle({ opacity: 0 });
+    }
+    L.Polyline.prototype.initialize.call(this, latlngs, options);
+
+    return this
   },
-  addLatLng (latlng) {
+  addLatLng (latlng, options = style) {
+    if (this._isHiddenLine) {
+      this._isHiddenLine = false;
+
+      this.setLatLngs([latlng]);
+    }
+
+    this.setStyle(options);
+
     if (this._latlngToMove) {
       this._latlngToMove = undefined;
     }

@@ -24,38 +24,45 @@ export const precisionGeoJSON = function(geoJSON, prec = 0) {
     throw new Error('Please, make sure that first arguments is geoJSON');
   }
 
-  json = JSON.parse(JSON.stringify(geoJSON));
-
-  let { geometry: { type, coordinates } } = json;
-
-  if (!Array.isArray(coordinates)) {
-    throw new Error('Please, make sure that geoJSON has correct structure');
+  if (geoJSON.features && geoJSON.features[0]) {
+    geoJSON.features = geoJSON.features.map(feature => {
+      return precisionGeoJSON(feature, prec);
+    }, []);
   }
 
-  if (type === 'Polygon') {
-    if (prec > 0) {
-      coordinates.forEach(outlet => {
-        outlet.forEach(edge => {
-          edge[0] = precision(edge[0], prec);
-          edge[1] = precision(edge[1], prec);
-        });
-      });
+  json = Object.assign({}, geoJSON);
+
+  if (json.geometry) {
+    let { geometry: { type, coordinates } } = json;
+
+    if (!Array.isArray(coordinates)) {
+      throw new Error('Please, make sure that geoJSON has correct structure');
     }
-  }
 
-  if (type === 'MultiPolygon') {
-    if (prec > 0) {
-      coordinates.forEach(polygon => {
-        polygon.forEach(outlet => {
+    if (type === 'Polygon') {
+      if (prec > 0) {
+        coordinates.forEach(outlet => {
           outlet.forEach(edge => {
             edge[0] = precision(edge[0], prec);
             edge[1] = precision(edge[1], prec);
           });
         });
-      });
+      }
+    }
+
+    if (type === 'MultiPolygon') {
+      if (prec > 0) {
+        coordinates.forEach(polygon => {
+          polygon.forEach(outlet => {
+            outlet.forEach(edge => {
+              edge[0] = precision(edge[0], prec);
+              edge[1] = precision(edge[1], prec);
+            });
+          });
+        });
+      }
     }
   }
-
 
   return json;
 };

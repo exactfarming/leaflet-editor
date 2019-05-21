@@ -3436,10 +3436,10 @@ leaflet@0.7.3:
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.3.tgz#c80439e4ebcaae9ee02700960b61c4f9cdb93ac5"
   integrity sha1-yAQ55OvKrp7gJwCWC2HE+c25OsU=
 
-leaflet@^0.7.3:
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
-  integrity sha1-HjUrpU5j0HZFH6NjyQCJDLLPde4=
+leaflet@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
+  integrity sha512-ekM9KAeG99tYisNBg0IzEywAlp0hYI5XRipsqRXyRTeuU8jcuntilpp+eFf5gaE0xubc9RuSNIVtByEKwqFV0w==
 
 limiter@^1.0.5:
   version "1.1.4"

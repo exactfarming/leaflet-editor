@@ -13,11 +13,11 @@ import HolesGroup from './modes/edit/holesGroup.js';
 
 let Map = L.Map.extend({
   setLayers() {
-    this.viewGroup = new ViewGroup([]);
+    this.viewGroup = new ViewGroup();
     this.editGroup = new DrawGroup([]);
-    this.editPolygon = new EditPolygon([]);
+    this.editPolygon = new EditPolygon();
     this.editMarkersGroup = new MarkerGroup([]);
-    this.dashedEditLineGroup = new DashedEditLineGroup([]);
+    this.dashedEditLineGroup = new DashedEditLineGroup();
     this.editHoleMarkersGroup = new HolesGroup([]);
 
     this.viewGroup.addTo(this);
@@ -121,7 +121,8 @@ let Map = L.Map.extend({
   },
 
   getSelectedMGroup() {
-    return this._selectedMGroup;
+    const selectedMGroup = this._selectedMGroup;
+    return selectedMGroup && selectedMGroup._map ? selectedMGroup : null;
   },
 
   getCurrentGeoJSON() {

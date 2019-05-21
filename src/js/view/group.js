@@ -1,8 +1,9 @@
 import EVENTS from '../event-names.js';
 
-export default L.MultiPolygon.extend({
-  initialize (latlngs, options) {
-    L.MultiPolygon.prototype.initialize.call(this, latlngs, options);
+export default L.FeatureGroup.extend({
+  initialize (latlngs, options = {}) {
+    L.FeatureGroup.prototype.initialize.call(this, latlngs, options);
+
 
     this.on('layeradd', (e) => {
       var mViewStyle = this._map.options.style.view;
@@ -19,7 +20,7 @@ export default L.MultiPolygon.extend({
     return this.getLayers().length === 0;
   },
   onAdd (map) {
-    L.MultiPolygon.prototype.onAdd.call(this, map);
+    L.FeatureGroup.prototype.onAdd.call(this, map);
 
     this.on('mousemove', (e) => {
       map.fire(EVENTS.view_polygon_mousemove, { layerPoint: e.layerPoint });
@@ -29,6 +30,8 @@ export default L.MultiPolygon.extend({
     });
   },
   onClick (e) {
+    L.DomEvent.stopPropagation(e);
+
     const map = this._map;
     const selectedMGroup = map.getSelectedMGroup();
     const eMarkersGroup = map.getEMarkersGroup();

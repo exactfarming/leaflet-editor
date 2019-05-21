@@ -3,12 +3,12 @@
     <meta charset="utf-8">
     <title>Mocha Tests</title>
     <link href="../node_modules/mocha/mocha.css" rel="stylesheet" />
-    <link href="./vendor/css/mapbox.2.2.1.css" rel="stylesheet" />
+    <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet" />
     <link href="../dist/css/index.css" rel="stylesheet" />
 </head>
 <body>
 
-<script src="./vendor/js/mapbox.2.2.1.js"></script>
+<script src="../node_modules/leaflet/dist/leaflet-src.js"></script>
 <script src="../node_modules/chai/chai.js"></script>
 <script src="../node_modules/mocha/mocha.js"></script>
 <script src="../node_modules/chai-spies/chai-spies.js"></script>
@@ -19,10 +19,6 @@
 
 <script src="../test/helper/template.js"></script>
 <script src="../test/helper/events.js"></script>
-
-<script>
-  L.mapbox.accessToken = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejh2N21nMzAxMmQzMnA5emRyN2lucW0ifQ.jSE-g2vsn48Ry928pqylcg";
-</script>
 
 <script src="/testem.js"></script> <!-- !!! only for running on testem (CI server) !!! -->
 

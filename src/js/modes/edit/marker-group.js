@@ -19,6 +19,9 @@ L.MarkerGroup = BaseMGroup.extend({
   onAdd (map) {
     this._map = map;
   },
+  onRemove () {
+    this._map.off('mousemove');
+  },
   _updateDELine (latlng) {
     const deLine = this.getDELine();
     if (this._firstMarker) {
@@ -27,9 +30,6 @@ L.MarkerGroup = BaseMGroup.extend({
     return deLine;
   },
   getDELine () {
-    if (!this._map) {
-      this._map.dashedEditLineGroup.addTo(this._map);
-    }
     return this._map.dashedEditLineGroup;
   },
   hasMinimalMarkersLength() {
@@ -62,8 +62,21 @@ L.MarkerGroup = BaseMGroup.extend({
     return !!(this.getFirst() && this.getFirst()._hasFirstIcon());
   },
   restore (layer) {
-    this.setAll(layer._latlngs);
-    this.setAllHoles(layer._holes);
+    if (layer._latlngs[0][0] instanceof L.LatLng) {
+      if (layer._latlngs) {
+        this.setAll(layer._latlngs[0]);
+      }
+      if (layer._latlngs[1]) {
+        const [_, ..._holes] = layer._latlngs;
+
+        this.setAllHoles(_holes);
+      }
+    } else if (layer._latlngs[0][0][0] instanceof L.LatLng) {
+      layer._latlngs.forEach(ll => {
+        this.restore({ _latlngs: ll })
+      })
+    }
+
   },
   _add(latlng, position, options = {}) {
 
@@ -103,14 +116,16 @@ L.MarkerGroup = BaseMGroup.extend({
   set (latlng, position, options) {
     return this._add(latlng, position, options);
   },
-  setAll (latlngs) {
+  setAll (latlngs = []) {
     latlngs.forEach((latlng, position) => {
       this.set(latlng, position);
     });
 
-    this.getFirst().fire('click');
+    if (latlngs.length > 0) {
+      this.getFirst().fire('click');
+    }
   },
-  setAllHoles (holes) {
+  setAllHoles (holes = []) {
     holes.forEach((hole) => {
       var lastHGroup = this._map.getEHMarkersGroup().addHoleGroup();
 

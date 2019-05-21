@@ -55,7 +55,7 @@ describe('methods', function () {
 
     editor.fitBounds(layer.getBounds());
 
-    expect(document.querySelectorAll('path.leaflet-clickable:not(.editable-polygon)').length).to.eql(1);
+    expect(document.querySelectorAll('path.leaflet-clickable:not(.view-polygon)').length).to.eql(1);
   });
 
   it('area', async () => {
@@ -92,7 +92,7 @@ describe('methods', function () {
 
     expect(editor.area()).to.eql(114178506.51615);
 
-    await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
+    await triggerEvent('click', 'path.leaflet-clickable:not(.view-polygon)', {position: {x: 40, y: 40}});
 
     expect(editor.area()).to.eql(114178506.51615);
   });
@@ -128,7 +128,7 @@ describe('methods', function () {
 
     editor.fitBounds(layer.getBounds());
 
-    await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
+    await triggerEvent('click', 'path.leaflet-clickable:not(.view-polygon)', {position: {x: 40, y: 40}});
 
     expect(editor.area()).to.eql(114178506.51615);
     expect(editor.geoJSONArea(geoJSON)).to.eql(114178506.51615033);
@@ -136,38 +136,66 @@ describe('methods', function () {
 
   it('saveState', async () => {
     const geoJSON = {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      "type": "Polygon",
+      "coordinates": [
+        [
           [
-            [
-              [73.804779, 54.650002],
-              [73.970947, 54.684947],
-              [74.058838, 54.612641],
-              [73.881683, 54.596732],
-              [73.714142, 54.670655],
-              [73.817139, 54.707962],
-              [73.804779, 54.650002]],
-            [
-              [73.946228, 54.661124],
-              [73.981934, 54.633313],
-              [73.900909, 54.622183],
-              [73.946228, 54.661124]
-            ]
+            73.804779,
+            54.650002
+          ],
+          [
+            73.970947,
+            54.684947
+          ],
+          [
+            74.058838,
+            54.612641
+          ],
+          [
+            73.881683,
+            54.596732
+          ],
+          [
+            73.714142,
+            54.670655
+          ],
+          [
+            73.817139,
+            54.707962
+          ],
+          [
+            73.804779,
+            54.650002
+          ]
+        ],
+        [
+          [
+            73.946228,
+            54.661124
+          ],
+          [
+            73.981934,
+            54.633313
+          ],
+          [
+            73.900909,
+            54.622183
+          ],
+          [
+            73.946228,
+            54.661124
           ]
         ]
-      }
+      ]
     };
 
     editor.createEditPolygon(geoJSON);
 
     const json = editor.saveState();
 
-    expect(json).to.eql(geoJSON.geometry);
+    expect(json).to.eql(geoJSON);
 
-    await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
+    await triggerEvent('click', 'path.leaflet-clickable:not(.view-polygon)', {position: {x: 40, y: 40}});
   });
 
   it('polygon.isEmpty', async () => {
@@ -188,8 +216,8 @@ describe('methods', function () {
               [73.804779, 54.650002]],
             [
               [73.946228, 54.661124],
-              [73.981934, 54.633313],
               [73.900909, 54.622183],
+              [73.981934, 54.633313],
               [73.946228, 54.661124]
             ]
           ]
@@ -199,15 +227,16 @@ describe('methods', function () {
 
     editor.createEditPolygon(geoJSON);
 
-    await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
+    await triggerEvent('click', '.view-polygon', {position: {x: 40, y: 40}});
 
+    debugger;
     expect(editor.getEPolygon().isEmpty()).to.be.false;
 
     editor.saveState();
 
     expect(editor.getEPolygon().isEmpty()).to.be.true;
 
-    await triggerEvent('click', 'path.leaflet-clickable:not(.editable-polygon)', {position: {x: 40, y: 40}});
+    await triggerEvent('click', '.view-polygon', {position: {x: 40, y: 40}});
 
     editor.getEPolygon().clear();
 

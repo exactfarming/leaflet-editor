@@ -2,11 +2,18 @@
 
 Leaflet plugin which helps edit polygons
 
-Works with leaflet 0.7.x (see folder "examples") and mapbox v2.2.1 (see folders "examples/mapbox.html", "test/index.html")
+!!! Restrictions !!!
 
-## Support old browsers versions
+Editor works only with one multipolygon
 
-> IE10
+Compatibility with leaflet versions
+
+  plugin versions  --> leaflet versions
+
+  0.0.x - 2.0.x        0.7.x
+  3.x.x                >= 1.5.0
+
+Works with leaflet 1.5.1 (see folder "examples") and mapbox v3.2.0 (see folders "examples/mapbox.html", "test/index.html")
 
 ## Examples
 1) [http://exactfarming.github.io/leaflet-editor/](http://exactfarming.github.io/leaflet-editor/)
