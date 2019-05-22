@@ -2,11 +2,11 @@
 
 Leaflet plugin which helps edit polygons
 
-####!!! Restrictions !!!
+#### !!! Restrictions !!!
 
 Editor works only with one multipolygon
 
-####Compatibility with leaflet versions
+#### Compatibility with leaflet versions
 
   plugin versions  --> leaflet versions
 
