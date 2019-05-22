@@ -132,10 +132,12 @@
   });
 
   window._map.on('editor:polygon_changed', ({ json }) => {
-    //
     console.log('Saved state', json);
-    //
-  })
+  });
+
+  const m = L.marker([54.695999, 73.855556]);
+
+  m.bindTooltip("my tooltip").addTo(window._map);
 </script>
 </body>
 </html>

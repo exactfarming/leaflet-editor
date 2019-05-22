@@ -53,7 +53,7 @@ describe('e2e tests', function () {
 
     await triggerEvent('click', '.m-editor-div-icon-first');
 
-    await triggerEvent('mousemove', '.editable-polygon', {position: {x: 5, y: 5}});
+    await triggerEvent('mousemove', '.editable-polygon', {position: {x: 15, y: 15}});
 
     expect(document.querySelector('.leaflet-msg-container:not(.title-hidden)').innerText).to.eql('click to draw inner edges');
 

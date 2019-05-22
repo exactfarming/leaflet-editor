@@ -161,7 +161,8 @@ export default L.LayerGroup.extend({
       latlng = this._getMiddleLatLng(prevMarker, nextMarker);
     }
 
-    var marker = new Marker(this, latlng, options);
+    const marker = new Marker(this, latlng, options);
+
     if (!this._firstMarker) {
       this._firstMarker = marker;
       this._lastMarker = marker;
@@ -172,6 +173,8 @@ export default L.LayerGroup.extend({
     }
 
     this.addLayer(marker);
+
+    // marker.bindTooltip("my tooltip text").openTooltip();
 
     {
       marker.position = (marker.position !== undefined ) ? marker.position : this._lastPosition++;
