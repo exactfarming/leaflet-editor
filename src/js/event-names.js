@@ -1,4 +1,6 @@
 export default {
+  changed: 'editor:polygon_changed',
+
   start_add_new_polygon: 'editor:start_add_new_polygon',
   start_add_new_hole: 'editor:start_add_new_hole',
   marker_group_clear: 'editor:marker_group_clear',

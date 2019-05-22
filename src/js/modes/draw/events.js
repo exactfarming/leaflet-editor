@@ -88,6 +88,7 @@ export default {
       this.clear();
 
       this.fire(EVENTS.marker_group_clear);
+      this.fire(EVENTS.changed, { json: this.saveState() });
 
       this.mode('draw');
     });

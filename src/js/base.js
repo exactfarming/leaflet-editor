@@ -70,7 +70,14 @@ export default Object.assign({
     this.clear();
     this.mode('draw');
 
-    return this.getVGroup().toGeoJSON();
+    const rslt = this.getVGroup().toGeoJSON();
+
+    return {
+      type: 'MultiPolygon',
+      coordinates: rslt.features.reduce((data, feature) => {
+          return [...data, ...feature.geometry.coordinates];
+        }, [])
+    };
   },
   geoJSONArea(geoJSON) {
     let areaFunc = this.options.geoJSONArea || window.turf && window.turf.area;

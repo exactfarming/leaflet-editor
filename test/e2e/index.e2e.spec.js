@@ -341,4 +341,36 @@ describe('e2e tests', function () {
 
     expect(document.querySelectorAll('.leaflet-marker-pane .m-editor-div-icon').length).to.eql(5);
   });
+
+  it('change area', async function () {
+    const x = 100;
+    const y = 150;
+
+    await triggerEvent('click', '#map', {position: {x, y}});
+    await triggerEvent('click', '#map', {position: {x, y: y + 250}});
+    await triggerEvent('click', '#map', {position: {x: x + 250, y: y}});
+
+    await triggerEvent('click', '.m-editor-div-icon-first');
+
+    await triggerEvent('click', '#map', {position: {x: 40, y: 40}});
+
+    expect(editor.area()).to.eql(1221117532965.0015);
+
+    const xSecond = 400;
+
+    await triggerEvent('click', '#map', {position: {x: xSecond, y}});
+    await triggerEvent('click', '#map', {position: {x: xSecond, y: y + 250}});
+    await triggerEvent('click', '#map', {position: {x: xSecond + 250, y: y}});
+
+    await triggerEvent('click', '.m-editor-div-icon-first');
+
+    await triggerEvent('click', '#map', {position: {x: 40, y: 40}});
+
+    expect(editor.area()).to.eql(2442235065930.003);
+
+    await triggerEvent('click', document.querySelectorAll('path.view-polygon')[1], { position: { x: 10 , y: 10 } });
+    await triggerEvent('click', '.leaflet-marker-icon');
+
+    expect(editor.area()).to.eql(1221117532965.0015);
+  });
 });

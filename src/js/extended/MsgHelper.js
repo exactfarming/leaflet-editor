@@ -27,22 +27,29 @@ export default L.Control.extend({
     return container;
   },
   onRemove() {
-    this._unBindEvents(map);
-    document.body.removeChild(this._titlePosContainer);
+    this._unBindEvents();
+
+    document.querySelectorAll('.leaflet-msg-container').forEach(container => {
+      document.body.removeChild(container);
+    });
   },
   _changePos () {
-    let controlCorner = this._map._controlCorners['msgcenter'];
-    if (controlCorner && controlCorner.children.length) {
-      let child = controlCorner.children[0].children[0];
+    if (this._map) {
+      let controlCorner = this._map._controlCorners['msgcenter'];
+      if (controlCorner && controlCorner.children.length) {
+        let child = controlCorner.children[0].children[0];
 
-      if (!child) {
-        return;
-      }
+        if (!child) {
+          return;
+        }
 
-      let width = child.clientWidth;
-      if (width) {
-        controlCorner.style.left = (this._map._container.clientWidth - width) / 2 + 'px';
+        let width = child.clientWidth;
+        if (width) {
+          controlCorner.style.left = (this._map._container.clientWidth - width) / 2 + 'px';
+        }
       }
+    } else {
+      this._unBindEvents();
     }
   },
   _unBindEvents() {
@@ -51,7 +58,6 @@ export default L.Control.extend({
   _bindEvents () {
     this._onResizeEvent = this._changePos.bind(this);
     window.addEventListener('resize', this._onResizeEvent);
-    this._onResizeEvent = null;
   },
   _setContainer (container) {
     this._titleContainer = L.DomUtil.create('div', 'leaflet-msg-container title-hidden');

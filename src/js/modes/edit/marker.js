@@ -312,8 +312,6 @@ export default L.Marker.extend({
     this._bindEvents(map);
   },
   _onDrag(e) {
-    console.log(e);
-
     const marker = e.target;
 
     marker.changePrevNextPos();

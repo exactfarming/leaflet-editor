@@ -1,12 +1,12 @@
-# leaflet-editor [![Build Status](https://travis-ci.org/exactfarming/leaflet-editor.svg?branch=master)](https://travis-ci.org/exactfarming/leaflet-editor)
+### leaflet-editor [![Build Status](https://travis-ci.org/exactfarming/leaflet-editor.svg?branch=master)](https://travis-ci.org/exactfarming/leaflet-editor)
 
 Leaflet plugin which helps edit polygons
 
-!!! Restrictions !!!
+####!!! Restrictions !!!
 
 Editor works only with one multipolygon
 
-Compatibility with leaflet versions
+####Compatibility with leaflet versions
 
   plugin versions  --> leaflet versions
 
@@ -15,21 +15,21 @@ Compatibility with leaflet versions
 
 Works with leaflet 1.5.1 (see folder "examples") and mapbox v3.2.0 (see folders "examples/mapbox.html", "test/index.html")
 
-## Examples
+#### Examples
 1) [http://exactfarming.github.io/leaflet-editor/](http://exactfarming.github.io/leaflet-editor/)
 
 2) ["area" function](http://exactfarming.github.io/leaflet-editor/index-area) ("turf.js" library is required)
 
-## Install packages
+#### Install packages
 yarn install
 
-## Build
+#### Build
 npm run build
 
-## Run
+#### Run
 npm run start:dev
 
-## Tests
+#### Tests
 
  There are several ways to do it:
 
@@ -37,7 +37,7 @@ npm run start:dev
  2) Use wallabyjs tool
  3) Run `testem`
 
-## Style
+#### Style
 
 Change style of markers using css variables
 
@@ -66,7 +66,7 @@ Change style of markers using css variables
 }
 ```
 
-## Deprecations
+#### Deprecations
 
 Removed:
 
