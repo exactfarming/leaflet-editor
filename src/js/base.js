@@ -75,7 +75,7 @@ export default Object.assign({
     return {
       type: 'MultiPolygon',
       coordinates: rslt.features.reduce((data, feature) => {
-          return [...data, ...feature.geometry.coordinates];
+          return [...data, feature.geometry.coordinates];
         }, [])
     };
   },
@@ -155,7 +155,13 @@ export default Object.assign({
         const latlngs = layer.getLatLngs();
         const vGroup = this.getVGroup();
 
-        vGroup.addLayer(L.polygon(latlngs, { className: 'view-polygon' }));
+        if (layer.feature.geometry.type === 'MultiPolygon') {
+          latlngs.forEach(_latlngs => {
+            vGroup.addLayer(L.polygon(_latlngs, { className: 'view-polygon' }));
+          })
+        } else {
+          vGroup.addLayer(L.polygon(latlngs, { className: 'view-polygon' }));
+        }
       });
     }
 
