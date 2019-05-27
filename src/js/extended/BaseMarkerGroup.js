@@ -33,21 +33,22 @@ export default L.LayerGroup.extend({
     marker.position = (marker.position != null) ? marker.position : this._markers.length - 1;
   },
   remove () {
-    var markers = this.getLayers();
+    const map = this._map;
+    const markers = this.getLayers();
+
+    this.getDELine().clear();
+
     markers._each((marker) => {
       while (this.getLayers().length) {
         this.removeMarker(marker);
       }
     });
 
-    var map = this._map;
-
     if (this._isHole) {
       map.fire(EVENTS.hole_deleted);
     } else {
       map.getVGroup().removeLayer(map._getSelectedVLayer());
       map.fire(EVENTS.polygon_deleted);
-
     }
   },
   removeLayer (marker) {
@@ -273,7 +274,7 @@ export default L.LayerGroup.extend({
   select () {
     if (this.isEmpty()) {
       if (this._map) {
-        this._map._selectedMGroup = null;
+        this._map.clearSelectedMGroup();
       }
     } else {
       const map = this._map;
@@ -293,7 +294,8 @@ export default L.LayerGroup.extend({
       });
       this._selected = true;
 
-      this._map._selectedMGroup = this;
+
+      this._map.setSelectedMGroup(this);
       this._map.fire(EVENTS.marker_group_select);
     }
   },

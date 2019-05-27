@@ -120,6 +120,15 @@ let Map = L.Map.extend({
     return this.editHoleMarkersGroup;
   },
 
+  setSelectedMGroup(group) {
+    debugger;
+    this._selectedMGroup = group;
+  },
+
+  clearSelectedMGroup() {
+    this._selectedMGroup = null;
+  },
+
   getSelectedMGroup() {
     const selectedMGroup = this._selectedMGroup;
     return selectedMGroup && selectedMGroup._map ? selectedMGroup : null;

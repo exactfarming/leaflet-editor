@@ -31,7 +31,7 @@ export default {
 
         this._clearSelectedVLayer();
 
-        this._selectedMGroup = eMarkersGroup;
+        this.setSelectedMGroup(eMarkersGroup);
         return false;
       }
 
@@ -56,7 +56,7 @@ export default {
             var lastHGroup = ehMarkersGroup.addHoleGroup();
             lastHGroup.set(e.latlng, null, { icon: firstIcon });
 
-            this._selectedMGroup = lastHGroup;
+            this.setSelectedMGroup(lastHGroup);
             this.fire(EVENTS.start_add_new_hole);
 
             this.getEHMarkersGroup().resetSelection();
