@@ -121,7 +121,6 @@ let Map = L.Map.extend({
   },
 
   setSelectedMGroup(group) {
-    debugger;
     this._selectedMGroup = group;
   },
 
